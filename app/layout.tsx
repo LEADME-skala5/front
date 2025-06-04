@@ -1,14 +1,14 @@
-import type React from "react"
-import { Inter } from "next/font/google"
-import "./globals.css"
-import ClientLayout from "./clientLayout"
+import type React from "react";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import ClientLayout from "./clientLayout";
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
@@ -16,9 +16,9 @@ export default function RootLayout({
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
-  )
+  );
 }
 
-export const metadata = {
-      generator: 'v0.dev'
-    };
+// export const metadata = {
+//       generator: 'v0.dev'
+//     };

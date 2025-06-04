@@ -1,8 +1,16 @@
-"use client"
+"use client";
 
-import { Home, FileText, Settings, BarChart3, TrendingUp } from "lucide-react"
-import { usePathname } from "next/navigation"
-import Link from "next/link"
+import {
+  Home,
+  FileText,
+  Settings,
+  BarChart3,
+  TrendingUp,
+  ClipboardCheck,
+} from "lucide-react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 import {
   Sidebar,
@@ -13,39 +21,58 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarHeader,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
-// Main menu items (removed chatbot dropdown)
 const menuItems = [
   {
     title: "Dashboard",
     url: "/dashboard",
     icon: Home,
+    requiresTeamLead: false,
   },
   {
     title: "Report Archive",
     url: "/reports",
     icon: FileText,
+    requiresTeamLead: false,
   },
   {
     title: "Performance Management",
     url: "/performance",
     icon: TrendingUp,
+    requiresTeamLead: false,
+  },
+  {
+    title: "성과관리 기준 설정",
+    url: "/evaluation/setup",
+    icon: ClipboardCheck,
+    requiresTeamLead: true,
   },
   {
     title: "Settings",
     url: "/settings",
     icon: Settings,
+    requiresTeamLead: false,
   },
-]
+];
 
 export function AppSidebar() {
-  const pathname = usePathname()
+  const pathname = usePathname();
+  const [isTeamLead, setIsTeamLead] = useState(false);
+
+  useEffect(() => {
+    const userRole = localStorage.getItem("userRole") || "member";
+    setIsTeamLead(userRole === "teamlead");
+  }, []);
 
   const isActiveRoute = (url: string) => {
-    const mainPath = pathname.split("?")[0]
-    return mainPath === url
-  }
+    const mainPath = pathname.split("?")[0];
+    return mainPath === url;
+  };
+
+  const visibleMenuItems = menuItems.filter(
+    (item) => !item.requiresTeamLead || isTeamLead
+  );
 
   return (
     <Sidebar>
@@ -74,5 +101,5 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
-  )
+  );
 }
