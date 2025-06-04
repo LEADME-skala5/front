@@ -7,6 +7,7 @@ import {
   BarChart3,
   TrendingUp,
   ClipboardCheck,
+  Users,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -47,6 +48,12 @@ const menuItems = [
     url: "/evaluation/setup",
     icon: ClipboardCheck,
     requiresTeamLead: true,
+  },
+  {
+    title: "동료 평가",
+    url: "/evaluation/peer",
+    icon: Users,
+    requiresTeamLead: false,
   },
   {
     title: "Settings",
