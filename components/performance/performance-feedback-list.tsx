@@ -68,7 +68,7 @@ export function PerformanceFeedbackList() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <FileText className="h-5 w-5" />
-          Performance Feedback Reports
+          리포트 내역
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -96,7 +96,7 @@ export function PerformanceFeedbackList() {
                       <span>{report.author}</span>
                     </div>
                     <p className="text-sm text-muted-foreground mt-1">
-                      Period: {report.period}
+                      기간: {report.period}
                     </p>
                   </div>
                 </div>
@@ -114,7 +114,7 @@ export function PerformanceFeedbackList() {
                     onClick={(e) => handleDownload(e, report.id)}
                   >
                     <Download className="mr-2 h-4 w-4" />
-                    Download
+                    다운로드
                   </Button>
                 </div>
               </div>

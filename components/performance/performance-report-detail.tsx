@@ -162,12 +162,10 @@ export function PerformanceReportDetail({
     return (
       <div className="text-center py-12">
         <h2 className="text-2xl font-bold text-gray-900">Report Not Found</h2>
-        <p className="text-gray-600 mt-2">
-          The requested performance report could not be found.
-        </p>
+        <p className="text-gray-600 mt-2">찾을 수 없는 페이지입니다.</p>
         <Button onClick={() => router.push("/performance")} className="mt-4">
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Performance
+          이전 페이지
         </Button>
       </div>
     );
@@ -190,17 +188,16 @@ function YearEndReport({ report, router }: { report: any; router: any }) {
           onClick={() => router.push("/performance")}
           className="mb-4"
         >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Performance
+          <ArrowLeft className="h-4 w-4" />
         </Button>
         <div className="flex gap-2">
           <Button variant="outline">
             <Share className="mr-2 h-4 w-4" />
-            Share
+            공유
           </Button>
           <Button variant="outline">
             <Download className="mr-2 h-4 w-4" />
-            Download
+            다운로드
           </Button>
         </div>
       </div>

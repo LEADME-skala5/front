@@ -12,7 +12,8 @@ import {
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-
+import logo from "@/public/logo.png";
+import Image from "next/image";
 import {
   Sidebar,
   SidebarContent,
@@ -26,19 +27,19 @@ import {
 
 const menuItems = [
   {
-    title: "Dashboard",
+    title: "대시보드",
     url: "/dashboard",
     icon: Home,
     requiresTeamLead: false,
   },
   {
-    title: "Report Archive",
+    title: "위클리 리포트",
     url: "/reports",
     icon: FileText,
     requiresTeamLead: false,
   },
   {
-    title: "Performance Management",
+    title: "성과관리 결과",
     url: "/performance",
     icon: TrendingUp,
     requiresTeamLead: false,
@@ -56,7 +57,7 @@ const menuItems = [
     requiresTeamLead: false,
   },
   {
-    title: "Settings",
+    title: "설정",
     url: "/settings",
     icon: Settings,
     requiresTeamLead: false,
@@ -85,8 +86,8 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarHeader>
         <div className="flex items-center gap-2 px-2 py-2">
-          <BarChart3 className="h-6 w-6" />
-          <span className="font-semibold">WorkFlow</span>
+          <Image src={logo} alt="로고" width={50} height={50} />
+          <span className="font-semibold">목록</span>
         </div>
       </SidebarHeader>
       <SidebarContent>
