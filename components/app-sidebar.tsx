@@ -8,6 +8,7 @@ import {
   TrendingUp,
   ClipboardCheck,
   Users,
+  UserCheck,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -48,6 +49,12 @@ const menuItems = [
     title: "성과관리 기준 설정",
     url: "/evaluation/setup",
     icon: ClipboardCheck,
+    requiresTeamLead: true,
+  },
+  {
+    title: "팀원 전체 보기",
+    url: "/team/overview",
+    icon: UserCheck,
     requiresTeamLead: true,
   },
   {
