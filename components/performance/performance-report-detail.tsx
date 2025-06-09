@@ -215,7 +215,7 @@ export function PerformanceReportDetail({
         </p>
         <Button onClick={() => router.push("/performance")} className="mt-4">
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Performance
+          이전
         </Button>
       </div>
     );

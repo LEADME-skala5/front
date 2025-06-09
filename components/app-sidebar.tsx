@@ -90,20 +90,28 @@ export function AppSidebar() {
   );
 
   return (
-    <Sidebar>
-      <SidebarHeader>
-        <div className="flex items-center gap-2 px-2 py-2">
+    <Sidebar className="border-r border-primary/20 bg-white">
+      <SidebarHeader className="bg-white">
+        <div className="flex items-center gap-2 px-2 py-2 ">
           <Image src={logo} alt="로고" width={50} height={50} />
           <span className="font-semibold">목록</span>
         </div>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="bg-white">
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive={isActiveRoute(item.url)}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={isActiveRoute(item.url)}
+                    className={
+                      isActiveRoute(item.url)
+                        ? "bg-secondary text-white"
+                        : "hover:text-secondary text-black "
+                    }
+                  >
                     <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
