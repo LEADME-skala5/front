@@ -1,4 +1,4 @@
-import { PerformanceReportDetail } from "@/components/performance/performance-report-detail";
+import { PerformanceReportDetail } from '@/components/performance/performance-report-detail';
 
 interface PerformanceReportPageProps {
   params: {
@@ -6,9 +6,7 @@ interface PerformanceReportPageProps {
   };
 }
 
-export default async function PerformanceReportPage({
-  params,
-}: PerformanceReportPageProps) {
+export default async function PerformanceReportPage({ params }: PerformanceReportPageProps) {
   const { id } = await params;
   const reportId = Number.parseInt(id);
 

@@ -1,4 +1,4 @@
-import { ContributionEvaluation } from "@/components/evaluation/contribution";
+import { ContributionEvaluation } from '@/components/evaluation/contribution';
 
 export default function ContributionEvaluationPage() {
   return (

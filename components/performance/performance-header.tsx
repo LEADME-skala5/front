@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { Plus, Download } from "lucide-react";
+import { Button } from '@/components/ui/button';
+import { Plus, Download } from 'lucide-react';
 
 export function PerformanceHeader() {
   return (

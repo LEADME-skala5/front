@@ -1,9 +1,9 @@
-"use client"
+'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Download, Trash2, AlertTriangle } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Download, Trash2, AlertTriangle } from 'lucide-react';
 
 export function DataSettings() {
   return (
@@ -37,7 +37,7 @@ export function DataSettings() {
               <span>8.2 MB</span>
             </div>
             <div className="w-full bg-muted rounded-full h-2">
-              <div className="bg-primary h-2 rounded-full" style={{ width: "35%" }}></div>
+              <div className="bg-primary h-2 rounded-full" style={{ width: '35%' }}></div>
             </div>
             <p className="text-xs text-muted-foreground">26.3 MB of 100 MB used</p>
           </div>
@@ -56,5 +56,5 @@ export function DataSettings() {
         </Alert>
       </CardContent>
     </Card>
-  )
+  );
 }

@@ -1,53 +1,53 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { FileText, Calendar, User, Download } from "lucide-react";
+import { useRouter } from 'next/navigation';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { FileText, Calendar, User, Download } from 'lucide-react';
 
 const feedbackReports = [
   {
     id: 1,
-    title: "2026년 평가 Report",
-    type: "Year-End Evaluation",
-    date: "2026-01-15",
-    author: "Virtual 홍길동 & X.Cel",
-    period: "2026-01-01 ~ 2026-11-30",
-    status: "completed",
+    title: '2026년 평가 Report',
+    type: 'Year-End Evaluation',
+    date: '2026-01-15',
+    author: 'Virtual 홍길동 & X.Cel',
+    period: '2026-01-01 ~ 2026-11-30',
+    status: 'completed',
   },
   {
     id: 2,
-    title: "3분기 Feedback Report",
-    type: "Quarterly Feedback",
-    date: "2026-10-01",
-    author: "Virtual 홍길동 & X.Cel",
-    period: "2026-07-01 ~ 2026-09-26 (26년 3분기)",
-    status: "completed",
+    title: '3분기 Feedback Report',
+    type: 'Quarterly Feedback',
+    date: '2026-10-01',
+    author: 'Virtual 홍길동 & X.Cel',
+    period: '2026-07-01 ~ 2026-09-26 (26년 3분기)',
+    status: 'completed',
   },
   {
     id: 3,
-    title: "2분기 Feedback Report",
-    type: "Quarterly Feedback",
-    date: "2026-07-15",
-    author: "Performance Team",
-    period: "2026-04-01 ~ 2026-06-30",
-    status: "completed",
+    title: '2분기 Feedback Report',
+    type: 'Quarterly Feedback',
+    date: '2026-07-15',
+    author: 'Performance Team',
+    period: '2026-04-01 ~ 2026-06-30',
+    status: 'completed',
   },
   {
     id: 4,
-    title: "1분기 Performance Review",
-    type: "Quarterly Feedback",
-    date: "2026-04-10",
-    author: "HR Department",
-    period: "2026-01-01 ~ 2026-03-31",
-    status: "completed",
+    title: '1분기 Performance Review',
+    type: 'Quarterly Feedback',
+    date: '2026-04-10',
+    author: 'HR Department',
+    period: '2026-01-01 ~ 2026-03-31',
+    status: 'completed',
   },
 ];
 
 const typeColors = {
-  "Year-End Evaluation": "bg-purple-100 text-purple-800",
-  "Quarterly Feedback": "bg-blue-100 text-blue-800",
+  'Year-End Evaluation': 'bg-purple-100 text-purple-800',
+  'Quarterly Feedback': 'bg-blue-100 text-blue-800',
 };
 
 export function PerformanceFeedbackList() {
@@ -95,24 +95,14 @@ export function PerformanceFeedbackList() {
                       <User className="h-4 w-4" />
                       <span>{report.author}</span>
                     </div>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      기간: {report.period}
-                    </p>
+                    <p className="text-sm text-muted-foreground mt-1">기간: {report.period}</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <Badge
-                    className={
-                      typeColors[report.type as keyof typeof typeColors]
-                    }
-                  >
+                  <Badge className={typeColors[report.type as keyof typeof typeColors]}>
                     {report.type}
                   </Badge>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={(e) => handleDownload(e, report.id)}
-                  >
+                  <Button variant="outline" size="sm" onClick={(e) => handleDownload(e, report.id)}>
                     <Download className="mr-2 h-4 w-4" />
                     다운로드
                   </Button>

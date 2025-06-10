@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import type React from "react";
+import type React from 'react';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Eye, EyeOff, LogIn } from "lucide-react";
-import Link from "next/link";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Eye, EyeOff, LogIn } from 'lucide-react';
+import Link from 'next/link';
 
 export function LoginForm() {
   const router = useRouter();
   const [formData, setFormData] = useState({
-    userId: "",
-    password: "",
+    userId: '',
+    password: '',
   });
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -26,13 +26,13 @@ export function LoginForm() {
     const newErrors: { [key: string]: string } = {};
 
     if (!formData.userId.trim()) {
-      newErrors.userId = "User ID is required";
+      newErrors.userId = 'User ID is required';
     }
 
     if (!formData.password.trim()) {
-      newErrors.password = "Password is required";
+      newErrors.password = 'Password is required';
     } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
+      newErrors.password = 'Password must be at least 6 characters';
     }
 
     setErrors(newErrors);
@@ -49,28 +49,19 @@ export function LoginForm() {
     // Simulate login process
     setTimeout(() => {
       // Mock authentication - in real app, this would be an API call
-      if (formData.userId === "admin" && formData.password === "password") {
-        localStorage.setItem("isAuthenticated", "true");
-        localStorage.setItem(
-          "user",
-          JSON.stringify({ userId: formData.userId })
-        );
-        localStorage.setItem("userRole", "teamlead"); // Set as team lead for demo
-        router.push("/dashboard");
-      } else if (
-        formData.userId === "member" &&
-        formData.password === "password"
-      ) {
-        localStorage.setItem("isAuthenticated", "true");
-        localStorage.setItem(
-          "user",
-          JSON.stringify({ userId: formData.userId })
-        );
-        localStorage.setItem("userRole", "member"); // Set as regular member
-        router.push("/dashboard");
+      if (formData.userId === 'admin' && formData.password === 'password') {
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('user', JSON.stringify({ userId: formData.userId }));
+        localStorage.setItem('userRole', 'teamlead'); // Set as team lead for demo
+        router.push('/dashboard');
+      } else if (formData.userId === 'member' && formData.password === 'password') {
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('user', JSON.stringify({ userId: formData.userId }));
+        localStorage.setItem('userRole', 'member'); // Set as regular member
+        router.push('/dashboard');
       } else {
         setErrors({
-          general: "Invalid credentials. Try admin/password or member/password",
+          general: 'Invalid credentials. Try admin/password or member/password',
         });
       }
       setIsLoading(false);
@@ -80,7 +71,7 @@ export function LoginForm() {
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: "" }));
+      setErrors((prev) => ({ ...prev, [field]: '' }));
     }
   };
 
@@ -106,13 +97,11 @@ export function LoginForm() {
               id="userId"
               type="text"
               value={formData.userId}
-              onChange={(e) => handleInputChange("userId", e.target.value)}
+              onChange={(e) => handleInputChange('userId', e.target.value)}
               placeholder="Enter your user ID"
-              className={errors.userId ? "border-red-500" : ""}
+              className={errors.userId ? 'border-red-500' : ''}
             />
-            {errors.userId && (
-              <p className="text-sm text-red-500">{errors.userId}</p>
-            )}
+            {errors.userId && <p className="text-sm text-red-500">{errors.userId}</p>}
           </div>
 
           <div className="space-y-2">
@@ -120,11 +109,11 @@ export function LoginForm() {
             <div className="relative">
               <Input
                 id="password"
-                type={showPassword ? "text" : "password"}
+                type={showPassword ? 'text' : 'password'}
                 value={formData.password}
-                onChange={(e) => handleInputChange("password", e.target.value)}
+                onChange={(e) => handleInputChange('password', e.target.value)}
                 placeholder="Enter your password"
-                className={errors.password ? "border-red-500" : ""}
+                className={errors.password ? 'border-red-500' : ''}
               />
               <Button
                 type="button"
@@ -133,25 +122,19 @@ export function LoginForm() {
                 className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                 onClick={() => setShowPassword(!showPassword)}
               >
-                {showPassword ? (
-                  <EyeOff className="h-4 w-4" />
-                ) : (
-                  <Eye className="h-4 w-4" />
-                )}
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </Button>
             </div>
-            {errors.password && (
-              <p className="text-sm text-red-500">{errors.password}</p>
-            )}
+            {errors.password && <p className="text-sm text-red-500">{errors.password}</p>}
           </div>
 
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? "Signing in..." : "Sign In"}
+            {isLoading ? 'Signing in...' : 'Sign In'}
           </Button>
 
           <div className="text-center">
             <p className="text-sm text-gray-600">
-              Don't have an account?{" "}
+              Don't have an account?{' '}
               <Link href="/signup" className="text-blue-600 hover:underline">
                 Sign up
               </Link>

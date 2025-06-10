@@ -1,22 +1,22 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
-import { Input } from "@/components/ui/input"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Edit, Save, X, Bot, Send, User } from "lucide-react"
+import { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Edit, Save, X, Bot, Send, User } from 'lucide-react';
 
 interface Message {
-  id: number
-  text: string
-  sender: "user" | "bot"
-  timestamp: Date
+  id: number;
+  text: string;
+  sender: 'user' | 'bot';
+  timestamp: Date;
 }
 
 export function WeeklyReportSection() {
-  const [isEditing, setIsEditing] = useState(false)
+  const [isEditing, setIsEditing] = useState(false);
   const [reportSections, setReportSections] = useState({
     whatWasDone: `• Completed performance metrics dashboard implementation
 • Reviewed and updated team goal tracking system
@@ -40,119 +40,123 @@ export function WeeklyReportSection() {
 • Inconsistent goal setting across different departments
 • Technical issues with performance tracking dashboard
 • Budget constraints for performance management tool upgrades`,
-  })
+  });
 
   const [editedSections, setEditedSections] = useState({
-    whatWasDone: "",
-    whatsNext: "",
-    issues: "",
-  })
+    whatWasDone: '',
+    whatsNext: '',
+    issues: '',
+  });
 
   // Chatbot state
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
       text: "Hi! I can help you update your performance report. Try commands like 'Add [item] to what was done' or 'Add [item] to what's next'.",
-      sender: "bot",
+      sender: 'bot',
       timestamp: new Date(),
     },
-  ])
-  const [input, setInput] = useState("")
+  ]);
+  const [input, setInput] = useState('');
 
   const handleEdit = () => {
     setEditedSections({
       whatWasDone: reportSections.whatWasDone,
       whatsNext: reportSections.whatsNext,
       issues: reportSections.issues,
-    })
-    setIsEditing(true)
-  }
+    });
+    setIsEditing(true);
+  };
 
   const handleSave = () => {
-    setReportSections(editedSections)
-    setIsEditing(false)
-  }
+    setReportSections(editedSections);
+    setIsEditing(false);
+  };
 
   const handleCancel = () => {
-    setIsEditing(false)
+    setIsEditing(false);
     setEditedSections({
-      whatWasDone: "",
-      whatsNext: "",
-      issues: "",
-    })
-  }
+      whatWasDone: '',
+      whatsNext: '',
+      issues: '',
+    });
+  };
 
   const handleChatbotSend = () => {
-    if (!input.trim()) return
+    if (!input.trim()) return;
 
     const userMessage: Message = {
       id: messages.length + 1,
       text: input,
-      sender: "user",
+      sender: 'user',
       timestamp: new Date(),
-    }
+    };
 
-    setMessages((prev) => [...prev, userMessage])
+    setMessages((prev) => [...prev, userMessage]);
 
     // Process chatbot commands
     setTimeout(() => {
-      const command = input.toLowerCase()
-      let botResponse = "I understand you want to update the report. "
-      let updated = false
+      const command = input.toLowerCase();
+      let botResponse = 'I understand you want to update the report. ';
+      let updated = false;
 
       // Parse commands to update report sections
-      if (command.includes("add") && command.includes("what was done")) {
+      if (command.includes('add') && command.includes('what was done')) {
         const match =
-          command.match(/add ['"](.+?)['"] to what was done/i) || command.match(/add (.+?) to what was done/i)
+          command.match(/add ['"](.+?)['"] to what was done/i) ||
+          command.match(/add (.+?) to what was done/i);
         if (match) {
-          const newItem = `• ${match[1]}`
+          const newItem = `• ${match[1]}`;
           setReportSections((prev) => ({
             ...prev,
-            whatWasDone: prev.whatWasDone + "\n" + newItem,
-          }))
-          botResponse = `Added "${match[1]}" to the "What was done" section.`
-          updated = true
+            whatWasDone: prev.whatWasDone + '\n' + newItem,
+          }));
+          botResponse = `Added "${match[1]}" to the "What was done" section.`;
+          updated = true;
         }
-      } else if (command.includes("add") && command.includes("what's next")) {
-        const match = command.match(/add ['"](.+?)['"] to what's next/i) || command.match(/add (.+?) to what's next/i)
+      } else if (command.includes('add') && command.includes("what's next")) {
+        const match =
+          command.match(/add ['"](.+?)['"] to what's next/i) ||
+          command.match(/add (.+?) to what's next/i);
         if (match) {
-          const newItem = `• ${match[1]}`
+          const newItem = `• ${match[1]}`;
           setReportSections((prev) => ({
             ...prev,
-            whatsNext: prev.whatsNext + "\n" + newItem,
-          }))
-          botResponse = `Added "${match[1]}" to the "What's next" section.`
-          updated = true
+            whatsNext: prev.whatsNext + '\n' + newItem,
+          }));
+          botResponse = `Added "${match[1]}" to the "What's next" section.`;
+          updated = true;
         }
-      } else if (command.includes("add") && command.includes("issues")) {
-        const match = command.match(/add ['"](.+?)['"] to issues/i) || command.match(/add (.+?) to issues/i)
+      } else if (command.includes('add') && command.includes('issues')) {
+        const match =
+          command.match(/add ['"](.+?)['"] to issues/i) || command.match(/add (.+?) to issues/i);
         if (match) {
-          const newItem = `• ${match[1]}`
+          const newItem = `• ${match[1]}`;
           setReportSections((prev) => ({
             ...prev,
-            issues: prev.issues + "\n" + newItem,
-          }))
-          botResponse = `Added "${match[1]}" to the "Issues" section.`
-          updated = true
+            issues: prev.issues + '\n' + newItem,
+          }));
+          botResponse = `Added "${match[1]}" to the "Issues" section.`;
+          updated = true;
         }
       }
 
       if (!updated) {
         botResponse =
-          "I can help you update your performance report. Try commands like:\n• 'Add [item] to what was done'\n• 'Add [item] to what's next'\n• 'Add [item] to issues'"
+          "I can help you update your performance report. Try commands like:\n• 'Add [item] to what was done'\n• 'Add [item] to what's next'\n• 'Add [item] to issues'";
       }
 
       const botMessage: Message = {
         id: messages.length + 2,
         text: botResponse,
-        sender: "bot",
+        sender: 'bot',
         timestamp: new Date(),
-      }
-      setMessages((prev) => [...prev, botMessage])
-    }, 1000)
+      };
+      setMessages((prev) => [...prev, botMessage]);
+    }, 1000);
 
-    setInput("")
-  }
+    setInput('');
+  };
 
   return (
     <div className="space-y-6">
@@ -193,12 +197,16 @@ export function WeeklyReportSection() {
             {isEditing ? (
               <Textarea
                 value={editedSections.whatWasDone}
-                onChange={(e) => setEditedSections((prev) => ({ ...prev, whatWasDone: e.target.value }))}
+                onChange={(e) =>
+                  setEditedSections((prev) => ({ ...prev, whatWasDone: e.target.value }))
+                }
                 className="min-h-[150px] font-mono text-sm"
                 placeholder="Enter what was accomplished this week..."
               />
             ) : (
-              <div className="whitespace-pre-line text-sm leading-relaxed">{reportSections.whatWasDone}</div>
+              <div className="whitespace-pre-line text-sm leading-relaxed">
+                {reportSections.whatWasDone}
+              </div>
             )}
           </CardContent>
         </Card>
@@ -212,12 +220,16 @@ export function WeeklyReportSection() {
             {isEditing ? (
               <Textarea
                 value={editedSections.whatsNext}
-                onChange={(e) => setEditedSections((prev) => ({ ...prev, whatsNext: e.target.value }))}
+                onChange={(e) =>
+                  setEditedSections((prev) => ({ ...prev, whatsNext: e.target.value }))
+                }
                 className="min-h-[150px] font-mono text-sm"
                 placeholder="Enter what's planned for next week..."
               />
             ) : (
-              <div className="whitespace-pre-line text-sm leading-relaxed">{reportSections.whatsNext}</div>
+              <div className="whitespace-pre-line text-sm leading-relaxed">
+                {reportSections.whatsNext}
+              </div>
             )}
           </CardContent>
         </Card>
@@ -236,7 +248,9 @@ export function WeeklyReportSection() {
                 placeholder="Enter any issues or blockers..."
               />
             ) : (
-              <div className="whitespace-pre-line text-sm leading-relaxed">{reportSections.issues}</div>
+              <div className="whitespace-pre-line text-sm leading-relaxed">
+                {reportSections.issues}
+              </div>
             )}
           </CardContent>
         </Card>
@@ -257,24 +271,29 @@ export function WeeklyReportSection() {
                 {messages.map((message) => (
                   <div
                     key={message.id}
-                    className={`flex items-start gap-3 ${message.sender === "user" ? "justify-end" : "justify-start"}`}
+                    className={`flex items-start gap-3 ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
-                    {message.sender === "bot" && (
+                    {message.sender === 'bot' && (
                       <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                         <Bot className="h-4 w-4" />
                       </div>
                     )}
                     <div
                       className={`max-w-[80%] p-3 rounded-lg ${
-                        message.sender === "user" ? "bg-primary text-primary-foreground" : "bg-muted"
+                        message.sender === 'user'
+                          ? 'bg-primary text-primary-foreground'
+                          : 'bg-muted'
                       }`}
                     >
                       <p className="text-sm whitespace-pre-line">{message.text}</p>
                       <p className="text-xs opacity-70 mt-1">
-                        {message.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                        {message.timestamp.toLocaleTimeString([], {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })}
                       </p>
                     </div>
-                    {message.sender === "user" && (
+                    {message.sender === 'user' && (
                       <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                         <User className="h-4 w-4" />
                       </div>
@@ -289,7 +308,7 @@ export function WeeklyReportSection() {
                   placeholder="Try: 'Add completed team calibration to what was done'"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  onKeyPress={(e) => e.key === "Enter" && handleChatbotSend()}
+                  onKeyPress={(e) => e.key === 'Enter' && handleChatbotSend()}
                   className="flex-1"
                 />
                 <Button onClick={handleChatbotSend} size="icon">
@@ -301,5 +320,5 @@ export function WeeklyReportSection() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

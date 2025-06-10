@@ -1,5 +1,5 @@
-import { ProfileSettings } from "@/components/settings/profile-settings";
-import { DataSettings } from "@/components/settings/data-settings";
+import { ProfileSettings } from '@/components/settings/profile-settings';
+import { DataSettings } from '@/components/settings/data-settings';
 
 export default function SettingsPage() {
   return (

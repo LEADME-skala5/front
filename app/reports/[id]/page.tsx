@@ -1,4 +1,4 @@
-import { ReportDetailView } from "@/components/reports/report-detail-view";
+import { ReportDetailView } from '@/components/reports/report-detail-view';
 
 interface ReportDetailPageProps {
   params: {
@@ -6,9 +6,7 @@ interface ReportDetailPageProps {
   };
 }
 
-export default async function ReportDetailPage({
-  params,
-}: ReportDetailPageProps) {
+export default async function ReportDetailPage({ params }: ReportDetailPageProps) {
   const { id } = await params;
   const reportId = Number.parseInt(id);
 

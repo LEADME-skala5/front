@@ -1,5 +1,5 @@
-import { ReportList } from "@/components/reports/report-list"
-import { ReportFilters } from "@/components/reports/report-filters"
+import { ReportList } from '@/components/reports/report-list';
+import { ReportFilters } from '@/components/reports/report-filters';
 
 export default function ReportsPage() {
   return (
@@ -10,5 +10,5 @@ export default function ReportsPage() {
       <ReportFilters />
       <ReportList />
     </div>
-  )
+  );
 }

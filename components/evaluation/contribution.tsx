@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Slider } from "@/components/ui/slider";
-import { ArrowLeft, Save, BarChart3 } from "lucide-react";
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Slider } from '@/components/ui/slider';
+import { ArrowLeft, Save, BarChart3 } from 'lucide-react';
 
 interface Task {
   id: string;
@@ -24,19 +24,19 @@ interface ContributionData {
 
 const mockTasks: Task[] = [
   {
-    id: "1",
-    name: "User Authentication System",
-    members: ["김민수", "이지영", "박준호", "You"],
+    id: '1',
+    name: 'User Authentication System',
+    members: ['김민수', '이지영', '박준호', 'You'],
   },
   {
-    id: "2",
-    name: "Dashboard UI Implementation",
-    members: ["이지영", "최수진", "You"],
+    id: '2',
+    name: 'Dashboard UI Implementation',
+    members: ['이지영', '최수진', 'You'],
   },
   {
-    id: "3",
-    name: "API Integration",
-    members: ["김민수", "박준호", "You"],
+    id: '3',
+    name: 'API Integration',
+    members: ['김민수', '박준호', 'You'],
   },
 ];
 
@@ -50,7 +50,7 @@ export function ContributionEvaluation() {
 
   useEffect(() => {
     // Load saved contributions from localStorage
-    const saved = localStorage.getItem("contributionEvaluations");
+    const saved = localStorage.getItem('contributionEvaluations');
     if (saved) {
       setContributions(JSON.parse(saved));
     } else {
@@ -61,20 +61,14 @@ export function ContributionEvaluation() {
         const defaultValue = Math.floor(100 / task.members.length);
         task.members.forEach((member, index) => {
           initialContributions[task.id][member] =
-            index === 0
-              ? 100 - defaultValue * (task.members.length - 1)
-              : defaultValue;
+            index === 0 ? 100 - defaultValue * (task.members.length - 1) : defaultValue;
         });
       });
       setContributions(initialContributions);
     }
   }, []);
 
-  const updateContribution = (
-    taskId: string,
-    memberName: string,
-    value: number
-  ) => {
+  const updateContribution = (taskId: string, memberName: string, value: number) => {
     const newContributions = {
       ...contributions,
       [taskId]: {
@@ -84,10 +78,7 @@ export function ContributionEvaluation() {
     };
 
     setContributions(newContributions);
-    localStorage.setItem(
-      "contributionEvaluations",
-      JSON.stringify(newContributions)
-    );
+    localStorage.setItem('contributionEvaluations', JSON.stringify(newContributions));
 
     // Clear validation error for this task
     if (validationErrors[taskId]) {
@@ -101,10 +92,7 @@ export function ContributionEvaluation() {
 
   const getTaskTotal = (taskId: string) => {
     const taskContributions = contributions[taskId] || {};
-    return Object.values(taskContributions).reduce(
-      (sum, value) => sum + value,
-      0
-    );
+    return Object.values(taskContributions).reduce((sum, value) => sum + value, 0);
   };
 
   const validateContributions = () => {
@@ -113,9 +101,7 @@ export function ContributionEvaluation() {
     mockTasks.forEach((task) => {
       const total = getTaskTotal(task.id);
       if (Math.abs(total - 100) > 0.1) {
-        errors[task.id] = `Total must equal 100% (currently ${total.toFixed(
-          1
-        )}%)`;
+        errors[task.id] = `Total must equal 100% (currently ${total.toFixed(1)}%)`;
       }
     });
 
@@ -129,22 +115,19 @@ export function ContributionEvaluation() {
     }
 
     // Save all evaluation data
-    localStorage.setItem(
-      "contributionEvaluations",
-      JSON.stringify(contributions)
-    );
+    localStorage.setItem('contributionEvaluations', JSON.stringify(contributions));
     setIsSaved(true);
 
     // Show success message
     setTimeout(() => {
       setIsSaved(false);
       // In a real app, this would redirect to a success page or dashboard
-      router.push("/performance");
+      router.push('/performance');
     }, 2000);
   };
 
   const handlePrevious = () => {
-    router.push("/evaluation/peer");
+    router.push('/evaluation/peer');
   };
 
   return (
@@ -161,15 +144,13 @@ export function ContributionEvaluation() {
           const hasError = validationErrors[task.id];
 
           return (
-            <Card key={task.id} className={hasError ? "border-red-300" : ""}>
+            <Card key={task.id} className={hasError ? 'border-red-300' : ''}>
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
                   <span>{task.name}</span>
                   <span
                     className={`text-sm ${
-                      Math.abs(total - 100) < 0.1
-                        ? "text-green-600"
-                        : "text-red-600"
+                      Math.abs(total - 100) < 0.1 ? 'text-green-600' : 'text-red-600'
                     }`}
                   >
                     총합: {total.toFixed(1)}%
@@ -198,17 +179,11 @@ export function ContributionEvaluation() {
                               max="100"
                               value={value}
                               onChange={(e) =>
-                                updateContribution(
-                                  task.id,
-                                  member,
-                                  Number(e.target.value)
-                                )
+                                updateContribution(task.id, member, Number(e.target.value))
                               }
                               className="w-20 text-center"
                             />
-                            <span className="text-sm text-muted-foreground">
-                              %
-                            </span>
+                            <span className="text-sm text-muted-foreground">%</span>
                           </div>
                         </div>
                         <Slider
@@ -233,10 +208,10 @@ export function ContributionEvaluation() {
                     <div
                       className={`h-2 rounded-full transition-all ${
                         Math.abs(total - 100) < 0.1
-                          ? "bg-green-500"
+                          ? 'bg-green-500'
                           : total > 100
-                          ? "bg-red-500"
-                          : "bg-yellow-500"
+                            ? 'bg-red-500'
+                            : 'bg-yellow-500'
                       }`}
                       style={{ width: `${Math.min(total, 100)}%` }}
                     />
@@ -255,10 +230,7 @@ export function ContributionEvaluation() {
           동료 평가
         </Button>
 
-        <Button
-          onClick={handleSave}
-          disabled={Object.keys(validationErrors).length > 0}
-        >
+        <Button onClick={handleSave} disabled={Object.keys(validationErrors).length > 0}>
           {isSaved ? (
             <>
               <Save className="mr-2 h-4 w-4" />
