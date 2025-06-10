@@ -21,10 +21,6 @@ interface PeerEvaluationKeyword {
   isPositive: boolean;
 }
 
-interface PeerEvaluationKeywords {
-  initialKeywords: PeerEvaluationKeyword[];
-}
-
 const mockTeammates: Teammate[] = [
   {
     id: '1',
@@ -47,7 +43,7 @@ const mockTeammates: Teammate[] = [
   },
 ];
 
-export function PeerEvaluation({ initialKeywords }: PeerEvaluationKeywords) {
+export function PeerEvaluation({ initialKeywords }: { initialKeywords: PeerEvaluationKeyword[] }) {
   const router = useRouter();
   const [currentTeammateIndex, setCurrentTeammateIndex] = useState(0);
   const [selectedKeywords, setSelectedKeywords] = useState<{
