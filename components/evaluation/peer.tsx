@@ -15,10 +15,14 @@ interface Teammate {
   project: string;
 }
 
-interface Keyword {
+interface PeerEvaluationKeyword {
   id: string;
-  text: string;
-  category: "positive" | "negative";
+  keyword: string;
+  isPositive: boolean;
+}
+
+interface PeerEvaluationKeywords {
+  initialKeywords: PeerEvaluationKeyword[];
 }
 
 const mockTeammates: Teammate[] = [
@@ -43,25 +47,7 @@ const mockTeammates: Teammate[] = [
   },
 ];
 
-const keywords: Keyword[] = [
-  { id: "1", text: "신뢰감", category: "positive" },
-  { id: "2", text: "주도성", category: "positive" },
-  { id: "3", text: "끈끈함", category: "positive" },
-  { id: "4", text: "책임감", category: "positive" },
-  { id: "5", text: "정리력", category: "positive" },
-  { id: "6", text: "창의성", category: "positive" },
-  { id: "7", text: "소통력", category: "positive" },
-  { id: "8", text: "전문성", category: "positive" },
-  { id: "9", text: "열정", category: "positive" },
-  { id: "10", text: "협력", category: "positive" },
-  { id: "11", text: "표현력", category: "negative" },
-  { id: "12", text: "간결함", category: "negative" },
-  { id: "13", text: "요약 부족", category: "negative" },
-  { id: "14", text: "소통", category: "negative" },
-  { id: "15", text: "시간관리", category: "negative" },
-];
-
-export function PeerEvaluation() {
+export function PeerEvaluation({initialKeywords}:PeerEvaluationKeywords) {
   const router = useRouter();
   const [currentTeammateIndex, setCurrentTeammateIndex] = useState(0);
   const [selectedKeywords, setSelectedKeywords] = useState<{
@@ -125,8 +111,8 @@ export function PeerEvaluation() {
     }
   };
 
-  const getKeywordsByCategory = (category: "positive" | "negative") => {
-    return keywords.filter((keyword) => keyword.category === category);
+  const getKeywordsByCategory = (isPositive: boolean) => {
+    return initialKeywords.filter((keyword) => keyword.isPositive === isPositive);
   };
 
   return (
@@ -184,7 +170,7 @@ export function PeerEvaluation() {
           <div>
             <h3 className="font-medium mb-3 text-green-700">칭찬할 부분</h3>
             <div className="flex flex-wrap gap-2">
-              {getKeywordsByCategory("positive").map((keyword) => (
+              {getKeywordsByCategory(true).map((keyword) => (
                 <Button
                   key={keyword.id}
                   variant={
@@ -200,7 +186,7 @@ export function PeerEvaluation() {
                       : "hover:bg-green-50 hover:border-green-300"
                   }
                 >
-                  {keyword.text}
+                  {keyword.keyword}
                 </Button>
               ))}
             </div>
@@ -212,7 +198,7 @@ export function PeerEvaluation() {
               개선이 필요한 부분
             </h3>
             <div className="flex flex-wrap gap-2">
-              {getKeywordsByCategory("negative").map((keyword) => (
+              {getKeywordsByCategory(false).map((keyword) => (
                 <Button
                   key={keyword.id}
                   variant={
@@ -228,7 +214,7 @@ export function PeerEvaluation() {
                       : "hover:bg-orange-50 hover:border-orange-300"
                   }
                 >
-                  {keyword.text}
+                  {keyword.keyword}
                 </Button>
               ))}
             </div>
