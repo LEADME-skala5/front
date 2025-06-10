@@ -1,63 +1,63 @@
-"use client"
+'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Progress } from "@/components/ui/progress"
-import { Target, Calendar, TrendingUp } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
+import { Target, Calendar, TrendingUp } from 'lucide-react';
 
 const goals = [
   {
     id: 1,
-    title: "Complete React Certification",
-    category: "Skills Development",
+    title: 'Complete React Certification',
+    category: 'Skills Development',
     progress: 75,
-    status: "on-track",
-    dueDate: "2024-03-15",
-    description: "Finish online React course and pass certification exam",
+    status: 'on-track',
+    dueDate: '2024-03-15',
+    description: 'Finish online React course and pass certification exam',
   },
   {
     id: 2,
-    title: "Increase Team Productivity by 20%",
-    category: "Leadership",
+    title: 'Increase Team Productivity by 20%',
+    category: 'Leadership',
     progress: 60,
-    status: "on-track",
-    dueDate: "2024-02-28",
-    description: "Implement new workflow processes and tools",
+    status: 'on-track',
+    dueDate: '2024-02-28',
+    description: 'Implement new workflow processes and tools',
   },
   {
     id: 3,
-    title: "Launch Mobile App Feature",
-    category: "Project Goals",
+    title: 'Launch Mobile App Feature',
+    category: 'Project Goals',
     progress: 90,
-    status: "on-track",
-    dueDate: "2024-01-30",
-    description: "Complete development and testing of new mobile features",
+    status: 'on-track',
+    dueDate: '2024-01-30',
+    description: 'Complete development and testing of new mobile features',
   },
   {
     id: 4,
-    title: "Reduce Bug Reports by 30%",
-    category: "Productivity",
+    title: 'Reduce Bug Reports by 30%',
+    category: 'Productivity',
     progress: 45,
-    status: "at-risk",
-    dueDate: "2024-04-01",
-    description: "Improve code quality and testing processes",
+    status: 'at-risk',
+    dueDate: '2024-04-01',
+    description: 'Improve code quality and testing processes',
   },
-]
+];
 
 const statusColors = {
-  "on-track": "bg-green-100 text-green-800",
-  "at-risk": "bg-yellow-100 text-yellow-800",
-  completed: "bg-blue-100 text-blue-800",
-  overdue: "bg-red-100 text-red-800",
-}
+  'on-track': 'bg-green-100 text-green-800',
+  'at-risk': 'bg-yellow-100 text-yellow-800',
+  completed: 'bg-blue-100 text-blue-800',
+  overdue: 'bg-red-100 text-red-800',
+};
 
 const categoryColors = {
-  "Skills Development": "bg-purple-100 text-purple-800",
-  Leadership: "bg-blue-100 text-blue-800",
-  "Project Goals": "bg-green-100 text-green-800",
-  Productivity: "bg-orange-100 text-orange-800",
-}
+  'Skills Development': 'bg-purple-100 text-purple-800',
+  Leadership: 'bg-blue-100 text-blue-800',
+  'Project Goals': 'bg-green-100 text-green-800',
+  Productivity: 'bg-orange-100 text-orange-800',
+};
 
 export function GoalsSection() {
   return (
@@ -101,7 +101,7 @@ export function GoalsSection() {
                     {goal.category}
                   </Badge>
                   <Badge className={statusColors[goal.status as keyof typeof statusColors]}>
-                    {goal.status.replace("-", " ")}
+                    {goal.status.replace('-', ' ')}
                   </Badge>
                 </div>
               </div>
@@ -110,5 +110,5 @@ export function GoalsSection() {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

@@ -1,22 +1,18 @@
-"use client";
+'use client';
 
-import type React from "react";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
-import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
-import { usePathname } from "next/navigation";
+import type React from 'react';
+import { Inter } from 'next/font/google';
+import './globals.css';
+import { SidebarProvider } from '@/components/ui/sidebar';
+import { AppSidebar } from '@/components/app-sidebar';
+import { SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
+import { usePathname } from 'next/navigation';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
-export default function ClientLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isAuthPage = pathname === "/login" || pathname === "/signup";
+  const isAuthPage = pathname === '/login' || pathname === '/signup';
 
   if (isAuthPage) {
     return (

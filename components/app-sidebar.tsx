@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Home,
@@ -9,12 +9,12 @@ import {
   ClipboardCheck,
   Users,
   UserCheck,
-} from "lucide-react";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import logo from "@/public/logo.png";
-import Image from "next/image";
+} from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import logo from '@/public/logo.png';
+import Image from 'next/image';
 import {
   Sidebar,
   SidebarContent,
@@ -24,48 +24,48 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarHeader,
-} from "@/components/ui/sidebar";
+} from '@/components/ui/sidebar';
 
 const menuItems = [
   {
-    title: "대시보드",
-    url: "/dashboard",
+    title: '대시보드',
+    url: '/dashboard',
     icon: Home,
     requiresTeamLead: false,
   },
   {
-    title: "위클리 리포트",
-    url: "/reports",
+    title: '위클리 리포트',
+    url: '/reports',
     icon: FileText,
     requiresTeamLead: false,
   },
   {
-    title: "성과관리 결과",
-    url: "/performance",
+    title: '성과관리 결과',
+    url: '/performance',
     icon: TrendingUp,
     requiresTeamLead: false,
   },
   {
-    title: "성과관리 기준 설정",
-    url: "/evaluation/setup",
+    title: '성과관리 기준 설정',
+    url: '/evaluation/setup',
     icon: ClipboardCheck,
     requiresTeamLead: true,
   },
   {
-    title: "팀원 전체 보기",
-    url: "/team/overview",
+    title: '팀원 전체 보기',
+    url: '/team/overview',
     icon: UserCheck,
     requiresTeamLead: true,
   },
   {
-    title: "동료 평가",
-    url: "/evaluation/peer",
+    title: '동료 평가',
+    url: '/evaluation/peer',
     icon: Users,
     requiresTeamLead: false,
   },
   {
-    title: "설정",
-    url: "/settings",
+    title: '설정',
+    url: '/settings',
     icon: Settings,
     requiresTeamLead: false,
   },
@@ -76,18 +76,16 @@ export function AppSidebar() {
   const [isTeamLead, setIsTeamLead] = useState(false);
 
   useEffect(() => {
-    const userRole = localStorage.getItem("userRole") || "member";
-    setIsTeamLead(userRole === "teamlead");
+    const userRole = localStorage.getItem('userRole') || 'member';
+    setIsTeamLead(userRole === 'teamlead');
   }, []);
 
   const isActiveRoute = (url: string) => {
-    const mainPath = pathname.split("?")[0];
+    const mainPath = pathname.split('?')[0];
     return mainPath === url;
   };
 
-  const visibleMenuItems = menuItems.filter(
-    (item) => !item.requiresTeamLead || isTeamLead
-  );
+  const visibleMenuItems = menuItems.filter((item) => !item.requiresTeamLead || isTeamLead);
 
   return (
     <Sidebar className="border-r border-primary/20 bg-white">
@@ -108,8 +106,8 @@ export function AppSidebar() {
                     isActive={isActiveRoute(item.url)}
                     className={
                       isActiveRoute(item.url)
-                        ? "bg-secondary text-white"
-                        : "hover:text-secondary text-black "
+                        ? 'bg-secondary text-white'
+                        : 'hover:text-secondary text-black '
                     }
                   >
                     <Link href={item.url}>

@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { TeamOverview } from "@/components/team/team-overview";
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { TeamOverview } from '@/components/team/team-overview';
 
 export default function TeamOverviewPage() {
   const router = useRouter();
@@ -11,9 +11,9 @@ export default function TeamOverviewPage() {
 
   useEffect(() => {
     // Check if user is team lead
-    const userRole = localStorage.getItem("userRole") || "member";
-    if (userRole !== "teamlead") {
-      router.push("/dashboard");
+    const userRole = localStorage.getItem('userRole') || 'member';
+    if (userRole !== 'teamlead') {
+      router.push('/dashboard');
       return;
     }
     setIsTeamLead(true);

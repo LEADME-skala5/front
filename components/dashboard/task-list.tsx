@@ -1,65 +1,65 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Badge } from "@/components/ui/badge"
-import { Plus, Calendar, Trash2 } from "lucide-react"
+import { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Badge } from '@/components/ui/badge';
+import { Plus, Calendar, Trash2 } from 'lucide-react';
 
 interface Task {
-  id: number
-  title: string
-  completed: boolean
-  priority: "high" | "medium" | "low"
-  createdAt: Date
+  id: number;
+  title: string;
+  completed: boolean;
+  priority: 'high' | 'medium' | 'low';
+  createdAt: Date;
 }
 
 const priorityColors = {
-  high: "bg-red-100 text-red-800",
-  medium: "bg-yellow-100 text-yellow-800",
-  low: "bg-green-100 text-green-800",
-}
+  high: 'bg-red-100 text-red-800',
+  medium: 'bg-yellow-100 text-yellow-800',
+  low: 'bg-green-100 text-green-800',
+};
 
 export function TaskList() {
   const [tasks, setTasks] = useState<Task[]>([
     {
       id: 1,
-      title: "Review team performance reports",
+      title: 'Review team performance reports',
       completed: false,
-      priority: "high",
+      priority: 'high',
       createdAt: new Date(),
     },
     {
       id: 2,
-      title: "Update project documentation",
+      title: 'Update project documentation',
       completed: true,
-      priority: "medium",
+      priority: 'medium',
       createdAt: new Date(),
     },
     {
       id: 3,
-      title: "Prepare for client meeting",
+      title: 'Prepare for client meeting',
       completed: false,
-      priority: "high",
+      priority: 'high',
       createdAt: new Date(),
     },
-  ])
+  ]);
 
-  const [newTaskTitle, setNewTaskTitle] = useState("")
-  const [newTaskPriority, setNewTaskPriority] = useState<"high" | "medium" | "low">("medium")
-  const [showAddForm, setShowAddForm] = useState(false)
+  const [newTaskTitle, setNewTaskTitle] = useState('');
+  const [newTaskPriority, setNewTaskPriority] = useState<'high' | 'medium' | 'low'>('medium');
+  const [showAddForm, setShowAddForm] = useState(false);
 
-  const today = new Date().toLocaleDateString("en-US", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  })
+  const today = new Date().toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
 
   const addTask = () => {
-    if (!newTaskTitle.trim()) return
+    if (!newTaskTitle.trim()) return;
 
     const newTask: Task = {
       id: Date.now(),
@@ -67,24 +67,26 @@ export function TaskList() {
       completed: false,
       priority: newTaskPriority,
       createdAt: new Date(),
-    }
+    };
 
-    setTasks((prev) => [newTask, ...prev])
-    setNewTaskTitle("")
-    setNewTaskPriority("medium")
-    setShowAddForm(false)
-  }
+    setTasks((prev) => [newTask, ...prev]);
+    setNewTaskTitle('');
+    setNewTaskPriority('medium');
+    setShowAddForm(false);
+  };
 
   const toggleTask = (id: number) => {
-    setTasks((prev) => prev.map((task) => (task.id === id ? { ...task, completed: !task.completed } : task)))
-  }
+    setTasks((prev) =>
+      prev.map((task) => (task.id === id ? { ...task, completed: !task.completed } : task))
+    );
+  };
 
   const deleteTask = (id: number) => {
-    setTasks((prev) => prev.filter((task) => task.id !== id))
-  }
+    setTasks((prev) => prev.filter((task) => task.id !== id));
+  };
 
-  const completedCount = tasks.filter((task) => task.completed).length
-  const totalCount = tasks.length
+  const completedCount = tasks.filter((task) => task.completed).length;
+  const totalCount = tasks.length;
 
   return (
     <Card>
@@ -115,12 +117,12 @@ export function TaskList() {
                 placeholder="Enter task title..."
                 value={newTaskTitle}
                 onChange={(e) => setNewTaskTitle(e.target.value)}
-                onKeyPress={(e) => e.key === "Enter" && addTask()}
+                onKeyPress={(e) => e.key === 'Enter' && addTask()}
               />
               <div className="flex items-center gap-2">
                 <select
                   value={newTaskPriority}
-                  onChange={(e) => setNewTaskPriority(e.target.value as "high" | "medium" | "low")}
+                  onChange={(e) => setNewTaskPriority(e.target.value as 'high' | 'medium' | 'low')}
                   className="px-3 py-1 border rounded text-sm"
                 >
                   <option value="low">Low Priority</option>
@@ -139,10 +141,15 @@ export function TaskList() {
 
           {/* Task List */}
           {tasks.map((task) => (
-            <div key={task.id} className="flex items-center gap-3 p-3 border rounded-lg hover:bg-muted/50">
+            <div
+              key={task.id}
+              className="flex items-center gap-3 p-3 border rounded-lg hover:bg-muted/50"
+            >
               <Checkbox checked={task.completed} onCheckedChange={() => toggleTask(task.id)} />
               <div className="flex-1">
-                <p className={`font-medium ${task.completed ? "line-through text-muted-foreground" : ""}`}>
+                <p
+                  className={`font-medium ${task.completed ? 'line-through text-muted-foreground' : ''}`}
+                >
                   {task.title}
                 </p>
               </div>
@@ -161,5 +168,5 @@ export function TaskList() {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

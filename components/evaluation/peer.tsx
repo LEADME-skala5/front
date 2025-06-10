@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Users, ChevronRight, ChevronLeft } from "lucide-react";
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Users, ChevronRight, ChevronLeft } from 'lucide-react';
 
 interface Teammate {
   id: string;
@@ -27,27 +27,27 @@ interface PeerEvaluationKeywords {
 
 const mockTeammates: Teammate[] = [
   {
-    id: "1",
-    name: "김민수",
-    role: "Senior Developer",
-    project: "Project Alpha",
+    id: '1',
+    name: '김민수',
+    role: 'Senior Developer',
+    project: 'Project Alpha',
   },
-  { id: "2", name: "이지영", role: "UI/UX Designer", project: "Project Alpha" },
+  { id: '2', name: '이지영', role: 'UI/UX Designer', project: 'Project Alpha' },
   {
-    id: "3",
-    name: "박준호",
-    role: "Backend Developer",
-    project: "Project Beta",
+    id: '3',
+    name: '박준호',
+    role: 'Backend Developer',
+    project: 'Project Beta',
   },
   {
-    id: "4",
-    name: "최수진",
-    role: "Product Manager",
-    project: "Project Alpha",
+    id: '4',
+    name: '최수진',
+    role: 'Product Manager',
+    project: 'Project Alpha',
   },
 ];
 
-export function PeerEvaluation({initialKeywords}:PeerEvaluationKeywords) {
+export function PeerEvaluation({ initialKeywords }: PeerEvaluationKeywords) {
   const router = useRouter();
   const [currentTeammateIndex, setCurrentTeammateIndex] = useState(0);
   const [selectedKeywords, setSelectedKeywords] = useState<{
@@ -60,7 +60,7 @@ export function PeerEvaluation({initialKeywords}:PeerEvaluationKeywords) {
 
   useEffect(() => {
     // Load saved evaluations from localStorage
-    const saved = localStorage.getItem("peerEvaluations");
+    const saved = localStorage.getItem('peerEvaluations');
     if (saved) {
       setSelectedKeywords(JSON.parse(saved));
     }
@@ -85,7 +85,7 @@ export function PeerEvaluation({initialKeywords}:PeerEvaluationKeywords) {
     };
 
     setSelectedKeywords(newSelections);
-    localStorage.setItem("peerEvaluations", JSON.stringify(newSelections));
+    localStorage.setItem('peerEvaluations', JSON.stringify(newSelections));
     setShowValidation(false);
   };
 
@@ -100,7 +100,7 @@ export function PeerEvaluation({initialKeywords}:PeerEvaluationKeywords) {
       setShowValidation(false);
     } else {
       // All teammates evaluated, go to contribution page
-      router.push("/evaluation/contribution");
+      router.push('/evaluation/contribution');
     }
   };
 
@@ -133,10 +133,10 @@ export function PeerEvaluation({initialKeywords}:PeerEvaluationKeywords) {
               key={index}
               className={`w-3 h-3 rounded-full ${
                 index === currentTeammateIndex
-                  ? "bg-primary"
+                  ? 'bg-primary'
                   : index < currentTeammateIndex
-                  ? "bg-green-500"
-                  : "bg-gray-200"
+                    ? 'bg-green-500'
+                    : 'bg-gray-200'
               }`}
             />
           ))}
@@ -152,17 +152,13 @@ export function PeerEvaluation({initialKeywords}:PeerEvaluationKeywords) {
                 {currentTeammate.role} • {currentTeammate.project}
               </p>
             </div>
-            <Badge variant="outline">
-              선택된 키워드 {currentSelections.length}/5
-            </Badge>
+            <Badge variant="outline">선택된 키워드 {currentSelections.length}/5</Badge>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           {showValidation && (
             <Alert variant="destructive">
-              <AlertDescription>
-                적어도 5개 이상의 키워드를 선택해주세요
-              </AlertDescription>
+              <AlertDescription>적어도 5개 이상의 키워드를 선택해주세요</AlertDescription>
             </Alert>
           )}
 
@@ -173,17 +169,13 @@ export function PeerEvaluation({initialKeywords}:PeerEvaluationKeywords) {
               {getKeywordsByCategory(true).map((keyword) => (
                 <Button
                   key={keyword.id}
-                  variant={
-                    currentSelections.includes(keyword.id)
-                      ? "default"
-                      : "outline"
-                  }
+                  variant={currentSelections.includes(keyword.id) ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => toggleKeyword(keyword.id)}
                   className={
                     currentSelections.includes(keyword.id)
-                      ? "bg-green-600 hover:bg-green-700"
-                      : "hover:bg-green-50 hover:border-green-300"
+                      ? 'bg-green-600 hover:bg-green-700'
+                      : 'hover:bg-green-50 hover:border-green-300'
                   }
                 >
                   {keyword.keyword}
@@ -194,24 +186,18 @@ export function PeerEvaluation({initialKeywords}:PeerEvaluationKeywords) {
 
           {/* Negative Keywords */}
           <div>
-            <h3 className="font-medium mb-3 text-orange-700">
-              개선이 필요한 부분
-            </h3>
+            <h3 className="font-medium mb-3 text-orange-700">개선이 필요한 부분</h3>
             <div className="flex flex-wrap gap-2">
               {getKeywordsByCategory(false).map((keyword) => (
                 <Button
                   key={keyword.id}
-                  variant={
-                    currentSelections.includes(keyword.id)
-                      ? "default"
-                      : "outline"
-                  }
+                  variant={currentSelections.includes(keyword.id) ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => toggleKeyword(keyword.id)}
                   className={
                     currentSelections.includes(keyword.id)
-                      ? "bg-orange-600 hover:bg-orange-700"
-                      : "hover:bg-orange-50 hover:border-orange-300"
+                      ? 'bg-orange-600 hover:bg-orange-700'
+                      : 'hover:bg-orange-50 hover:border-orange-300'
                   }
                 >
                   {keyword.keyword}
@@ -231,13 +217,8 @@ export function PeerEvaluation({initialKeywords}:PeerEvaluationKeywords) {
               이전 평가
             </Button>
 
-            <Button
-              onClick={handleNext}
-              disabled={currentSelections.length !== 5}
-            >
-              {currentTeammateIndex === mockTeammates.length - 1
-                ? "평가 완료"
-                : "다음 평가"}
+            <Button onClick={handleNext} disabled={currentSelections.length !== 5}>
+              {currentTeammateIndex === mockTeammates.length - 1 ? '평가 완료' : '다음 평가'}
               <ChevronRight className="ml-2 h-4 w-4" />
             </Button>
           </div>

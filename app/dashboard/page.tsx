@@ -1,6 +1,6 @@
-import { DashboardHeader } from "@/components/dashboard/dashboard-header"
-import { TaskList } from "@/components/dashboard/task-list"
-import { ChatBot } from "@/components/dashboard/chat-bot"
+import { DashboardHeader } from '@/components/dashboard/dashboard-header';
+import { TaskList } from '@/components/dashboard/task-list';
+import { ChatBot } from '@/components/dashboard/chat-bot';
 
 export default function DashboardPage() {
   return (
@@ -16,5 +16,5 @@ export default function DashboardPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

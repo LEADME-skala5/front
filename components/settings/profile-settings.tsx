@@ -1,34 +1,34 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Eye, EyeOff, Save } from "lucide-react";
+} from '@/components/ui/select';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Eye, EyeOff, Save } from 'lucide-react';
 
 export function ProfileSettings() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    name: "John Doe",
-    userId: "john.doe",
-    password: "password123",
-    teamsEmail: "john.doe@company.com",
-    slackEmail: "john.doe@company.com",
-    localDirectory: "C:\\Users\\JohnDoe\\Documents",
-    department: "engineering",
-    division: "technology",
-    organization: "team-alpha",
-    position: "senior",
-    careerLevel: "senior",
+    name: 'John Doe',
+    userId: 'john.doe',
+    password: 'password123',
+    teamsEmail: 'john.doe@company.com',
+    slackEmail: 'john.doe@company.com',
+    localDirectory: 'C:\\Users\\JohnDoe\\Documents',
+    department: 'engineering',
+    division: 'technology',
+    organization: 'team-alpha',
+    position: 'senior',
+    careerLevel: 'senior',
   });
 
   const [isEditing, setIsEditing] = useState(false);
@@ -39,7 +39,7 @@ export function ProfileSettings() {
 
   const handleSave = () => {
     // Mock save functionality
-    console.log("Saving profile data:", formData);
+    console.log('Saving profile data:', formData);
     setIsEditing(false);
     // In a real app, this would make an API call
   };
@@ -85,7 +85,7 @@ export function ProfileSettings() {
             <Input
               id="name"
               value={formData.name}
-              onChange={(e) => handleInputChange("name", e.target.value)}
+              onChange={(e) => handleInputChange('name', e.target.value)}
               disabled={!isEditing}
             />
           </div>
@@ -96,7 +96,7 @@ export function ProfileSettings() {
             <Input
               id="userId"
               value={formData.userId}
-              onChange={(e) => handleInputChange("userId", e.target.value)}
+              onChange={(e) => handleInputChange('userId', e.target.value)}
               disabled={!isEditing}
             />
           </div>
@@ -107,9 +107,9 @@ export function ProfileSettings() {
             <div className="relative">
               <Input
                 id="password"
-                type={showPassword ? "text" : "password"}
+                type={showPassword ? 'text' : 'password'}
                 value={formData.password}
-                onChange={(e) => handleInputChange("password", e.target.value)}
+                onChange={(e) => handleInputChange('password', e.target.value)}
                 disabled={!isEditing}
               />
               {isEditing && (
@@ -120,11 +120,7 @@ export function ProfileSettings() {
                   className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </Button>
               )}
             </div>
@@ -137,7 +133,7 @@ export function ProfileSettings() {
               id="teamsEmail"
               type="email"
               value={formData.teamsEmail}
-              onChange={(e) => handleInputChange("teamsEmail", e.target.value)}
+              onChange={(e) => handleInputChange('teamsEmail', e.target.value)}
               disabled={!isEditing}
             />
           </div>
@@ -149,7 +145,7 @@ export function ProfileSettings() {
               id="slackEmail"
               type="email"
               value={formData.slackEmail}
-              onChange={(e) => handleInputChange("slackEmail", e.target.value)}
+              onChange={(e) => handleInputChange('slackEmail', e.target.value)}
               disabled={!isEditing}
             />
           </div>
@@ -160,9 +156,7 @@ export function ProfileSettings() {
             <Input
               id="localDirectory"
               value={formData.localDirectory}
-              onChange={(e) =>
-                handleInputChange("localDirectory", e.target.value)
-              }
+              onChange={(e) => handleInputChange('localDirectory', e.target.value)}
               disabled={!isEditing}
             />
           </div>
@@ -172,9 +166,7 @@ export function ProfileSettings() {
             <Label htmlFor="department">부문</Label>
             {isEditing ? (
               <Select
-                onValueChange={(value) =>
-                  handleInputChange("department", value)
-                }
+                onValueChange={(value) => handleInputChange('department', value)}
                 value={formData.department}
               >
                 <SelectTrigger>
@@ -200,20 +192,16 @@ export function ProfileSettings() {
             <Label htmlFor="division">본부</Label>
             {isEditing ? (
               <Select
-                onValueChange={(value) => handleInputChange("division", value)}
+                onValueChange={(value) => handleInputChange('division', value)}
                 value={formData.division}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select division" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="technology">
-                    Technology Division
-                  </SelectItem>
+                  <SelectItem value="technology">Technology Division</SelectItem>
                   <SelectItem value="business">Business Division</SelectItem>
-                  <SelectItem value="operations">
-                    Operations Division
-                  </SelectItem>
+                  <SelectItem value="operations">Operations Division</SelectItem>
                   <SelectItem value="strategy">Strategy Division</SelectItem>
                 </SelectContent>
               </Select>
@@ -227,9 +215,7 @@ export function ProfileSettings() {
             <Label htmlFor="organization">조직</Label>
             {isEditing ? (
               <Select
-                onValueChange={(value) =>
-                  handleInputChange("organization", value)
-                }
+                onValueChange={(value) => handleInputChange('organization', value)}
                 value={formData.organization}
               >
                 <SelectTrigger>
@@ -252,7 +238,7 @@ export function ProfileSettings() {
             <Label htmlFor="position">직위</Label>
             {isEditing ? (
               <Select
-                onValueChange={(value) => handleInputChange("position", value)}
+                onValueChange={(value) => handleInputChange('position', value)}
                 value={formData.position}
               >
                 <SelectTrigger>
@@ -277,9 +263,7 @@ export function ProfileSettings() {
             <Label htmlFor="careerLevel">커리어레벨</Label>
             {isEditing ? (
               <Select
-                onValueChange={(value) =>
-                  handleInputChange("careerLevel", value)
-                }
+                onValueChange={(value) => handleInputChange('careerLevel', value)}
                 value={formData.careerLevel}
               >
                 <SelectTrigger>
@@ -290,9 +274,7 @@ export function ProfileSettings() {
                   <SelectItem value="junior">Junior (주니어)</SelectItem>
                   <SelectItem value="mid">Mid Level (중급)</SelectItem>
                   <SelectItem value="senior">Senior Level (시니어)</SelectItem>
-                  <SelectItem value="principal">
-                    Principal (프린시펄)
-                  </SelectItem>
+                  <SelectItem value="principal">Principal (프린시펄)</SelectItem>
                   <SelectItem value="executive">Executive (임원)</SelectItem>
                 </SelectContent>
               </Select>

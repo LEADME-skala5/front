@@ -1,107 +1,113 @@
-"use client"
+'use client';
 
-import type React from "react"
+import type React from 'react';
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Eye, EyeOff, UserPlus } from "lucide-react"
-import Link from "next/link"
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Eye, EyeOff, UserPlus } from 'lucide-react';
+import Link from 'next/link';
 
 export function SignUpForm() {
-  const router = useRouter()
+  const router = useRouter();
   const [formData, setFormData] = useState({
-    name: "",
-    userId: "",
-    password: "",
-    teamsEmail: "",
-    slackEmail: "",
-    localDirectory: "",
-    department: "",
-    division: "",
-    organization: "",
-    position: "",
-    careerLevel: "",
-  })
-  const [showPassword, setShowPassword] = useState(false)
-  const [errors, setErrors] = useState<{ [key: string]: string }>({})
-  const [isLoading, setIsLoading] = useState(false)
+    name: '',
+    userId: '',
+    password: '',
+    teamsEmail: '',
+    slackEmail: '',
+    localDirectory: '',
+    department: '',
+    division: '',
+    organization: '',
+    position: '',
+    careerLevel: '',
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const validateForm = () => {
-    const newErrors: { [key: string]: string } = {}
+    const newErrors: { [key: string]: string } = {};
 
     // Required fields validation
     const requiredFields = [
-      { key: "name", label: "Name" },
-      { key: "userId", label: "User ID" },
-      { key: "password", label: "Password" },
-      { key: "teamsEmail", label: "Teams Email" },
-      { key: "slackEmail", label: "Slack Email" },
-      { key: "localDirectory", label: "Local Directory Path" },
-      { key: "department", label: "Department" },
-      { key: "division", label: "Division" },
-      { key: "organization", label: "Organization" },
-      { key: "position", label: "Position" },
-      { key: "careerLevel", label: "Career Level" },
-    ]
+      { key: 'name', label: 'Name' },
+      { key: 'userId', label: 'User ID' },
+      { key: 'password', label: 'Password' },
+      { key: 'teamsEmail', label: 'Teams Email' },
+      { key: 'slackEmail', label: 'Slack Email' },
+      { key: 'localDirectory', label: 'Local Directory Path' },
+      { key: 'department', label: 'Department' },
+      { key: 'division', label: 'Division' },
+      { key: 'organization', label: 'Organization' },
+      { key: 'position', label: 'Position' },
+      { key: 'careerLevel', label: 'Career Level' },
+    ];
 
     requiredFields.forEach((field) => {
       if (!formData[field.key as keyof typeof formData].trim()) {
-        newErrors[field.key] = `${field.label} is required`
+        newErrors[field.key] = `${field.label} is required`;
       }
-    })
+    });
 
     // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (formData.teamsEmail && !emailRegex.test(formData.teamsEmail)) {
-      newErrors.teamsEmail = "Please enter a valid email address"
+      newErrors.teamsEmail = 'Please enter a valid email address';
     }
     if (formData.slackEmail && !emailRegex.test(formData.slackEmail)) {
-      newErrors.slackEmail = "Please enter a valid email address"
+      newErrors.slackEmail = 'Please enter a valid email address';
     }
 
     // Password validation
     if (formData.password && formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters"
+      newErrors.password = 'Password must be at least 6 characters';
     }
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    if (!validateForm()) return
+    if (!validateForm()) return;
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     // Simulate registration process
     setTimeout(() => {
       // Mock registration - in real app, this would be an API call
-      localStorage.setItem("isAuthenticated", "true")
+      localStorage.setItem('isAuthenticated', 'true');
       localStorage.setItem(
-        "user",
+        'user',
         JSON.stringify({
           userId: formData.userId,
           name: formData.name,
-        }),
-      )
-      router.push("/dashboard")
-      setIsLoading(false)
-    }, 1500)
-  }
+        })
+      );
+      router.push('/dashboard');
+      setIsLoading(false);
+    }, 1500);
+  };
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
+    setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: "" }))
+      setErrors((prev) => ({ ...prev, [field]: '' }));
     }
-  }
+  };
 
   return (
     <Card className="w-full">
@@ -121,9 +127,9 @@ export function SignUpForm() {
                 id="name"
                 type="text"
                 value={formData.name}
-                onChange={(e) => handleInputChange("name", e.target.value)}
+                onChange={(e) => handleInputChange('name', e.target.value)}
                 placeholder="Enter your full name"
-                className={errors.name ? "border-red-500" : ""}
+                className={errors.name ? 'border-red-500' : ''}
               />
               {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
             </div>
@@ -135,9 +141,9 @@ export function SignUpForm() {
                 id="userId"
                 type="text"
                 value={formData.userId}
-                onChange={(e) => handleInputChange("userId", e.target.value)}
+                onChange={(e) => handleInputChange('userId', e.target.value)}
                 placeholder="Choose a user ID"
-                className={errors.userId ? "border-red-500" : ""}
+                className={errors.userId ? 'border-red-500' : ''}
               />
               {errors.userId && <p className="text-sm text-red-500">{errors.userId}</p>}
             </div>
@@ -148,11 +154,11 @@ export function SignUpForm() {
               <div className="relative">
                 <Input
                   id="password"
-                  type={showPassword ? "text" : "password"}
+                  type={showPassword ? 'text' : 'password'}
                   value={formData.password}
-                  onChange={(e) => handleInputChange("password", e.target.value)}
+                  onChange={(e) => handleInputChange('password', e.target.value)}
                   placeholder="Create a password"
-                  className={errors.password ? "border-red-500" : ""}
+                  className={errors.password ? 'border-red-500' : ''}
                 />
                 <Button
                   type="button"
@@ -174,9 +180,9 @@ export function SignUpForm() {
                 id="teamsEmail"
                 type="email"
                 value={formData.teamsEmail}
-                onChange={(e) => handleInputChange("teamsEmail", e.target.value)}
+                onChange={(e) => handleInputChange('teamsEmail', e.target.value)}
                 placeholder="your.name@company.com"
-                className={errors.teamsEmail ? "border-red-500" : ""}
+                className={errors.teamsEmail ? 'border-red-500' : ''}
               />
               {errors.teamsEmail && <p className="text-sm text-red-500">{errors.teamsEmail}</p>}
             </div>
@@ -188,9 +194,9 @@ export function SignUpForm() {
                 id="slackEmail"
                 type="email"
                 value={formData.slackEmail}
-                onChange={(e) => handleInputChange("slackEmail", e.target.value)}
+                onChange={(e) => handleInputChange('slackEmail', e.target.value)}
                 placeholder="your.name@company.com"
-                className={errors.slackEmail ? "border-red-500" : ""}
+                className={errors.slackEmail ? 'border-red-500' : ''}
               />
               {errors.slackEmail && <p className="text-sm text-red-500">{errors.slackEmail}</p>}
             </div>
@@ -202,18 +208,20 @@ export function SignUpForm() {
                 id="localDirectory"
                 type="text"
                 value={formData.localDirectory}
-                onChange={(e) => handleInputChange("localDirectory", e.target.value)}
+                onChange={(e) => handleInputChange('localDirectory', e.target.value)}
                 placeholder="C:\Users\YourName\Documents"
-                className={errors.localDirectory ? "border-red-500" : ""}
+                className={errors.localDirectory ? 'border-red-500' : ''}
               />
-              {errors.localDirectory && <p className="text-sm text-red-500">{errors.localDirectory}</p>}
+              {errors.localDirectory && (
+                <p className="text-sm text-red-500">{errors.localDirectory}</p>
+              )}
             </div>
 
             {/* Department */}
             <div className="space-y-2">
               <Label htmlFor="department">Department (부문) *</Label>
-              <Select onValueChange={(value) => handleInputChange("department", value)}>
-                <SelectTrigger className={errors.department ? "border-red-500" : ""}>
+              <Select onValueChange={(value) => handleInputChange('department', value)}>
+                <SelectTrigger className={errors.department ? 'border-red-500' : ''}>
                   <SelectValue placeholder="Select department" />
                 </SelectTrigger>
                 <SelectContent>
@@ -232,8 +240,8 @@ export function SignUpForm() {
             {/* Division */}
             <div className="space-y-2">
               <Label htmlFor="division">Division (본부) *</Label>
-              <Select onValueChange={(value) => handleInputChange("division", value)}>
-                <SelectTrigger className={errors.division ? "border-red-500" : ""}>
+              <Select onValueChange={(value) => handleInputChange('division', value)}>
+                <SelectTrigger className={errors.division ? 'border-red-500' : ''}>
                   <SelectValue placeholder="Select division" />
                 </SelectTrigger>
                 <SelectContent>
@@ -249,8 +257,8 @@ export function SignUpForm() {
             {/* Organization */}
             <div className="space-y-2">
               <Label htmlFor="organization">Organization (조직) *</Label>
-              <Select onValueChange={(value) => handleInputChange("organization", value)}>
-                <SelectTrigger className={errors.organization ? "border-red-500" : ""}>
+              <Select onValueChange={(value) => handleInputChange('organization', value)}>
+                <SelectTrigger className={errors.organization ? 'border-red-500' : ''}>
                   <SelectValue placeholder="Select organization" />
                 </SelectTrigger>
                 <SelectContent>
@@ -266,8 +274,8 @@ export function SignUpForm() {
             {/* Position */}
             <div className="space-y-2">
               <Label htmlFor="position">Position (직위) *</Label>
-              <Select onValueChange={(value) => handleInputChange("position", value)}>
-                <SelectTrigger className={errors.position ? "border-red-500" : ""}>
+              <Select onValueChange={(value) => handleInputChange('position', value)}>
+                <SelectTrigger className={errors.position ? 'border-red-500' : ''}>
                   <SelectValue placeholder="Select position" />
                 </SelectTrigger>
                 <SelectContent>
@@ -285,8 +293,8 @@ export function SignUpForm() {
             {/* Career Level */}
             <div className="space-y-2 md:col-span-2">
               <Label htmlFor="careerLevel">Career Level (커리어레벨) *</Label>
-              <Select onValueChange={(value) => handleInputChange("careerLevel", value)}>
-                <SelectTrigger className={errors.careerLevel ? "border-red-500" : ""}>
+              <Select onValueChange={(value) => handleInputChange('careerLevel', value)}>
+                <SelectTrigger className={errors.careerLevel ? 'border-red-500' : ''}>
                   <SelectValue placeholder="Select career level" />
                 </SelectTrigger>
                 <SelectContent>
@@ -303,12 +311,12 @@ export function SignUpForm() {
           </div>
 
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? "Creating Account..." : "Create Account"}
+            {isLoading ? 'Creating Account...' : 'Create Account'}
           </Button>
 
           <div className="text-center">
             <p className="text-sm text-gray-600">
-              Already have an account?{" "}
+              Already have an account?{' '}
               <Link href="/login" className="text-blue-600 hover:underline">
                 Sign in
               </Link>
@@ -317,5 +325,5 @@ export function SignUpForm() {
         </form>
       </CardContent>
     </Card>
-  )
+  );
 }

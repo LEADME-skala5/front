@@ -1,26 +1,19 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  UserCheck,
-  Eye,
-  Star,
-  Briefcase,
-  TrendingUp,
-  TrendingDown,
-} from "lucide-react";
+} from '@/components/ui/select';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { UserCheck, Eye, Star, Briefcase, TrendingUp, TrendingDown } from 'lucide-react';
 
 interface TeamMember {
   id: string;
@@ -35,71 +28,71 @@ interface TeamMember {
 
 const mockTeamMembers: TeamMember[] = [
   {
-    id: "1",
-    name: "김민수",
-    role: "Senior Developer",
-    email: "kim.minsu@company.com",
-    projects: ["Project Alpha", "API Integration"],
+    id: '1',
+    name: '김민수',
+    role: 'Senior Developer',
+    email: 'kim.minsu@company.com',
+    projects: ['Project Alpha', 'API Integration'],
     performanceScore: 4.5,
-    lastEvaluationDate: "2024-01-15",
+    lastEvaluationDate: '2024-01-15',
   },
   {
-    id: "2",
-    name: "이지영",
-    role: "UI/UX Designer",
-    email: "lee.jiyoung@company.com",
-    projects: ["Project Alpha", "Dashboard UI"],
+    id: '2',
+    name: '이지영',
+    role: 'UI/UX Designer',
+    email: 'lee.jiyoung@company.com',
+    projects: ['Project Alpha', 'Dashboard UI'],
     performanceScore: 4.8,
-    lastEvaluationDate: "2024-01-12",
+    lastEvaluationDate: '2024-01-12',
   },
   {
-    id: "3",
-    name: "박준호",
-    role: "Backend Developer",
-    email: "park.junho@company.com",
-    projects: ["Project Beta", "API Integration"],
+    id: '3',
+    name: '박준호',
+    role: 'Backend Developer',
+    email: 'park.junho@company.com',
+    projects: ['Project Beta', 'API Integration'],
     performanceScore: 4.2,
-    lastEvaluationDate: "2024-01-10",
+    lastEvaluationDate: '2024-01-10',
   },
   {
-    id: "4",
-    name: "최수진",
-    role: "Product Manager",
-    email: "choi.sujin@company.com",
-    projects: ["Project Alpha", "Dashboard UI"],
+    id: '4',
+    name: '최수진',
+    role: 'Product Manager',
+    email: 'choi.sujin@company.com',
+    projects: ['Project Alpha', 'Dashboard UI'],
     performanceScore: 4.6,
-    lastEvaluationDate: "2024-01-08",
+    lastEvaluationDate: '2024-01-08',
   },
   {
-    id: "5",
-    name: "정현우",
-    role: "Frontend Developer",
-    email: "jung.hyunwoo@company.com",
-    projects: ["Dashboard UI"],
+    id: '5',
+    name: '정현우',
+    role: 'Frontend Developer',
+    email: 'jung.hyunwoo@company.com',
+    projects: ['Dashboard UI'],
     performanceScore: 3.9,
-    lastEvaluationDate: "2024-01-05",
+    lastEvaluationDate: '2024-01-05',
   },
   {
-    id: "6",
-    name: "한소영",
-    role: "QA Engineer",
-    email: "han.soyoung@company.com",
-    projects: ["Project Alpha", "Project Beta"],
+    id: '6',
+    name: '한소영',
+    role: 'QA Engineer',
+    email: 'han.soyoung@company.com',
+    projects: ['Project Alpha', 'Project Beta'],
     performanceScore: 4.3,
-    lastEvaluationDate: "2024-01-03",
+    lastEvaluationDate: '2024-01-03',
   },
 ];
 
-type SortMode = "alphabetical" | "performance";
+type SortMode = 'alphabetical' | 'performance';
 
 export function TeamOverview() {
   const router = useRouter();
-  const [sortMode, setSortMode] = useState<SortMode>("alphabetical");
+  const [sortMode, setSortMode] = useState<SortMode>('alphabetical');
   const [teamMembers, setTeamMembers] = useState(mockTeamMembers);
 
   const sortTeamMembers = (mode: SortMode) => {
     const sorted = [...mockTeamMembers].sort((a, b) => {
-      if (mode === "alphabetical") {
+      if (mode === 'alphabetical') {
         return a.name.localeCompare(b.name);
       } else {
         return b.performanceScore - a.performanceScore;
@@ -115,10 +108,10 @@ export function TeamOverview() {
   };
 
   const getPerformanceColor = (score: number) => {
-    if (score >= 4.5) return "text-green-600";
-    if (score >= 4.0) return "text-primary";
-    if (score >= 3.5) return "text-yellow-600";
-    return "text-red-600";
+    if (score >= 4.5) return 'text-green-600';
+    if (score >= 4.0) return 'text-primary';
+    if (score >= 3.5) return 'text-yellow-600';
+    return 'text-red-600';
   };
 
   const getPerformanceIcon = (score: number) => {
@@ -129,9 +122,9 @@ export function TeamOverview() {
 
   const getInitials = (name: string) => {
     return name
-      .split(" ")
+      .split(' ')
       .map((n) => n[0])
-      .join("")
+      .join('')
       .toUpperCase();
   };
 
@@ -145,19 +138,14 @@ export function TeamOverview() {
           </div>
           <div>
             <h1 className="text-3xl font-bold text-gray-900">팀원 전체보기</h1>
-            <p className="text-gray-600">
-              팀원 전체의 성과 관리 리포트를 볼 수 있는 페이지입니다
-            </p>
+            <p className="text-gray-600">팀원 전체의 성과 관리 리포트를 볼 수 있는 페이지입니다</p>
           </div>
         </div>
 
         {/* Sort Controls */}
         <div className="flex items-center gap-3">
           <span className="text-sm font-medium text-gray-700">정렬:</span>
-          <Select
-            value={sortMode}
-            onValueChange={(value: SortMode) => sortTeamMembers(value)}
-          >
+          <Select value={sortMode} onValueChange={(value: SortMode) => sortTeamMembers(value)}>
             <SelectTrigger className="w-48 border-primary/20 focus:border-primary">
               <SelectValue />
             </SelectTrigger>
@@ -176,9 +164,7 @@ export function TeamOverview() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">총 팀원 수</p>
-                <p className="text-2xl font-bold text-primary">
-                  {teamMembers.length}
-                </p>
+                <p className="text-2xl font-bold text-primary">{teamMembers.length}</p>
               </div>
               <UserCheck className="h-8 w-8 text-primary" />
             </div>
@@ -189,9 +175,7 @@ export function TeamOverview() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">
-                  점수가 오른 팀원
-                </p>
+                <p className="text-sm font-medium text-gray-600">점수가 오른 팀원</p>
                 <p className="text-2xl font-bold text-green-600">
                   {teamMembers.filter((m) => m.performanceScore >= 4.5).length}
                 </p>
@@ -208,10 +192,7 @@ export function TeamOverview() {
                 <p className="text-sm font-medium text-gray-600">평균 점수</p>
                 <p className="text-2xl font-bold text-yellow-600">
                   {(
-                    teamMembers.reduce(
-                      (sum, m) => sum + m.performanceScore,
-                      0
-                    ) / teamMembers.length
+                    teamMembers.reduce((sum, m) => sum + m.performanceScore, 0) / teamMembers.length
                   ).toFixed(1)}
                 </p>
               </div>
@@ -224,9 +205,7 @@ export function TeamOverview() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">
-                  현재 진행 중인 프로젝트 수
-                </p>
+                <p className="text-sm font-medium text-gray-600">현재 진행 중인 프로젝트 수</p>
                 <p className="text-2xl font-bold text-blue-600">
                   {new Set(teamMembers.flatMap((m) => m.projects)).size}
                 </p>
@@ -248,15 +227,13 @@ export function TeamOverview() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <Avatar className="h-12 w-12 border-2 border-primary/20">
-                    <AvatarImage src={member.avatar || "/placeholder.svg"} />
+                    <AvatarImage src={member.avatar || '/placeholder.svg'} />
                     <AvatarFallback className="bg-primary/10 text-primary font-semibold">
                       {getInitials(member.name)}
                     </AvatarFallback>
                   </Avatar>
                   <div>
-                    <CardTitle className="text-lg text-gray-900">
-                      {member.name}
-                    </CardTitle>
+                    <CardTitle className="text-lg text-gray-900">{member.name}</CardTitle>
                     <p className="text-sm text-gray-600">{member.role}</p>
                     <p className="text-xs text-gray-500">{member.email}</p>
                   </div>
@@ -277,15 +254,11 @@ export function TeamOverview() {
               <div className="flex items-center justify-between mb-4 p-3 bg-gray-50 rounded-lg">
                 <div className="flex items-center gap-2">
                   {getPerformanceIcon(member.performanceScore)}
-                  <span className="text-sm font-medium text-gray-700">
-                    이번 분기 점수
-                  </span>
+                  <span className="text-sm font-medium text-gray-700">이번 분기 점수</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span
-                    className={`text-lg font-bold ${getPerformanceColor(
-                      member.performanceScore
-                    )}`}
+                    className={`text-lg font-bold ${getPerformanceColor(member.performanceScore)}`}
                   >
                     {member.performanceScore.toFixed(1)}
                   </span>
@@ -295,9 +268,7 @@ export function TeamOverview() {
 
               {/* Projects */}
               <div className="space-y-2">
-                <p className="text-sm font-medium text-gray-700">
-                  현재 진행 중인 프로젝트
-                </p>
+                <p className="text-sm font-medium text-gray-700">현재 진행 중인 프로젝트</p>
                 <div className="flex flex-wrap gap-2">
                   {member.projects.map((project, index) => (
                     <Badge
@@ -314,8 +285,7 @@ export function TeamOverview() {
               {/* Last Evaluation */}
               <div className="mt-4 pt-3 border-t border-gray-200">
                 <p className="text-xs text-gray-500">
-                  최근 업데이트 일:{" "}
-                  {new Date(member.lastEvaluationDate).toLocaleDateString()}
+                  최근 업데이트 일: {new Date(member.lastEvaluationDate).toLocaleDateString()}
                 </p>
               </div>
             </CardContent>

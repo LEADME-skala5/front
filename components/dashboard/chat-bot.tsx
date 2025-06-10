@@ -1,20 +1,20 @@
-"use client"
+'use client';
 
-import type React from "react"
+import type React from 'react';
 
-import { useState, useRef } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Send, Bot, User, Paperclip, X } from "lucide-react"
+import { useState, useRef } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Send, Bot, User, Paperclip, X } from 'lucide-react';
 
 interface Message {
-  id: number
-  text: string
-  sender: "user" | "bot"
-  timestamp: Date
-  file?: File
+  id: number;
+  text: string;
+  sender: 'user' | 'bot';
+  timestamp: Date;
+  file?: File;
 }
 
 export function ChatBot() {
@@ -22,64 +22,65 @@ export function ChatBot() {
     {
       id: 1,
       text: "Hello! I'm your work assistant. How can I help you today?",
-      sender: "bot",
+      sender: 'bot',
       timestamp: new Date(),
     },
-  ])
-  const [input, setInput] = useState("")
-  const [attachedFile, setAttachedFile] = useState<File | null>(null)
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  ]);
+  const [input, setInput] = useState('');
+  const [attachedFile, setAttachedFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
+    const file = event.target.files?.[0];
     if (file) {
-      setAttachedFile(file)
+      setAttachedFile(file);
     }
-  }
+  };
 
   const removeFile = () => {
-    setAttachedFile(null)
+    setAttachedFile(null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = ""
+      fileInputRef.current.value = '';
     }
-  }
+  };
 
   const handleSend = () => {
-    if (!input.trim() && !attachedFile) return
+    if (!input.trim() && !attachedFile) return;
 
     const userMessage: Message = {
       id: messages.length + 1,
-      text: input || (attachedFile ? `Uploaded file: ${attachedFile.name}` : ""),
-      sender: "user",
+      text: input || (attachedFile ? `Uploaded file: ${attachedFile.name}` : ''),
+      sender: 'user',
       timestamp: new Date(),
       file: attachedFile || undefined,
-    }
+    };
 
-    setMessages((prev) => [...prev, userMessage])
+    setMessages((prev) => [...prev, userMessage]);
 
     // Simulate bot response
     setTimeout(() => {
-      let botResponse = "I understand you need help with that. Let me assist you with your work management tasks."
+      let botResponse =
+        'I understand you need help with that. Let me assist you with your work management tasks.';
 
       if (attachedFile) {
-        botResponse = `I can see you've uploaded "${attachedFile.name}". I can help you analyze this file or use it in your work tasks. What would you like me to do with it?`
+        botResponse = `I can see you've uploaded "${attachedFile.name}". I can help you analyze this file or use it in your work tasks. What would you like me to do with it?`;
       }
 
       const botMessage: Message = {
         id: messages.length + 2,
         text: botResponse,
-        sender: "bot",
+        sender: 'bot',
         timestamp: new Date(),
-      }
-      setMessages((prev) => [...prev, botMessage])
-    }, 1000)
+      };
+      setMessages((prev) => [...prev, botMessage]);
+    }, 1000);
 
-    setInput("")
-    setAttachedFile(null)
+    setInput('');
+    setAttachedFile(null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = ""
+      fileInputRef.current.value = '';
     }
-  }
+  };
 
   return (
     <Card className="h-[500px] flex flex-col">
@@ -95,16 +96,16 @@ export function ChatBot() {
             {messages.map((message) => (
               <div
                 key={message.id}
-                className={`flex items-start gap-3 ${message.sender === "user" ? "justify-end" : "justify-start"}`}
+                className={`flex items-start gap-3 ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
-                {message.sender === "bot" && (
+                {message.sender === 'bot' && (
                   <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
                     <Bot className="h-4 w-4" />
                   </div>
                 )}
                 <div
                   className={`max-w-[80%] p-3 rounded-lg ${
-                    message.sender === "user" ? "bg-primary text-primary-foreground" : "bg-muted"
+                    message.sender === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted'
                   }`}
                 >
                   <p className="text-sm">{message.text}</p>
@@ -114,7 +115,7 @@ export function ChatBot() {
                     </div>
                   )}
                 </div>
-                {message.sender === "user" && (
+                {message.sender === 'user' && (
                   <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
                     <User className="h-4 w-4" />
                   </div>
@@ -130,7 +131,9 @@ export function ChatBot() {
             <div className="flex items-center gap-2 text-sm">
               <Paperclip className="h-4 w-4" />
               <span>{attachedFile.name}</span>
-              <span className="text-muted-foreground">({(attachedFile.size / 1024).toFixed(1)} KB)</span>
+              <span className="text-muted-foreground">
+                ({(attachedFile.size / 1024).toFixed(1)} KB)
+              </span>
             </div>
             <Button variant="ghost" size="sm" onClick={removeFile}>
               <X className="h-4 w-4" />
@@ -146,14 +149,19 @@ export function ChatBot() {
             className="hidden"
             accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png"
           />
-          <Button variant="outline" size="icon" onClick={() => fileInputRef.current?.click()} title="Attach file">
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => fileInputRef.current?.click()}
+            title="Attach file"
+          >
             <Paperclip className="h-4 w-4" />
           </Button>
           <Input
             placeholder="Ask me anything about your work..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyPress={(e) => e.key === "Enter" && handleSend()}
+            onKeyPress={(e) => e.key === 'Enter' && handleSend()}
           />
           <Button onClick={handleSend} size="icon">
             <Send className="h-4 w-4" />
@@ -161,5 +169,5 @@ export function ChatBot() {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

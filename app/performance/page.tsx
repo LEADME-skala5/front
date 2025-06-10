@@ -1,7 +1,7 @@
-import { PerformanceHeader } from "@/components/performance/performance-header";
-import { PerformanceMetrics } from "@/components/performance/performance-metrics";
-import { PerformanceFilters } from "@/components/performance/performance-filters";
-import { PerformanceFeedbackList } from "@/components/performance/performance-feedback-list";
+import { PerformanceHeader } from '@/components/performance/performance-header';
+import { PerformanceMetrics } from '@/components/performance/performance-metrics';
+import { PerformanceFilters } from '@/components/performance/performance-filters';
+import { PerformanceFeedbackList } from '@/components/performance/performance-feedback-list';
 
 export default function PerformancePage() {
   return (

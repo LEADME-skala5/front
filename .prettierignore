@@ -1,0 +1,31 @@
+# 빌드 결과물
+.next
+out
+dist
+build
+
+# 의존성
+node_modules
+
+# 환경 설정
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# 환경 파일
+.env
+*.env*
+
+# IDE 설정
+.idea
+
+# 퍼블릭 리소스
+public
+
+# 이미지나 기타 정적 리소스
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.ico
