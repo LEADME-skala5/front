@@ -30,10 +30,8 @@ const reportData: { [key: number]: any } = {
     title: '2023 Annual Performance Report',
     employee: {
       name: '박준호',
-      position: 'Senior PM',
       department: 'Product Management',
       period: '2023-01-01 ~ 2023-12-31',
-      evaluator: 'Director of Product & Performance AI',
     },
     finalScore: 4.6,
     skValues: [
@@ -85,7 +83,7 @@ const reportData: { [key: number]: any } = {
         summary: 'Completed annual strategy planning with clear execution roadmap',
       },
     ],
-    achievements: [
+    keyAchievements: [
       'Led successful product strategy resulting in 25% user growth',
       'Implemented new development processes improving team efficiency by 30%',
       'Mentored 2 junior PMs and contributed to hiring 3 new team members',
@@ -120,41 +118,43 @@ const reportData: { [key: number]: any } = {
     title: '2024 4분기 성과 리포트',
     employee: {
       name: '김민철',
-      position: '',
       department: '클라우드 개발 3팀',
       period: '2024-10-07 ~ 2024-12-27',
-      evaluator: 'Team Lead & Performance AI',
     },
     finalScore: 4.5,
     teamGoals: [
       {
-        goal: 'oud Professional 업무 진행 통한 BR/UR 개선',
-        achievement: '배정 - 4건',
-        contribution:
+        goalName: 'oud Professional 업무 진행 통한 BR/UR 개선',
+        assigned: '배정',
+        content:
           'Cloud Professional Service 비용절감 패키지 v1.0 개발, BR/UR 개선 제안서 작성 및 팀 내 승인 완료...',
+        contributionCount: 4,
       },
       {
-        goal: 'CSP 파트너쉽 강화 통한 원가개선',
-        achievement: '미배정',
-        contribution: '-',
+        goalName: 'CSP 파트너쉽 강화 통한 원가개선',
+        assigned: '미배정',
+        content: '-',
+        contributionCount: 0,
       },
       {
-        goal: 'oud 마케팅 및 홍보 통한 대외 oud 고객확보',
-        achievement: '배정 - 5건',
-        contribution:
+        goalName: 'oud 마케팅 및 홍보 통한 대외 oud 고객확보',
+        assigned: '배정',
+        content:
           'Korea Cloud Summit 2024 부스 설계 및 준비 작업 완료, 현대중공업 대상 Manufacturing IoT와 Cloud 연계 Private 이벤트 기획...',
+        contributionCount: 5,
       },
       {
-        goal: '글로벌 사업 Tech-presales 진행',
-        achievement: '미배정',
-        contribution: '-',
+        goalName: '글로벌 사업 Tech-presales 진행',
+        assigned: '미배정',
+        content: '-',
+        contributionCount: 0,
       },
     ],
-    achievements: [
+    keyAchievements: [
       '총 수행 활동: 9건 (목표 대비 평가)',
       '목표 참여도: 2/4개 목표 참여 (50% 커버리지)',
-      'oud Professional 업무 진행 통한 BR/UR 개선: 4건',
-      'oud 마케팅 및 홍보 통한 대외 oud 고객확보: 5건',
+      'Cloud Professional 업무 진행 통한 BR/UR 개선: 4건',
+      'Cloud 마케팅 및 홍보 통한 대외 oud 고객확보: 5건',
     ],
     peerFeedback: [
       {
@@ -252,9 +252,9 @@ export function PerformanceReportDetail({ reportId }: PerformanceReportDetailPro
             </Avatar>
             <div className="flex-1">
               <CardTitle className="text-2xl text-gray-900">{report.title}</CardTitle>
-              <p className="text-lg text-gray-600">
+              {/* <p className="text-lg text-gray-600">
                 {report.employee.name} {report.employee.position}
-              </p>
+              </p> */}
               <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
                 <span>{report.employee.department}</span>
                 <span>{report.employee.period}</span>
@@ -314,20 +314,24 @@ export function PerformanceReportDetail({ reportId }: PerformanceReportDetailPro
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {report.teamGoals.map((goal: any, index: number) => (
+                {report.teamGoals.map((goalName: any, index: number) => (
                   <div key={index} className="p-3 bg-gray-50 rounded-lg border">
                     <div className="flex items-center justify-between mb-1">
-                      <h4 className="font-medium text-gray-900">{goal.goal}</h4>
+                      <h4 className="font-medium text-gray-900">{goalName.goalName}</h4>
                       <Badge
                         variant="default"
-                        className={
-                          goal.achievement.includes('미배정') ? 'bg-gray-400 text-white' : ''
-                        }
+                        className={`${
+                          goalName.assigned.includes('미배정')
+                            ? 'bg-gray-400 text-white pointer-events-none'
+                            : 'hover:bg-primary/80 cursor-pointer'
+                        }`}
                       >
-                        {goal.achievement}
+                        {goalName.assigned.includes('미배정')
+                          ? goalName.assigned
+                          : `${goalName.assigned} - ${goalName.contributionCount}건`}
                       </Badge>
                     </div>
-                    <p className="text-sm text-gray-600">{goal.contribution}</p>
+                    <p className="text-sm text-gray-600">{goalName.content}</p>
                   </div>
                 ))}
               </div>
@@ -372,10 +376,10 @@ export function PerformanceReportDetail({ reportId }: PerformanceReportDetailPro
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            {report.achievements.map((achievement: string, index: number) => (
+            {report.keyAchievements.map((assigned: string, index: number) => (
               <div key={index} className="flex items-start gap-3">
                 <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                <p className="text-gray-700">{achievement}</p>
+                <p className="text-gray-700">{assigned}</p>
               </div>
             ))}
           </div>
