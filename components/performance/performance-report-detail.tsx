@@ -15,6 +15,7 @@ import {
   Users,
   FileText,
   MessageSquare,
+  BarChart3,
 } from 'lucide-react';
 
 interface PerformanceReportDetailProps {
@@ -115,64 +116,82 @@ const reportData: { [key: number]: any } = {
   },
   2: {
     id: 2,
-    type: 'quarterly',
-    title: 'Q3 2023 Feedback Report',
+    type: '분기 리포트',
+    title: '2024 4분기 성과 리포트',
     employee: {
-      name: '홍길동',
-      position: 'Senior Developer',
-      department: 'Product Development',
-      period: '2023-07-01 ~ 2023-09-30',
+      name: '김민철',
+      position: '',
+      department: '클라우드 개발 3팀',
+      period: '2024-10-07 ~ 2024-12-27',
       evaluator: 'Team Lead & Performance AI',
     },
     finalScore: 4.5,
     teamGoals: [
       {
-        goal: 'Platform Stability',
-        achievement: 'Assigned',
-        contribution: 'Critical contributor (high impact)',
+        goal: 'oud Professional 업무 진행 통한 BR/UR 개선',
+        achievement: '배정 - 4건',
+        contribution:
+          'Cloud Professional Service 비용절감 패키지 v1.0 개발, BR/UR 개선 제안서 작성 및 팀 내 승인 완료...',
       },
       {
-        goal: 'Customer Experience',
-        achievement: 'Assigned',
-        contribution: 'High level contribution',
+        goal: 'CSP 파트너쉽 강화 통한 원가개선',
+        achievement: '미배정',
+        contribution: '-',
       },
       {
-        goal: 'Internal Process Improvement',
-        achievement: 'Assigned',
-        contribution: 'Steady performance on assigned tasks',
+        goal: 'oud 마케팅 및 홍보 통한 대외 oud 고객확보',
+        achievement: '배정 - 5건',
+        contribution:
+          'Korea Cloud Summit 2024 부스 설계 및 준비 작업 완료, 현대중공업 대상 Manufacturing IoT와 Cloud 연계 Private 이벤트 기획...',
       },
       {
-        goal: 'New Feature Development',
-        achievement: 'Not assigned',
+        goal: '글로벌 사업 Tech-presales 진행',
+        achievement: '미배정',
         contribution: '-',
       },
     ],
     achievements: [
-      'Achieved 0 downtime incidents (prevented 3 potential issues) → 100% SLA maintained',
-      'Customer satisfaction rating of 4.7/5 → Highest rating from client stakeholders',
-      'Documented 2 critical issues and solutions → Added to team training materials',
+      '총 수행 활동: 9건 (목표 대비 평가)',
+      '목표 참여도: 2/4개 목표 참여 (50% 커버리지)',
+      'oud Professional 업무 진행 통한 BR/UR 개선: 4건',
+      'oud 마케팅 및 홍보 통한 대외 oud 고객확보: 5건',
     ],
     peerFeedback: [
       {
         type: 'positive',
-        keywords: ['Trustworthy', 'Initiative', 'Team cohesion', 'Responsibility', 'Organization'],
+        keywords: [
+          '열정/몰입',
+          '긍정에너지',
+          '협업역량',
+          '책임감',
+          '회복탄력성',
+          '문제해결력',
+          '신뢰성',
+        ],
       },
       {
         type: 'negative',
-        keywords: ['Expression', 'Conciseness', 'Summarization', 'Communication'],
+        keywords: ['감정 표현 부족', '감정조절 미흡', '이기적 태도', '협업능력 부족'],
       },
     ],
+    quarterlyPerformanceSummary: {
+      summaryText:
+        '김민철 매니저님은 2024-10-07 ~ 2024-12-27 기간 동안 총 12건의 활동을 수행하며 특히 Cloud Professional 업무와 Cloud 마케팅 및 홍보 분야에서 두드러진 성과를 보였습니다. Cloud Professional 서비스 비용절감 패키지 v1.0 개발 및 BR/UR 개선 제안서 작성을 통해 내부 프로세스 개선에 기여하였으며, 이는 4건의 활동을 통해 목표 달성에 중요한 역할을 하였습니다. 또한, Korea Cloud Summit 2024 부스 설계 및 현대중공업 대상 Private 이벤트 기획을 포함한 5건의 활동으로 고객 확보 및 리드 생성에 크게 기여하였습니다. 그러나 글로벌 사업 Tech-presales 및 CSP 파트너십 강화 분야에서는 활동이 없어 이 부분에 대한 개선이 필요합니다',
+    },
     workAttitude: [
-      'Proactively improved incident response protocols and implemented them team-wide',
-      'Consistently provides comprehensive updates in weekly meetings',
+      '고객 만족도와 타부서 협업 참여도 항목에서 상위 20% 이내의 성과를 보여주어, 고객 중심의 문제 해결력과 조직 내 협업 역량이 탁월함을 보여줍니다.',
+      '고객피드백 반영, 자기계발계획 이행률, 사내 교육 참여도, 발표 주도 항목은 상위 21~40 % 이내에 해당하여, 고객 응대와 자기 발전, 조직 내 발표 역량이 안정적인 수준입니다.',
+      '후배 / 신입 멘토링, 사내 행사 참여도, 커밋 수, 업무 채팅 수 항목 또한 상위 21~40 % 이내로, 조직 기여와 업무 몰입도에서 양호한 성과를 보입니다.',
+      '출장 횟수, 오버타임 근무 시간, 자기평가 - 타인평가 일치도 항목 역시 상위 21~40 % 이내에 해당하여, 업무 실행력과 자기 인식의 일관성이 안정적입니다.',
     ],
     growthSuggestions: [
-      'Focus on more concise communication with external stakeholders',
-      'Develop presentation skills for better message delivery',
-      'Expand into strategic thinking through targeted training',
+      '이번 분기 동안 Cloud Professional 업무와 Cloud 마케팅 및 홍보 활동에서 높은 성과를 보였습니다. 특히, Cloud Professional Service 비용절감 패키지 개발과 대규모 리드 확보를 통해 상위 20%의 성과를 보였으며, 이를 통해 고객 중심의 문제 해결력과 응대 역량에 탁월함을 입증하였습니다.',
+      '그러나 글로벌 사업 Tech - presales와 CSP 파트너쉽 강화 관련 활동에는 주요 활동이 없었으며, 이 부분에 대한 개선이 필요해 보입니다.글로벌 시장 진출을 위한 활동을 강화하고, CSP 파트너쉽을 통한 원가 개선에 더욱 집중해보는 것이 도움이 될 수 있습니다.',
+      '동료 피드백에서는 열정 / 몰입, 긍정에너지, 협업역량 등의 긍정적인 키워드가 언급되었으나, 감정 표현 부족, 감정조절 미흡, 이기적 태도 등의 보완 키워드도 확인되었습니다.이에 따라, 감정 표현을 조금 더 유연하게 전달하고, 협업 시 타인의 의견을 존중하는 태도를 보여주는 것이 도움이 될 수 있습니다.',
+      '마지막으로, 자기평가 - 타인 평가 일치도 항목에서 상위 21~40 % 의 성과를 보였습니다.이를 통해 자기 인식과 타인의 평가 간 일치도가 양호한 수준임을 확인할 수 있으나, 이를 더욱 향상시키기 위해 자신의 업무 수행에 대한 평가를 주기적으로 점검하고, 필요한 경우 타인의 피드백을 적극적으로 수용해보는 것도 좋겠습니다.',
     ],
     finalComment:
-      '홍길동 has been a core contributor to team objectives, demonstrating high performance in delivering results with strong potential for leadership roles.',
+      '김민철 매니저님은 이번 분기 동안 Cloud Professional 업무와 Cloud 마케팅 활동을 중심으로 높은 성과를 도출하였습니다.\n주요 업무로는 Cloud Professional Service 비용절감 패키지 개발, BR/UR 개선 제안서 작성, Cloud 자원최적화 Service 패키지 완성 등이 있었으며, 고객 만족도와 고객피드백 반영, 타부서 협업 참여도 등에서 상위 20%의 성과를 보였습니다.\n동료 피드백에서는 열정/몰입, 협업역량, 책임감 등의 키워드가 반복적으로 언급되어, 팀 내에서의 협업과 책임감 있는 업무 수행에서 강점을 드러냈습니다.\n이번 분기는 김민철님의 고객 중심적 접근과 철저한 시장 분석을 통한 목표 지향적 결과 도출이 돋보였던 시기로 평가할 수 있습니다.\n다만, CSP 파트너쉽 관련 활동 강화와 동료 피드백에서 언급된 감정 표현 부족, 협업능력 부족 등의 측면에서 추가적인 보완이 이루어진다면 향후 성과의 완성도를 더욱 높일 수 있을 것입니다.',
   },
 };
 
@@ -207,16 +226,16 @@ export function PerformanceReportDetail({ reportId }: PerformanceReportDetailPro
       <div className="flex items-center justify-between">
         <Button variant="outline" onClick={() => router.push('/performance')} className="mb-4">
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Performance
+          이전 페이지
         </Button>
         <div className="flex gap-2">
           <Button variant="outline">
             <Share className="mr-2 h-4 w-4" />
-            Share
+            공유
           </Button>
           <Button variant="outline">
             <Download className="mr-2 h-4 w-4" />
-            Download
+            다운로드
           </Button>
         </div>
       </div>
@@ -226,7 +245,7 @@ export function PerformanceReportDetail({ reportId }: PerformanceReportDetailPro
         <CardHeader>
           <div className="flex items-center gap-4">
             <Avatar className="h-20 w-20 border-4 border-primary/20">
-              <AvatarImage src="/placeholder.svg" />
+              <AvatarImage src="/.svg" />
               <AvatarFallback className="bg-primary/10 text-primary font-bold text-xl">
                 {getInitials(report.employee.name)}
               </AvatarFallback>
@@ -234,13 +253,13 @@ export function PerformanceReportDetail({ reportId }: PerformanceReportDetailPro
             <div className="flex-1">
               <CardTitle className="text-2xl text-gray-900">{report.title}</CardTitle>
               <p className="text-lg text-gray-600">
-                {report.employee.name} - {report.employee.position}
+                {report.employee.name} {report.employee.position}
               </p>
               <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
                 <span>{report.employee.department}</span>
                 <span>{report.employee.period}</span>
               </div>
-              <p className="text-sm text-gray-500 mt-1">Evaluator: {report.employee.evaluator}</p>
+              {/* <p className="text-sm text-gray-500 mt-1">Evaluator: {report.employee.evaluator}</p> */}
             </div>
             <div className="text-right">
               <div className="flex items-center gap-2 mb-2">
@@ -250,7 +269,7 @@ export function PerformanceReportDetail({ reportId }: PerformanceReportDetailPro
                 </span>
                 <span className="text-gray-500">/5.0</span>
               </div>
-              <p className="text-sm text-gray-600">Overall Score</p>
+              <p className="text-sm text-gray-600">4분기 점수</p>
             </div>
           </div>
         </CardHeader>
@@ -262,7 +281,7 @@ export function PerformanceReportDetail({ reportId }: PerformanceReportDetailPro
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <TrendingUp className="h-5 w-5 text-primary" />
-              Performance Evaluation
+              성과 평가
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -290,8 +309,7 @@ export function PerformanceReportDetail({ reportId }: PerformanceReportDetailPro
           <Card className="border-primary/20">
             <CardHeader>
               <CardTitle className="flex items-center w-full justify-start gap-2">
-                <Target className="h-5 w-5 text-primary" />
-                Team Goals Contribution
+                <Target className="h-5 w-5 text-primary" />팀 목표 기여도
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -300,7 +318,12 @@ export function PerformanceReportDetail({ reportId }: PerformanceReportDetailPro
                   <div key={index} className="p-3 bg-gray-50 rounded-lg border">
                     <div className="flex items-center justify-between mb-1">
                       <h4 className="font-medium text-gray-900">{goal.goal}</h4>
-                      <Badge variant={goal.achievement === 'Assigned' ? 'default' : 'secondary'}>
+                      <Badge
+                        variant="default"
+                        className={
+                          goal.achievement.includes('미배정') ? 'bg-gray-400 text-white' : ''
+                        }
+                      >
                         {goal.achievement}
                       </Badge>
                     </div>
@@ -317,7 +340,7 @@ export function PerformanceReportDetail({ reportId }: PerformanceReportDetailPro
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <TrendingUp className="h-5 w-5 text-primary" />
-                Quarterly Performance
+                분기별 업무 성과
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -344,7 +367,7 @@ export function PerformanceReportDetail({ reportId }: PerformanceReportDetailPro
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Star className="h-5 w-5 text-primary" />
-            Key Achievements
+            주요 성과
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -359,12 +382,30 @@ export function PerformanceReportDetail({ reportId }: PerformanceReportDetailPro
         </CardContent>
       </Card>
 
+      {report.quarterlyPerformanceSummary && report.quarterlyPerformanceSummary.summaryText && (
+        <Card className="border-primary/20">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <BarChart3 className="h-5 w-5 text-primary" />
+              분기 종합 요약
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
+              <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                {report.quarterlyPerformanceSummary.summaryText}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Peer Feedback */}
       <Card className="border-primary/20">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <MessageSquare className="h-5 w-5 text-primary" />
-            Peer Feedback
+            동료평가 피드백
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -402,7 +443,7 @@ export function PerformanceReportDetail({ reportId }: PerformanceReportDetailPro
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Users className="h-5 w-5 text-primary" />
-                Work Attitude
+                업무실행 및 태도
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -422,7 +463,7 @@ export function PerformanceReportDetail({ reportId }: PerformanceReportDetailPro
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <TrendingUp className="h-5 w-5 text-primary" />
-              Growth Suggestions
+              성장 방향
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -443,7 +484,7 @@ export function PerformanceReportDetail({ reportId }: PerformanceReportDetailPro
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <FileText className="h-5 w-5 text-primary" />
-            Final Comments
+            총평
           </CardTitle>
         </CardHeader>
         <CardContent>
