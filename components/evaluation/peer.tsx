@@ -8,11 +8,15 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Users, ChevronRight, ChevronLeft } from 'lucide-react';
 
-interface Teammate {
-  id: string;
+interface Peer {
+  userId: number;
   name: string;
-  role: string;
-  project: string;
+  task: Task[];
+}
+
+interface Task {
+  taskId: number;
+  taskName: string;
 }
 
 interface PeerEvaluationKeyword {
@@ -21,29 +25,20 @@ interface PeerEvaluationKeyword {
   isPositive: boolean;
 }
 
-const mockTeammates: Teammate[] = [
-  {
-    id: '1',
-    name: '김민수',
-    role: 'Senior Developer',
-    project: 'Project Alpha',
-  },
-  { id: '2', name: '이지영', role: 'UI/UX Designer', project: 'Project Alpha' },
-  {
-    id: '3',
-    name: '박준호',
-    role: 'Backend Developer',
-    project: 'Project Beta',
-  },
-  {
-    id: '4',
-    name: '최수진',
-    role: 'Product Manager',
-    project: 'Project Alpha',
-  },
-];
+interface Teammate {
+  id: string;
+  name: string;
+  project: string;
+}
 
-export function PeerEvaluation({ initialKeywords }: { initialKeywords: PeerEvaluationKeyword[] }) {
+export function PeerEvaluation({
+  initialKeywords,
+  peers,
+}: {
+  initialKeywords: PeerEvaluationKeyword[];
+  peers: Peer[];
+}) {
+  const MIN_SELECTED_KEYWORD_COUNT = 5;
   const router = useRouter();
   const [currentTeammateIndex, setCurrentTeammateIndex] = useState(0);
   const [selectedKeywords, setSelectedKeywords] = useState<{
@@ -51,7 +46,14 @@ export function PeerEvaluation({ initialKeywords }: { initialKeywords: PeerEvalu
   }>({});
   const [showValidation, setShowValidation] = useState(false);
 
-  const currentTeammate = mockTeammates[currentTeammateIndex];
+  // Convert peers to teammate format
+  const teammates: Teammate[] = peers.map((peer) => ({
+    id: peer.userId.toString(),
+    name: peer.name,
+    project: peer.task.map((t) => t.taskName).join(' • '),
+  }));
+
+  const currentTeammate = teammates[currentTeammateIndex];
   const currentSelections = selectedKeywords[currentTeammate?.id] || [];
 
   useEffect(() => {
@@ -69,7 +71,7 @@ export function PeerEvaluation({ initialKeywords }: { initialKeywords: PeerEvalu
     let updated: string[];
     if (current.includes(keywordId)) {
       updated = current.filter((id) => id !== keywordId);
-    } else if (current.length < 5) {
+    } else if (current.length < MIN_SELECTED_KEYWORD_COUNT) {
       updated = [...current, keywordId];
     } else {
       return; // Don't allow more than 5 selections
@@ -86,12 +88,12 @@ export function PeerEvaluation({ initialKeywords }: { initialKeywords: PeerEvalu
   };
 
   const handleNext = () => {
-    if (currentSelections.length !== 5) {
+    if (currentSelections.length !== MIN_SELECTED_KEYWORD_COUNT) {
       setShowValidation(true);
       return;
     }
 
-    if (currentTeammateIndex < mockTeammates.length - 1) {
+    if (currentTeammateIndex < teammates.length - 1) {
       setCurrentTeammateIndex(currentTeammateIndex + 1);
       setShowValidation(false);
     } else {
@@ -121,10 +123,10 @@ export function PeerEvaluation({ initialKeywords }: { initialKeywords: PeerEvalu
       {/* Progress indicator */}
       <div className="flex items-center justify-between mb-6">
         <div className="text-sm text-muted-foreground">
-          평가 진행 중 {currentTeammateIndex + 1} of {mockTeammates.length}
+          평가 진행 중 {currentTeammateIndex + 1} of {teammates.length}
         </div>
         <div className="flex gap-2">
-          {mockTeammates.map((_, index) => (
+          {teammates.map((_, index) => (
             <div
               key={index}
               className={`w-3 h-3 rounded-full ${
@@ -144,9 +146,7 @@ export function PeerEvaluation({ initialKeywords }: { initialKeywords: PeerEvalu
           <CardTitle className="flex items-center justify-between">
             <div>
               <h2 className="text-xl">{currentTeammate.name}</h2>
-              <p className="text-sm text-muted-foreground">
-                {currentTeammate.role} • {currentTeammate.project}
-              </p>
+              <p className="text-sm text-muted-foreground">{currentTeammate.project}</p>
             </div>
             <Badge variant="outline">선택된 키워드 {currentSelections.length}/5</Badge>
           </CardTitle>
@@ -214,7 +214,7 @@ export function PeerEvaluation({ initialKeywords }: { initialKeywords: PeerEvalu
             </Button>
 
             <Button onClick={handleNext} disabled={currentSelections.length !== 5}>
-              {currentTeammateIndex === mockTeammates.length - 1 ? '평가 완료' : '다음 평가'}
+              {currentTeammateIndex === teammates.length - 1 ? '평가 완료' : '다음 평가'}
               <ChevronRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
