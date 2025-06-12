@@ -39,25 +39,23 @@ export function SignUpForm() {
 
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
-
-    // Required fields validation
     const requiredFields = [
-      { key: 'name', label: 'Name' },
-      { key: 'userId', label: 'User ID' },
-      { key: 'password', label: 'Password' },
-      { key: 'teamsEmail', label: 'Teams Email' },
-      { key: 'slackEmail', label: 'Slack Email' },
-      { key: 'localDirectory', label: 'Local Directory Path' },
-      { key: 'department', label: 'Department' },
-      { key: 'division', label: 'Division' },
-      { key: 'organization', label: 'Organization' },
-      { key: 'position', label: 'Position' },
-      { key: 'careerLevel', label: 'Career Level' },
+      'name',
+      'userId',
+      'password',
+      'teamsEmail',
+      'slackEmail',
+      'localDirectory',
+      'department',
+      'division',
+      'organization',
+      'position',
+      'careerLevel',
     ];
 
-    requiredFields.forEach((field) => {
-      if (!formData[field.key as keyof typeof formData].trim()) {
-        newErrors[field.key] = `${field.label} is required`;
+    requiredFields.forEach((key) => {
+      if (!formData[key as keyof typeof formData]) {
+        newErrors[key] = `${key} is required`;
       }
     });
 
@@ -79,33 +77,73 @@ export function SignUpForm() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validateForm()) return;
-
-    setIsLoading(true);
-
-    // Simulate registration process
-    setTimeout(() => {
-      // Mock registration - in real app, this would be an API call
-      localStorage.setItem('isAuthenticated', 'true');
-      localStorage.setItem(
-        'user',
-        JSON.stringify({
-          userId: formData.userId,
-          name: formData.name,
-        })
-      );
-      router.push('/dashboard');
-      setIsLoading(false);
-    }, 1500);
+  const handleInputChange = (key: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [key]: value }));
+    if (errors[key]) setErrors((prev) => ({ ...prev, [key]: '' }));
   };
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: '' }));
+  const departmentMap: Record<string, number> = {
+    engineering: 1,
+    product: 2,
+    design: 3,
+    marketing: 4,
+    sales: 5,
+    hr: 6,
+    finance: 7,
+  };
+
+  const divisionMap: Record<string, number> = {
+    technology: 1,
+    business: 2,
+    operations: 3,
+    strategy: 4,
+  };
+
+  const organizationMap: Record<string, number> = {
+    'team-alpha': 1,
+    'team-beta': 2,
+    'team-gamma': 3,
+    'team-delta': 4,
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+    setIsLoading(true);
+
+    const payload = {
+      name: formData.name,
+      employeeNumber: formData.userId,
+      password: formData.password,
+      teamsEmail: formData.teamsEmail,
+      slackEmail: formData.slackEmail,
+      localPath: formData.localDirectory,
+      departmentId: departmentMap[formData.department],
+      divisionId: divisionMap[formData.division],
+      organizationId: organizationMap[formData.organization],
+      isManager: ['manager', 'director'].includes(formData.position),
+      careerLevel: formData.careerLevel,
+    };
+
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const data = await res.text();
+        console.error('Server Error:', data);
+        throw new Error(data);
+      }
+
+      router.push('/login');
+    } catch (err) {
+      alert('회원가입에 실패했습니다. 콘솔 로그를 확인해주세요.');
+      console.error(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
