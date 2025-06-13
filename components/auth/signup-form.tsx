@@ -54,7 +54,10 @@ export function SignUpForm() {
     ];
 
     requiredFields.forEach((key) => {
-      if (!formData[key as keyof typeof formData]) {
+      if (
+        !formData[key as keyof typeof formData] ||
+        formData[key as keyof typeof formData].trim() === ''
+      ) {
         newErrors[key] = `${key} is required`;
       }
     });
