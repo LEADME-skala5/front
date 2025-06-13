@@ -45,27 +45,35 @@ export function LoginForm() {
     if (!validateForm()) return;
 
     setIsLoading(true);
+    setErrors({});
 
-    // Simulate login process
-    setTimeout(() => {
-      // Mock authentication - in real app, this would be an API call
-      if (formData.userId === 'admin' && formData.password === 'password') {
-        localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('user', JSON.stringify({ userId: formData.userId }));
-        localStorage.setItem('userRole', 'teamlead'); // Set as team lead for demo
-        router.push('/dashboard');
-      } else if (formData.userId === 'member' && formData.password === 'password') {
-        localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('user', JSON.stringify({ userId: formData.userId }));
-        localStorage.setItem('userRole', 'member'); // Set as regular member
-        router.push('/dashboard');
-      } else {
-        setErrors({
-          general: 'Invalid credentials. Try admin/password or member/password',
-        });
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          employeeNumber: formData.userId,
+          password: formData.password,
+        }),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        setErrors({ general: errorData.message || 'Login failed' });
+        return;
       }
+
+      const user = await res.json();
+      localStorage.setItem('user', JSON.stringify(user));
+      router.push('/dashboard');
+    } catch (error) {
+      setErrors({ general: 'Failed to connect to server' });
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
