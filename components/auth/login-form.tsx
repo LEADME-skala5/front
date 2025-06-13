@@ -30,9 +30,9 @@ export function LoginForm() {
     }
 
     if (!formData.password.trim()) {
-      newErrors.password = 'Password is required';
+      newErrors.password = '비밀번호를 입력해주세요';
     } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
+      newErrors.password = '비밀번호는 6자리 이상입니다';
     }
 
     setErrors(newErrors);
@@ -88,7 +88,7 @@ export function LoginForm() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <LogIn className="h-5 w-5" />
-          Sign In
+          로그인
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -100,27 +100,27 @@ export function LoginForm() {
           )}
 
           <div className="space-y-2">
-            <Label htmlFor="userId">User ID</Label>
+            <Label htmlFor="userId">사번 ID</Label>
             <Input
               id="userId"
               type="text"
               value={formData.userId}
               onChange={(e) => handleInputChange('userId', e.target.value)}
-              placeholder="Enter your user ID"
+              placeholder="사번을 입력해주세요"
               className={errors.userId ? 'border-red-500' : ''}
             />
             {errors.userId && <p className="text-sm text-red-500">{errors.userId}</p>}
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">비밀번호</Label>
             <div className="relative">
               <Input
                 id="password"
                 type={showPassword ? 'text' : 'password'}
                 value={formData.password}
                 onChange={(e) => handleInputChange('password', e.target.value)}
-                placeholder="Enter your password"
+                placeholder="비밀번호를 입력해주세요"
                 className={errors.password ? 'border-red-500' : ''}
               />
               <Button
@@ -137,14 +137,14 @@ export function LoginForm() {
           </div>
 
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? 'Signing in...' : 'Sign In'}
+            {isLoading ? '로그인하는 중' : '로그인'}
           </Button>
 
           <div className="text-center">
             <p className="text-sm text-gray-600">
-              Don't have an account?{' '}
+              회원이 아니신가요?{' '}
               <Link href="/signup" className="text-blue-600 hover:underline">
-                Sign up
+                회원가입
               </Link>
             </p>
           </div>
