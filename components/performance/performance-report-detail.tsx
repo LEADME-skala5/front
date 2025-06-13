@@ -119,34 +119,39 @@ const reportData: { [key: number]: any } = {
     employee: {
       name: '김민철',
       department: '클라우드 개발 3팀',
-      period: '2024-10-07 ~ 2024-12-27',
+      startDate: '2024-10-07',
+      endDate: '2024-12-27',
     },
     finalScore: 4.5,
     teamGoals: [
       {
-        goalName: 'oud Professional 업무 진행 통한 BR/UR 개선',
+        goalName: 'Cloud Professional 업무 진행 통한 BR/UR 개선',
         assigned: '배정',
-        content:
-          'Cloud Professional Service 비용절감 패키지 v1.0 개발, BR/UR 개선 제안서 작성 및 팀 내 승인 완료...',
-        contributionCount: 4,
+        content: [
+          'Cloud Professional Service 비용절감 패키지 v1.0 개발',
+          'BR/UR 개선 제안서 작성 및 팀 내 승인 완료',
+        ],
+        contributionCount: 2,
       },
       {
         goalName: 'CSP 파트너쉽 강화 통한 원가개선',
         assigned: '미배정',
-        content: '-',
+        content: [],
         contributionCount: 0,
       },
       {
-        goalName: 'oud 마케팅 및 홍보 통한 대외 oud 고객확보',
+        goalName: 'Cloud 마케팅 및 홍보 통한 대외 Cloud 고객확보',
         assigned: '배정',
-        content:
-          'Korea Cloud Summit 2024 부스 설계 및 준비 작업 완료, 현대중공업 대상 Manufacturing IoT와 Cloud 연계 Private 이벤트 기획...',
-        contributionCount: 5,
+        content: [
+          'Korea Cloud Summit 2024 부스 설계 및 준비 작업 완료',
+          '현대중공업 대상 Manufacturing IoT와 Cloud 연계 Private 이벤트 기획',
+        ],
+        contributionCount: 2,
       },
       {
         goalName: '글로벌 사업 Tech-presales 진행',
         assigned: '미배정',
-        content: '-',
+        content: [],
         contributionCount: 0,
       },
     ],
@@ -154,7 +159,7 @@ const reportData: { [key: number]: any } = {
       '총 수행 활동: 9건 (목표 대비 평가)',
       '목표 참여도: 2/4개 목표 참여 (50% 커버리지)',
       'Cloud Professional 업무 진행 통한 BR/UR 개선: 4건',
-      'Cloud 마케팅 및 홍보 통한 대외 oud 고객확보: 5건',
+      'Cloud 마케팅 및 홍보 통한 대외 cloud 고객확보: 5건',
     ],
     peerFeedback: [
       {
@@ -171,12 +176,13 @@ const reportData: { [key: number]: any } = {
       },
       {
         type: 'negative',
-        keywords: ['감정 표현 부족', '감정조절 미흡', '이기적 태도', '협업능력 부족'],
+        keywords: ['감정 표현 부족', '감정조절 미흡', '이기적 태도'],
       },
     ],
     quarterlyPerformanceSummary: {
       summaryText:
         '김민철 매니저님은 2024-10-07 ~ 2024-12-27 기간 동안 총 12건의 활동을 수행하며 특히 Cloud Professional 업무와 Cloud 마케팅 및 홍보 분야에서 두드러진 성과를 보였습니다. Cloud Professional 서비스 비용절감 패키지 v1.0 개발 및 BR/UR 개선 제안서 작성을 통해 내부 프로세스 개선에 기여하였으며, 이는 4건의 활동을 통해 목표 달성에 중요한 역할을 하였습니다. 또한, Korea Cloud Summit 2024 부스 설계 및 현대중공업 대상 Private 이벤트 기획을 포함한 5건의 활동으로 고객 확보 및 리드 생성에 크게 기여하였습니다. 그러나 글로벌 사업 Tech-presales 및 CSP 파트너십 강화 분야에서는 활동이 없어 이 부분에 대한 개선이 필요합니다',
+      compareText: '김민철 매니저님은 클라우드 직무자들 중 상위 30%에 위치하고 있습니다.',
     },
     workAttitude: [
       '고객 만족도와 타부서 협업 참여도 항목에서 상위 20% 이내의 성과를 보여주어, 고객 중심의 문제 해결력과 조직 내 협업 역량이 탁월함을 보여줍니다.',
@@ -302,6 +308,23 @@ export function PerformanceReportDetail({ reportId }: PerformanceReportDetailPro
           </CardContent>
         </Card>
       )}
+      {/* Final Comments */}
+      <Card className="border-primary/20">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <FileText className="h-5 w-5 text-primary" />
+            총평
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
+            <p className="text-black- font-bold leading-relaxed">
+              {report.quarterlyPerformanceSummary.compareText}
+            </p>
+            <p className="text-gray-700 leading-relaxed">{report.finalComment}</p>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Team Goals & Quarterly Performance */}
       <div className="grid grid-cols-1 gap-6">
@@ -314,24 +337,42 @@ export function PerformanceReportDetail({ reportId }: PerformanceReportDetailPro
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {report.teamGoals.map((goalName: any, index: number) => (
+                {report.teamGoals.map((goal: any, index: number) => (
                   <div key={index} className="p-3 bg-gray-50 rounded-lg border">
                     <div className="flex items-center justify-between mb-1">
-                      <h4 className="font-medium text-gray-900">{goalName.goalName}</h4>
+                      <h4 className="font-medium text-gray-900">{goal.goalName}</h4>
                       <Badge
                         variant="default"
                         className={`${
-                          goalName.assigned.includes('미배정')
+                          goal.assigned.includes('미배정')
                             ? 'bg-gray-400 text-white pointer-events-none'
                             : 'hover:bg-primary/80 cursor-pointer'
                         }`}
                       >
-                        {goalName.assigned.includes('미배정')
-                          ? goalName.assigned
-                          : `${goalName.assigned} - ${goalName.contributionCount}건`}
+                        {goal.assigned.includes('미배정')
+                          ? goal.assigned
+                          : `${goal.assigned} - ${goal.contributionCount}건`}
                       </Badge>
                     </div>
-                    <p className="text-sm text-gray-600">{goalName.content}</p>
+                    {/* Content 배열 형태로 처리 */}
+                    <div className="text-sm text-gray-600">
+                      {Array.isArray(goal.content) ? (
+                        goal.content.length > 0 ? (
+                          <ul className="space-y-1">
+                            {goal.content.map((item: string, itemIndex: number) => (
+                              <li key={itemIndex} className="flex items-start gap-2">
+                                <div className="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 flex-shrink-0"></div>
+                                <span>{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <span className="text-gray-400 italic">-</span>
+                        )
+                      ) : (
+                        <span>{goal.content}</span>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -386,6 +427,7 @@ export function PerformanceReportDetail({ reportId }: PerformanceReportDetailPro
         </CardContent>
       </Card>
 
+      {/* Quarterly Performance Summary with compareText */}
       {report.quarterlyPerformanceSummary && report.quarterlyPerformanceSummary.summaryText && (
         <Card className="border-primary/20">
           <CardHeader>
@@ -395,10 +437,12 @@ export function PerformanceReportDetail({ reportId }: PerformanceReportDetailPro
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
-              <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                {report.quarterlyPerformanceSummary.summaryText}
-              </p>
+            <div className="space-y-4">
+              <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
+                <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                  {report.quarterlyPerformanceSummary.summaryText}
+                </p>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -417,7 +461,7 @@ export function PerformanceReportDetail({ reportId }: PerformanceReportDetailPro
             {report.peerFeedback.map((feedback: any, index: number) => (
               <div key={index}>
                 <h4 className="font-medium text-gray-900 mb-2 capitalize">
-                  {feedback.type === 'positive' ? 'Strengths' : 'Areas for Improvement'}
+                  {feedback.type === 'positive' ? '강점' : '보완할 점'}
                 </h4>
                 <div className="flex flex-wrap gap-2">
                   {feedback.keywords.map((keyword: string, keyIndex: number) => (
@@ -482,21 +526,6 @@ export function PerformanceReportDetail({ reportId }: PerformanceReportDetailPro
           </CardContent>
         </Card>
       </div>
-
-      {/* Final Comments */}
-      <Card className="border-primary/20">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <FileText className="h-5 w-5 text-primary" />
-            총평
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
-            <p className="text-gray-700 leading-relaxed">{report.finalComment}</p>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 }
