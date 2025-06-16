@@ -11,8 +11,10 @@ import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Eye, EyeOff, LogIn } from 'lucide-react';
 import Link from 'next/link';
+import { useUserStore } from '@/store/useUserStore';
 
 export function LoginForm() {
+  const setUser = useUserStore((state) => state.setUser);
   const router = useRouter();
   const [formData, setFormData] = useState({
     userId: '',
@@ -26,7 +28,7 @@ export function LoginForm() {
     const newErrors: { [key: string]: string } = {};
 
     if (!formData.userId.trim()) {
-      newErrors.userId = 'User ID is required';
+      newErrors.userId = '사번을 꼭 입력해주셔야 합니다.';
     }
 
     if (!formData.password.trim()) {
@@ -62,15 +64,16 @@ export function LoginForm() {
 
       if (!res.ok) {
         const errorData = await res.json();
-        setErrors({ general: errorData.message || 'Login failed' });
+        setErrors({ general: errorData.message || '사번 또는 비밀번호가 틀렸습니다.' });
         return;
       }
 
       const user = await res.json();
+      setUser(user); //Zustand에 유저 정보 저장
       localStorage.setItem('user', JSON.stringify(user));
       router.push('/dashboard');
     } catch (error) {
-      setErrors({ general: 'Failed to connect to server' });
+      setErrors({ general: '서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.' });
     } finally {
       setIsLoading(false);
     }
