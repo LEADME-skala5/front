@@ -11,8 +11,10 @@ import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Eye, EyeOff, LogIn } from 'lucide-react';
 import Link from 'next/link';
+import { useUserStore } from '@/store/useUserStore';
 
 export function LoginForm() {
+  const setUser = useUserStore((state) => state.setUser);
   const router = useRouter();
   const [formData, setFormData] = useState({
     userId: '',
@@ -26,13 +28,13 @@ export function LoginForm() {
     const newErrors: { [key: string]: string } = {};
 
     if (!formData.userId.trim()) {
-      newErrors.userId = 'User ID is required';
+      newErrors.userId = '사번을 꼭 입력해주셔야 합니다.';
     }
 
     if (!formData.password.trim()) {
-      newErrors.password = 'Password is required';
+      newErrors.password = '비밀번호를 입력해주세요';
     } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
+      newErrors.password = '비밀번호는 6자리 이상입니다';
     }
 
     setErrors(newErrors);
@@ -45,27 +47,36 @@ export function LoginForm() {
     if (!validateForm()) return;
 
     setIsLoading(true);
+    setErrors({});
 
-    // Simulate login process
-    setTimeout(() => {
-      // Mock authentication - in real app, this would be an API call
-      if (formData.userId === 'admin' && formData.password === 'password') {
-        localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('user', JSON.stringify({ userId: formData.userId }));
-        localStorage.setItem('userRole', 'teamlead'); // Set as team lead for demo
-        router.push('/dashboard');
-      } else if (formData.userId === 'member' && formData.password === 'password') {
-        localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('user', JSON.stringify({ userId: formData.userId }));
-        localStorage.setItem('userRole', 'member'); // Set as regular member
-        router.push('/dashboard');
-      } else {
-        setErrors({
-          general: 'Invalid credentials. Try admin/password or member/password',
-        });
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          employeeNumber: formData.userId,
+          password: formData.password,
+        }),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        setErrors({ general: errorData.message || '사번 또는 비밀번호가 틀렸습니다.' });
+        return;
       }
+
+      const user = await res.json();
+      setUser(user); //Zustand에 유저 정보 저장
+      localStorage.setItem('user', JSON.stringify(user));
+      router.push('/dashboard');
+    } catch (error) {
+      setErrors({ general: '서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.' });
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -80,7 +91,7 @@ export function LoginForm() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <LogIn className="h-5 w-5" />
-          Sign In
+          로그인
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -92,27 +103,27 @@ export function LoginForm() {
           )}
 
           <div className="space-y-2">
-            <Label htmlFor="userId">User ID</Label>
+            <Label htmlFor="userId">사번 ID</Label>
             <Input
               id="userId"
               type="text"
               value={formData.userId}
               onChange={(e) => handleInputChange('userId', e.target.value)}
-              placeholder="Enter your user ID"
+              placeholder="사번을 입력해주세요"
               className={errors.userId ? 'border-red-500' : ''}
             />
             {errors.userId && <p className="text-sm text-red-500">{errors.userId}</p>}
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">비밀번호</Label>
             <div className="relative">
               <Input
                 id="password"
                 type={showPassword ? 'text' : 'password'}
                 value={formData.password}
                 onChange={(e) => handleInputChange('password', e.target.value)}
-                placeholder="Enter your password"
+                placeholder="비밀번호를 입력해주세요"
                 className={errors.password ? 'border-red-500' : ''}
               />
               <Button
@@ -129,14 +140,14 @@ export function LoginForm() {
           </div>
 
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? 'Signing in...' : 'Sign In'}
+            {isLoading ? '로그인하는 중' : '로그인'}
           </Button>
 
           <div className="text-center">
             <p className="text-sm text-gray-600">
-              Don't have an account?{' '}
+              회원이 아니신가요?{' '}
               <Link href="/signup" className="text-blue-600 hover:underline">
-                Sign up
+                회원가입
               </Link>
             </p>
           </div>
