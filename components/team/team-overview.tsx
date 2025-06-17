@@ -107,6 +107,10 @@ export function TeamOverview() {
     router.push(`/team/member/${memberId}`);
   };
 
+  const handleQualitativeEvaluation = (memberId: string) => {
+    router.push(`/team/member/${memberId}/evaluate`);
+  };
+
   const getPerformanceColor = (score: number) => {
     if (score >= 4.5) return 'text-green-600';
     if (score >= 4.0) return 'text-primary';
@@ -238,15 +242,24 @@ export function TeamOverview() {
                     <p className="text-xs text-gray-500">{member.email}</p>
                   </div>
                 </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleViewReport(member.id)}
-                  className="border-primary/30 text-primary hover:bg-primary hover:text-white"
-                >
-                  <Eye className="mr-2 h-4 w-4" />
-                  리포트 보기
-                </Button>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleViewReport(member.id)}
+                    className="border-primary/30 text-primary hover:bg-primary hover:text-white"
+                  >
+                    <Eye className="mr-2 h-4 w-4" />
+                    리포트 보기
+                  </Button>
+                  <Button
+                    size="sm"
+                    onClick={() => handleQualitativeEvaluation(member.id)}
+                    className="bg-primary hover:bg-primary/90"
+                  >
+                    정성평가하기
+                  </Button>
+                </div>
               </div>
             </CardHeader>
             <CardContent className="pt-0">
