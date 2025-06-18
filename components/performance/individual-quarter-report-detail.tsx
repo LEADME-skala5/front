@@ -10,13 +10,15 @@ import {
   Download,
   Share,
   Star,
-  TrendingUp,
+  Info,
   Target,
   Users,
   FileText,
   MessageSquare,
   BarChart3,
 } from 'lucide-react';
+
+import * as Tooltip from '@radix-ui/react-tooltip';
 
 interface IndividualQuarterReportDetailProps {
   reportData: any;
@@ -88,54 +90,88 @@ export function IndividualQuarterReportDetail({ reportData }: IndividualQuarterR
       </Card>
 
       {/* Team Goals */}
-      <Card className="border-primary/20">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Target className="h-5 w-5 text-primary" />팀 목표 기여도
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            {reportData.teamGoals.map((goal: any, index: number) => (
-              <div key={index} className="p-3 bg-gray-50 rounded-lg border">
-                <div className="flex items-center justify-between mb-1">
-                  <h4 className="font-medium text-gray-900">{goal.goalName}</h4>
-                  <Badge
-                    variant="default"
-                    className={`${
-                      goal.assigned.includes('미배정')
-                        ? 'bg-gray-400 text-white pointer-events-none'
-                        : 'hover:bg-primary/80 cursor-pointer'
-                    }`}
-                  >
-                    {goal.assigned.includes('미배정')
-                      ? goal.assigned
-                      : `${goal.assigned} - ${goal.contributionCount}건`}
-                  </Badge>
-                </div>
-                <div className="text-sm text-gray-600">
-                  {Array.isArray(goal.content) ? (
-                    goal.content.length > 0 ? (
-                      <ul className="space-y-1">
-                        {goal.content.map((item: string, itemIndex: number) => (
-                          <li key={itemIndex} className="flex items-start gap-2">
-                            <div className="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 flex-shrink-0"></div>
-                            <span>{item}</span>
+      <Tooltip.Provider>
+        <Card className="border-primary/20">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Target className="h-5 w-5 text-primary" />
+              업무 수행 내역
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {reportData.teamGoals.map((goal: any, index: number) => (
+                <div key={index} className="p-3 bg-gray-50 rounded-lg border">
+                  <div className="flex items-center justify-between mb-1">
+                    <h4 className="font-medium text-gray-900">{goal.goalName}</h4>
+                    <Badge
+                      variant="default"
+                      className={`${
+                        goal.assigned.includes('미배정')
+                          ? 'bg-gray-400 text-white pointer-events-none'
+                          : 'hover:bg-primary/80 cursor-pointer'
+                      }`}
+                    >
+                      {goal.assigned.includes('미배정')
+                        ? goal.assigned
+                        : `${goal.assigned} - ${goal.contributionCount}건`}
+                    </Badge>
+                  </div>
+
+                  <div className="text-sm text-gray-600 space-y-2 mt-2">
+                    {goal.contents && goal.contents.length > 0 ? (
+                      <ul className="space-y-3">
+                        {goal.contents.map((item: any, itemIndex: number) => (
+                          <li key={itemIndex}>
+                            <div className="flex items-start gap-2">
+                              <div className="w-1.5 h-1.5 bg-gray-500 rounded-full mt-2 flex-shrink-0" />
+                              <span className="font-medium text-gray-600">{item.description}</span>
+
+                              {item.reference?.length > 0 && (
+                                <Tooltip.Root>
+                                  <Tooltip.Trigger asChild>
+                                    <button
+                                      type="button"
+                                      className="ml-1 mt-[2px] text-gray-400 hover:text-primary"
+                                    >
+                                      <Info className="w-4 h-4" />
+                                    </button>
+                                  </Tooltip.Trigger>
+
+                                  <Tooltip.Content
+                                    className="bg-white p-3 rounded-md shadow-lg border text-sm text-left w-72 z-50 animate-fade-in transition-opacity duration-300 ease-out"
+                                    side="bottom"
+                                    align="start"
+                                    sideOffset={5}
+                                  >
+                                    <ul className="space-y-2">
+                                      {item.reference.map((ref: any, refIndex: number) => (
+                                        <li key={refIndex}>
+                                          <div className="font-semibold text-gray-900">
+                                            {ref.label}
+                                          </div>
+                                          <div className="text-gray-600">{ref.excerpt}</div>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                    <Tooltip.Arrow className="fill-white" />
+                                  </Tooltip.Content>
+                                </Tooltip.Root>
+                              )}
+                            </div>
                           </li>
                         ))}
                       </ul>
                     ) : (
                       <span className="text-gray-400 italic">-</span>
-                    )
-                  ) : (
-                    <span>{goal.content}</span>
-                  )}
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </Tooltip.Provider>
 
       {/* Key Achievements */}
       <Card className="border-primary/20">
