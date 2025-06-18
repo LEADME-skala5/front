@@ -27,18 +27,18 @@ import {
 } from '@/components/ui/sidebar';
 
 const menuItems = [
-  {
-    title: '대시보드',
-    url: '/dashboard',
-    icon: Home,
-    requiresTeamLead: false,
-  },
-  {
-    title: '위클리 리포트',
-    url: '/reports',
-    icon: FileText,
-    requiresTeamLead: false,
-  },
+  // {
+  //   title: '대시보드',
+  //   url: '/dashboard',
+  //   icon: Home,
+  //   requiresTeamLead: false,
+  // },
+  // {
+  //   title: '위클리 리포트',
+  //   url: '/reports',
+  //   icon: FileText,
+  //   requiresTeamLead: false,
+  // },
   {
     title: '성과관리 결과',
     url: '/performance',
