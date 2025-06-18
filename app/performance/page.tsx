@@ -7,7 +7,7 @@ export default function PerformancePage() {
   return (
     <div className="p-6 space-y-6">
       <PerformanceHeader />
-      <PerformanceFilters />
+      {/* <PerformanceFilters /> */}
       <PerformanceMetrics />
 
       {/* Performance Feedback Reports List */}

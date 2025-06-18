@@ -10,7 +10,7 @@ const feedbackReports = [
   {
     id: 1,
     title: '개인 분기 보고서',
-    type: 'Year-End Evaluation',
+    type: '개인 분기 보고서',
     date: '2026-01-15',
     author: 'Virtual 홍길동 & X.Cel',
     period: '2026-01-01 ~ 2026-11-30',
@@ -19,7 +19,7 @@ const feedbackReports = [
   {
     id: 2,
     title: '개인 연말 보고서',
-    type: 'Quarterly Feedback',
+    type: '개인 연말 보고서',
     date: '2026-10-01',
     author: 'Virtual 홍길동 & X.Cel',
     period: '2026-07-01 ~ 2026-09-26 (26년 3분기)',
@@ -28,7 +28,7 @@ const feedbackReports = [
   {
     id: 3,
     title: '팀 분기 보고서',
-    type: 'Quarterly Feedback',
+    type: '팀 분기 보고서',
     date: '2026-07-15',
     author: 'Performance Team',
     period: '2026-04-01 ~ 2026-06-30',
@@ -37,7 +37,7 @@ const feedbackReports = [
   {
     id: 4,
     title: '팀 연말 보고서',
-    type: 'Quarterly Feedback',
+    type: '팀 연말 보고서',
     date: '2026-04-10',
     author: 'HR Department',
     period: '2026-01-01 ~ 2026-03-31',
@@ -45,9 +45,10 @@ const feedbackReports = [
   },
 ];
 
-const typeColors = {
-  'Year-End Evaluation': 'bg-purple-100 text-purple-800',
-  'Quarterly Feedback': 'bg-blue-100 text-blue-800',
+const getTypeColor = (type: string) => {
+  if (type.includes('분기')) return 'bg-blue-100 text-blue-800';
+  if (type.includes('연말')) return 'bg-purple-100 text-purple-800';
+  return 'bg-gray-100 text-gray-800'; // 기본값
 };
 
 export function PerformanceFeedbackList() {
@@ -99,9 +100,7 @@ export function PerformanceFeedbackList() {
                   </div>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <Badge className={typeColors[report.type as keyof typeof typeColors]}>
-                    {report.type}
-                  </Badge>
+                  <Badge className={getTypeColor(report.type)}>{report.type}</Badge>
                   <Button variant="outline" size="sm" onClick={(e) => handleDownload(e, report.id)}>
                     <Download className="mr-2 h-4 w-4" />
                     다운로드

@@ -27,32 +27,72 @@ const reportData: { [key: number]: any } = {
       {
         goalName: 'Cloud Professional 업무 진행 통한 BR/UR 개선',
         assigned: '배정',
-        content: [
-          'Cloud Professional Service 비용절감 패키지 v1.0 개발',
-          'BR/UR 개선 제안서 작성 및 팀 내 승인 완료',
-        ],
         contributionCount: 2,
+        contents: [
+          {
+            description: 'Cloud Professional Service 비용절감 패키지 v1.0 개발',
+            reference: [
+              {
+                label: '3주차 Weekly 리포트 5번째 항목 참고',
+                excerpt: '비용절감 패키지 구성안 초안 작성 완료 및 내부 리뷰 요청',
+              },
+              {
+                label: '2주차 리소스 정리표 참조',
+                excerpt: '서비스별 비용 분석 자료를 표 형태로 정리',
+              },
+            ],
+          },
+          {
+            description: 'BR/UR 개선 제안서 작성 및 팀 내 승인 완료',
+            reference: [
+              {
+                label: '6주차 팀 회의록 중 개선안 제시 내용',
+                excerpt: 'BR/UR 항목별 개선방안 초안 발표 및 팀 피드백 반영',
+              },
+            ],
+          },
+        ],
       },
       {
         goalName: 'CSP 파트너쉽 강화 통한 원가개선',
         assigned: '미배정',
-        content: [],
         contributionCount: 0,
+        contents: [],
       },
       {
         goalName: 'Cloud 마케팅 및 홍보 통한 대외 Cloud 고객확보',
         assigned: '배정',
-        content: [
-          'Korea Cloud Summit 2024 부스 설계 및 준비 작업 완료',
-          '현대중공업 대상 Manufacturing IoT와 Cloud 연계 Private 이벤트 기획',
-        ],
         contributionCount: 2,
+        contents: [
+          {
+            description: 'Korea Cloud Summit 2024 부스 설계 및 준비 작업 완료',
+            reference: [
+              {
+                label: '9주차 Weekly: Summit 준비 진행사항',
+                excerpt: '행사 부스 시안 검토 완료 및 외주 업체 선정',
+              },
+              {
+                label: '8주차 홍보 콘텐츠 기획안 첨부 참고',
+                excerpt: '온라인 홍보 콘텐츠 기획안 초안 정리 및 팀 리뷰 공유',
+              },
+            ],
+          },
+          {
+            description: '현대중공업 대상 Manufacturing IoT와 Cloud 연계 Private 이벤트 기획',
+            reference: [
+              {
+                label: '11주차 회의록: 현대중공업 관련 논의 내용',
+                excerpt: 'Private 이벤트 진행 배경 설명 및 주요 타겟 공유',
+              },
+            ],
+          },
+        ],
       },
       {
         goalName: '글로벌 사업 Tech-presales 진행',
         assigned: '미배정',
-        content: [],
         contributionCount: 0,
+        contents: [],
       },
     ],
     keyAchievements: [

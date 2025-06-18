@@ -21,10 +21,10 @@ export function PerformanceFilters() {
               <SelectValue placeholder="Time Period" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="current-quarter">Current Quarter</SelectItem>
-              <SelectItem value="last-quarter">Last Quarter</SelectItem>
-              <SelectItem value="current-year">Current Year</SelectItem>
-              <SelectItem value="last-year">Last Year</SelectItem>
+              <SelectItem value="current-quarter">이번 분기</SelectItem>
+              <SelectItem value="last-quarter">지난 분기</SelectItem>
+              <SelectItem value="current-year">올해 전체</SelectItem>
+              <SelectItem value="last-year">작년 전체</SelectItem>
             </SelectContent>
           </Select>
           <Select>
