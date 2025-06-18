@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Users, ChevronRight, ChevronLeft } from 'lucide-react';
+import { usePeerKeywordEvaluationStore } from '@/store/peerKeywordEvaluationStore';
 
 interface Peer {
   userId: number;
@@ -20,15 +21,40 @@ interface Task {
 }
 
 interface PeerEvaluationKeyword {
-  id: string;
+  id: number;
   keyword: string;
   isPositive: boolean;
 }
 
 interface Teammate {
-  id: string;
+  id: number;
   name: string;
   project: string;
+}
+
+const userId = 3;
+
+async function createPeerKeywordEvaluation(selectedKeywords: { [teammateId: number]: number[] }) {
+  const payload = {
+    evaluatorUserId: userId,
+    evaluations: Object.entries(selectedKeywords).map(([evaluateeUserId, keywordIds]) => ({
+      evaluateeUserId: Number(evaluateeUserId),
+      keywordIds,
+    })),
+  };
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/peer-evaluation/keyword-evaluation`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  });
+
+  console.log(res);
+
+  if (!res.ok) return [];
+  return res.json();
 }
 
 export function PeerEvaluation({
@@ -41,14 +67,14 @@ export function PeerEvaluation({
   const MIN_SELECTED_KEYWORD_COUNT = 5;
   const router = useRouter();
   const [currentTeammateIndex, setCurrentTeammateIndex] = useState(0);
-  const [selectedKeywords, setSelectedKeywords] = useState<{
-    [teammateId: string]: string[];
-  }>({});
   const [showValidation, setShowValidation] = useState(false);
 
-  // Convert peers to teammate format
+  const selectedKeywords = usePeerKeywordEvaluationStore((state) => state.selectedKeywords);
+  const setKeywords = usePeerKeywordEvaluationStore((state) => state.setKeywords);
+  const clearKeywords = usePeerKeywordEvaluationStore((state) => state.clearKeywords);
+
   const teammates: Teammate[] = peers.map((peer) => ({
-    id: peer.userId.toString(),
+    id: peer.userId,
     name: peer.name,
     project: peer.task.map((t) => t.taskName).join(' • '),
   }));
@@ -56,38 +82,24 @@ export function PeerEvaluation({
   const currentTeammate = teammates[currentTeammateIndex];
   const currentSelections = selectedKeywords[currentTeammate?.id] || [];
 
-  useEffect(() => {
-    // Load saved evaluations from localStorage
-    const saved = localStorage.getItem('peerEvaluations');
-    if (saved) {
-      setSelectedKeywords(JSON.parse(saved));
-    }
-  }, []);
-
-  const toggleKeyword = (keywordId: string) => {
+  const toggleKeyword = (keywordId: number) => {
     const teammateId = currentTeammate.id;
     const current = selectedKeywords[teammateId] || [];
 
-    let updated: string[];
+    let updated: number[];
     if (current.includes(keywordId)) {
       updated = current.filter((id) => id !== keywordId);
     } else if (current.length < MIN_SELECTED_KEYWORD_COUNT) {
       updated = [...current, keywordId];
     } else {
-      return; // Don't allow more than 5 selections
+      return;
     }
 
-    const newSelections = {
-      ...selectedKeywords,
-      [teammateId]: updated,
-    };
-
-    setSelectedKeywords(newSelections);
-    localStorage.setItem('peerEvaluations', JSON.stringify(newSelections));
+    setKeywords(teammateId, updated);
     setShowValidation(false);
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentSelections.length !== MIN_SELECTED_KEYWORD_COUNT) {
       setShowValidation(true);
       return;
@@ -96,9 +108,11 @@ export function PeerEvaluation({
     if (currentTeammateIndex < teammates.length - 1) {
       setCurrentTeammateIndex(currentTeammateIndex + 1);
       setShowValidation(false);
-    } else {
-      // All teammates evaluated, go to contribution page
-      router.push('/evaluation/contribution');
+    }
+
+    if (currentTeammateIndex === teammates.length - 1) {
+      await createPeerKeywordEvaluation(selectedKeywords);
+      clearKeywords();
     }
   };
 

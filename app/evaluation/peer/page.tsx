@@ -9,7 +9,7 @@ async function getPeerEvaluationKeywords() {
 }
 
 async function getPeers() {
-  const userId = 1;
+  const userId = 3;
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/peer-evaluation/peers/${userId}`);
   if (!res.ok) return [];
   return res.json();
