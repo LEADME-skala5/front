@@ -9,7 +9,7 @@ import { FileText, Calendar, User, Download } from 'lucide-react';
 const feedbackReports = [
   {
     id: 1,
-    title: '2026년 평가 Report',
+    title: '개인 분기 보고서',
     type: 'Year-End Evaluation',
     date: '2026-01-15',
     author: 'Virtual 홍길동 & X.Cel',
@@ -18,7 +18,7 @@ const feedbackReports = [
   },
   {
     id: 2,
-    title: '3분기 Feedback Report',
+    title: '개인 연말 보고서',
     type: 'Quarterly Feedback',
     date: '2026-10-01',
     author: 'Virtual 홍길동 & X.Cel',
@@ -27,7 +27,7 @@ const feedbackReports = [
   },
   {
     id: 3,
-    title: '2분기 Feedback Report',
+    title: '팀 분기 보고서',
     type: 'Quarterly Feedback',
     date: '2026-07-15',
     author: 'Performance Team',
@@ -36,7 +36,7 @@ const feedbackReports = [
   },
   {
     id: 4,
-    title: '1분기 Performance Review',
+    title: '팀 연말 보고서',
     type: 'Quarterly Feedback',
     date: '2026-04-10',
     author: 'HR Department',
