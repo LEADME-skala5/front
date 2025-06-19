@@ -111,7 +111,29 @@ const mockMemberTasks: { [key: string]: any } = {
   },
 };
 
-async function createWeeklyEvaluation(selectedScores: { [taskId: number]: number }) {}
+async function createWeeklyEvaluation(selectedScores: { [taskId: number]: number }) {
+  const payload = {
+    evaluatorUserId: 1,
+    evaluateeUserId: 2,
+    evaluations: Object.entries(selectedScores).map(([taskId, grade]) => ({
+      taskId: Number(taskId),
+      grade,
+    })),
+  };
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/quantitative-evaluation/weekly`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  });
+
+  console.log(res);
+
+  if (!res.ok) return [];
+  return res.json();
+}
 
 export function WeeklyEvaluation({ memberId }: QualitativeEvaluationProps) {
   const router = useRouter();
@@ -154,19 +176,7 @@ export function WeeklyEvaluation({ memberId }: QualitativeEvaluationProps) {
     const YEAR = 2025;
     const QUARTER = 2;
 
-    // TODO: selectedScores로 api 요청
     const res = await createWeeklyEvaluation(selectedScores);
-
-    // const incompleteTasks = tasks.filter((task: Task) => !selectedScores[task.id]);
-    // if (incompleteTasks.length > 0) {
-    //   setShowValidation(true);
-    //   return;
-    // }
-    // setIsSaved(true);
-    // setTimeout(() => {
-    //   setIsSaved(false);
-    //   router.push('/team/overview');
-    // }, 2000);
   };
 
   return (
