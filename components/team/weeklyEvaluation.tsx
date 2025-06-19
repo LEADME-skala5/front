@@ -111,6 +111,8 @@ const mockMemberTasks: { [key: string]: any } = {
   },
 };
 
+async function createWeeklyEvaluation(selectedScores: { [taskId: number]: number }) {}
+
 export function WeeklyEvaluation({ memberId }: QualitativeEvaluationProps) {
   const router = useRouter();
   const { selectedScores, setScore, clearScores } = useWeeklyEvaluationStore();
@@ -147,8 +149,14 @@ export function WeeklyEvaluation({ memberId }: QualitativeEvaluationProps) {
   const completedEvaluations = Object.keys(selectedScores).length;
   const totalTasks = tasks.length;
 
-  const handleSave = () => {
+  const handleSave = async () => {
     console.log(selectedScores);
+    const YEAR = 2025;
+    const QUARTER = 2;
+
+    // TODO: selectedScores로 api 요청
+    const res = await createWeeklyEvaluation(selectedScores);
+
     // const incompleteTasks = tasks.filter((task: Task) => !selectedScores[task.id]);
     // if (incompleteTasks.length > 0) {
     //   setShowValidation(true);
