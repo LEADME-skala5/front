@@ -162,142 +162,61 @@ export function TeamQuarterReportDetail({ reportData }: TeamQuarterReportDetailP
             </div>
 
             {/* Member Rows */}
-            {Array.from({ length: 40 }, (_, index) => {
-              const rank = index + 1;
-              const sampleNames = [
-                '김민수',
-                '이영희',
-                '박준호',
-                '최서연',
-                '정우진',
-                '한소영',
-                '오태현',
-                '임지은',
-                '강동훈',
-                '윤미래',
-                '조현우',
-                '신예린',
-                '배성호',
-                '문지혜',
-                '서준영',
-                '홍수빈',
-                '노승현',
-                '권민정',
-                '황재석',
-                '송다은',
-                '안준혁',
-                '유채원',
-                '장민기',
-                '전소희',
-                '고영수',
-                '남지원',
-                '도현석',
-                '류미경',
-                '마준서',
-                '방예진',
-                '사지훈',
-                '아름다',
-                '자현우',
-                '차민영',
-                '카준호',
-                '타소연',
-                '파영진',
-                '하준수',
-                '갑민정',
-                '을지은',
-              ];
-
-              const sampleKeywords = [
-                ['리더십', '협업', '문제해결'],
-                ['창의성', '소통', '전문성'],
-                ['책임감', '적극성', '신뢰성'],
-                ['분석력', '효율성', '성실함'],
-                ['혁신', '팀워크', '목표달성'],
-                ['책임감', '실행력', '멘토링'],
-                ['고객지향', '품질관리', '개선'],
-                ['기술력', '학습능력', '협조'],
-              ];
-
-              const percentiles = [
-                '상위 5%',
-                '상위 10%',
-                '상위 15%',
-                '상위 20%',
-                '상위 25%',
-                '상위 30%',
-              ];
-
-              const name = sampleNames[index] || `팀원${rank}`;
-              const keywords = sampleKeywords[index % sampleKeywords.length];
-              const percentile = percentiles[Math.floor(index / 7) % percentiles.length];
-
-              return (
-                <div
-                  key={index}
-                  className="grid grid-cols-12 gap-4 p-3 hover:bg-gray-50 rounded-lg border-b border-gray-100 transition-colors"
-                >
-                  <div className="col-span-1 text-center">
-                    <span
-                      className={`inline-flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold ${
-                        rank <= 5
-                          ? 'bg-yellow-100 text-yellow-800'
-                          : rank <= 10
-                            ? 'bg-green-100 text-green-800'
-                            : rank <= 20
-                              ? 'bg-blue-100 text-blue-800'
-                              : 'bg-gray-100 text-gray-600'
-                      }`}
-                    >
-                      {rank}
+            {reportData.memberAnalysis.map((member: any, index: number) => (
+              <div
+                key={index}
+                className="grid grid-cols-12 gap-4 p-3 hover:bg-gray-50 rounded-lg border-b border-gray-100 transition-colors"
+              >
+                <div className="col-span-1 text-center">
+                  <span className="inline-flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold">
+                    {member.rank}
+                  </span>
+                </div>
+                <div className="col-span-2">
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium text-gray-900">
+                      {member.name}&nbsp;({member.score})
                     </span>
                   </div>
-                  <div className="col-span-2">
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium text-gray-900">{name} (4.5)</span>
-                    </div>
-                  </div>
-                  <div className="col-span-4">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm text-gray-900">SLA 100% 달성, 신규 운영 노팅</span>
-                    </div>
-                  </div>
-                  <div className="col-span-3">
-                    <div className="flex flex-wrap gap-1">
-                      {keywords.map((keyword: string, keywordIndex: number) => (
-                        <Badge
-                          key={keywordIndex}
-                          variant="secondary"
-                          className="text-xs bg-blue-50 text-blue-700 hover:bg-blue-100"
-                        >
-                          {keyword}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="col-span-2 text-center">
-                    <Badge
-                      variant="outline"
-                      className={`${
-                        percentile.includes('5%') || percentile.includes('10%')
-                          ? 'bg-green-50 text-green-700 border-green-200'
-                          : percentile.includes('15%') || percentile.includes('20%')
-                            ? 'bg-blue-50 text-blue-700 border-blue-200'
-                            : 'bg-gray-50 text-gray-700 border-gray-200'
-                      }`}
-                    >
-                      {percentile}
-                    </Badge>
+                </div>
+                <div className="col-span-4">
+                  <div className="text-sm text-gray-900">{member.role}</div>
+                </div>
+                <div className="col-span-3">
+                  <div className="flex flex-wrap gap-1">
+                    {member.peerKeywords.map((keyword: string, keywordIndex: number) => (
+                      <Badge
+                        key={keywordIndex}
+                        variant="secondary"
+                        className="text-xs bg-blue-50 text-blue-700 hover:bg-blue-100"
+                      >
+                        {keyword}
+                      </Badge>
+                    ))}
                   </div>
                 </div>
-              );
-            })}
+                <div className="col-span-2 text-center">
+                  <Badge
+                    variant="outline"
+                    className={`${
+                      member.overallRank.includes('5%') || member.overallRank.includes('10%')
+                        ? 'bg-green-50 text-green-700 border-green-200'
+                        : member.overallRank.includes('15%') || member.overallRank.includes('20%')
+                          ? 'bg-blue-50 text-blue-700 border-blue-200'
+                          : 'bg-gray-50 text-gray-700 border-gray-200'
+                    }`}
+                  >
+                    {member.overallRank}
+                  </Badge>
+                </div>
+              </div>
+            ))}
           </div>
         </CardContent>
       </Card>
 
       {/* Contribution Criteria */}
-      <Card className="border-primary/20">
+      {/* <Card className="border-primary/20">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <BarChart3 className="h-5 w-5 text-primary" />
@@ -316,49 +235,43 @@ export function TeamQuarterReportDetail({ reportData }: TeamQuarterReportDetailP
             )}
           </div>
         </CardContent>
+      </Card> */}
+
+      <Card className="border-primary/20">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <MessageSquare className="h-5 w-5 text-primary" />
+            HR 제안사항
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {reportData.hrSuggestions.map((suggestion: string, index: number) => (
+              <div key={index} className="p-3 bg-gray-50 rounded-lg border">
+                <p className="text-sm text-gray-700">{suggestion}</p>
+              </div>
+            ))}
+          </div>
+        </CardContent>
       </Card>
 
-      {/* HR Suggestions & Org Recommendations */}
-      <div className="grid grid-cols-1 gap-6">
-        <Card className="border-primary/20">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <MessageSquare className="h-5 w-5 text-primary" />
-              HR 제안사항
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {reportData.hrSuggestions.map((suggestion: any, index: number) => (
-                <div key={index} className="p-3 bg-gray-50 rounded-lg border">
-                  <h4 className="font-medium text-gray-900 mb-1">{suggestion.target}</h4>
-                  <p className="text-sm text-gray-700">{suggestion.recommendation}</p>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-primary/20">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="h-5 w-5 text-primary" />
-              조직 차원 권고사항
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="p-3 bg-gray-50 rounded-lg border">
-              <p className="text-sm text-gray-700 mb-2">
-                <span className="font-medium">개선 키워드:</span>{' '}
-                {reportData.orgSuggestions.suggestion}
+      <Card className="border-primary/20">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <TrendingUp className="h-5 w-5 text-primary" />
+            조직 차원 권고사항
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            {reportData.orgSuggestions.map((item: string, index: number) => (
+              <p key={index} className="text-sm text-gray-700 leading-relaxed">
+                • {item}
               </p>
-              <p className="text-sm text-gray-700">
-                <span className="font-medium">권장 액션:</span> {reportData.orgSuggestions.action}
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Final Comments */}
       <Card className="border-primary/20">
