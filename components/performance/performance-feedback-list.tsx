@@ -6,6 +6,10 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { FileText, Calendar, User, Download } from 'lucide-react';
 
+interface PerformanceFeedbackListProps {
+  selectedType: 'individual' | 'team';
+}
+
 const feedbackReports = [
   {
     id: 1,
@@ -51,8 +55,12 @@ const getTypeColor = (type: string) => {
   return 'bg-gray-100 text-gray-800'; // 기본값
 };
 
-export function PerformanceFeedbackList() {
+export function PerformanceFeedbackList({ selectedType }: PerformanceFeedbackListProps) {
   const router = useRouter();
+
+  const filteredReports = feedbackReports.filter((report) =>
+    selectedType === 'individual' ? report.type.includes('개인') : report.type.includes('팀')
+  );
 
   const handleReportClick = (reportId: number) => {
     router.push(`/performance/reports/${reportId}`);
@@ -74,7 +82,7 @@ export function PerformanceFeedbackList() {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {feedbackReports.map((report) => (
+          {filteredReports.map((report) => (
             <div
               key={report.id}
               className="p-4 border rounded-lg cursor-pointer hover:shadow-md transition-shadow"
