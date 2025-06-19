@@ -6,11 +6,15 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { FileText, Calendar, User, Download } from 'lucide-react';
 
+interface PerformanceFeedbackListProps {
+  selectedType: 'individual' | 'team';
+}
+
 const feedbackReports = [
   {
     id: 1,
-    title: '2026년 평가 Report',
-    type: 'Year-End Evaluation',
+    title: '개인 분기 보고서',
+    type: '개인 분기 보고서',
     date: '2026-01-15',
     author: 'Virtual 홍길동 & X.Cel',
     period: '2026-01-01 ~ 2026-11-30',
@@ -18,8 +22,8 @@ const feedbackReports = [
   },
   {
     id: 2,
-    title: '3분기 Feedback Report',
-    type: 'Quarterly Feedback',
+    title: '개인 연말 보고서',
+    type: '개인 연말 보고서',
     date: '2026-10-01',
     author: 'Virtual 홍길동 & X.Cel',
     period: '2026-07-01 ~ 2026-09-26 (26년 3분기)',
@@ -27,8 +31,8 @@ const feedbackReports = [
   },
   {
     id: 3,
-    title: '2분기 Feedback Report',
-    type: 'Quarterly Feedback',
+    title: '팀 분기 보고서',
+    type: '팀 분기 보고서',
     date: '2026-07-15',
     author: 'Performance Team',
     period: '2026-04-01 ~ 2026-06-30',
@@ -36,8 +40,8 @@ const feedbackReports = [
   },
   {
     id: 4,
-    title: '1분기 Performance Review',
-    type: 'Quarterly Feedback',
+    title: '팀 연말 보고서',
+    type: '팀 연말 보고서',
     date: '2026-04-10',
     author: 'HR Department',
     period: '2026-01-01 ~ 2026-03-31',
@@ -45,13 +49,18 @@ const feedbackReports = [
   },
 ];
 
-const typeColors = {
-  'Year-End Evaluation': 'bg-purple-100 text-purple-800',
-  'Quarterly Feedback': 'bg-blue-100 text-blue-800',
+const getTypeColor = (type: string) => {
+  if (type.includes('분기')) return 'bg-blue-100 text-blue-800';
+  if (type.includes('연말')) return 'bg-purple-100 text-purple-800';
+  return 'bg-gray-100 text-gray-800'; // 기본값
 };
 
-export function PerformanceFeedbackList() {
+export function PerformanceFeedbackList({ selectedType }: PerformanceFeedbackListProps) {
   const router = useRouter();
+
+  const filteredReports = feedbackReports.filter((report) =>
+    selectedType === 'individual' ? report.type.includes('개인') : report.type.includes('팀')
+  );
 
   const handleReportClick = (reportId: number) => {
     router.push(`/performance/reports/${reportId}`);
@@ -73,7 +82,7 @@ export function PerformanceFeedbackList() {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {feedbackReports.map((report) => (
+          {filteredReports.map((report) => (
             <div
               key={report.id}
               className="p-4 border rounded-lg cursor-pointer hover:shadow-md transition-shadow"
@@ -99,9 +108,7 @@ export function PerformanceFeedbackList() {
                   </div>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <Badge className={typeColors[report.type as keyof typeof typeColors]}>
-                    {report.type}
-                  </Badge>
+                  <Badge className={getTypeColor(report.type)}>{report.type}</Badge>
                   <Button variant="outline" size="sm" onClick={(e) => handleDownload(e, report.id)}>
                     <Download className="mr-2 h-4 w-4" />
                     다운로드

@@ -1,18 +1,18 @@
-import { PerformanceReportDetail } from '@/components/performance/performance-report-detail';
+import { PerformanceReportPage } from '@/components/performance/performance-report-page';
 
-interface PerformanceReportPageProps {
+interface ReportDetailPageProps {
   params: {
     id: string;
   };
 }
 
-export default async function PerformanceReportPage({ params }: PerformanceReportPageProps) {
+export default async function ReportDetailPage({ params }: ReportDetailPageProps) {
   const { id } = await params;
   const reportId = Number.parseInt(id);
 
   return (
-    <div className="p-6">
-      <PerformanceReportDetail reportId={reportId} />
+    <div className="min-h-screen bg-gray-50">
+      <PerformanceReportPage reportId={reportId} />
     </div>
   );
 }
