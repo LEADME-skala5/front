@@ -89,10 +89,8 @@ export function PeerEvaluation({
     let updated: number[];
     if (current.includes(keywordId)) {
       updated = current.filter((id) => id !== keywordId);
-    } else if (current.length < MIN_SELECTED_KEYWORD_COUNT) {
-      updated = [...current, keywordId];
     } else {
-      return;
+      updated = [...current, keywordId];
     }
 
     setKeywords(teammateId, updated);
@@ -100,7 +98,7 @@ export function PeerEvaluation({
   };
 
   const handleNext = async () => {
-    if (currentSelections.length !== MIN_SELECTED_KEYWORD_COUNT) {
+    if (currentSelections.length < MIN_SELECTED_KEYWORD_COUNT) {
       setShowValidation(true);
       return;
     }
@@ -162,9 +160,15 @@ export function PeerEvaluation({
               <h2 className="text-xl">{currentTeammate.name}</h2>
               <p className="text-sm text-muted-foreground">{currentTeammate.project}</p>
             </div>
-            <Badge variant="outline">선택된 키워드 {currentSelections.length}/5</Badge>
+            <div className="text-right">
+              <Badge variant="outline" className="text-xs font-semibold px-2 py-1.5 ">
+                선택된 키워드 {currentSelections.length}
+              </Badge>
+              <p className="text-xs text-muted-foreground mt-2">5개 이상의 키워드를 선택해주세요</p>
+            </div>
           </CardTitle>
         </CardHeader>
+
         <CardContent className="space-y-6">
           {showValidation && (
             <Alert variant="destructive">
@@ -227,7 +231,7 @@ export function PeerEvaluation({
               이전 평가
             </Button>
 
-            <Button onClick={handleNext} disabled={currentSelections.length !== 5}>
+            <Button onClick={handleNext} disabled={currentSelections.length < 5}>
               {currentTeammateIndex === teammates.length - 1 ? '평가 완료' : '다음 평가'}
               <ChevronRight className="ml-2 h-4 w-4" />
             </Button>
