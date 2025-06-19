@@ -112,6 +112,7 @@ const mockMemberTasks: { [key: string]: any } = {
 };
 
 async function createWeeklyEvaluation(selectedScores: { [taskId: number]: number }) {
+  // TODO: 평가자, 피평가자 id 수정 필요함
   const payload = {
     evaluatorUserId: 1,
     evaluateeUserId: 2,
