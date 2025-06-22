@@ -1,0 +1,76 @@
+name: CI
+on:
+  push:
+    branches:
+      - feat/ci-cd # TODO: main으로 변경 필요
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      # 4. Next.js 빌드
+      - name: Build Next.js application
+        run: CI=false npm run build
+
+      # 5. Docker Buildx 설정
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # 6. Docker Hub 로그인
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # 7. Docker 이미지 빌드 및 푸시
+      - name: Build and push Docker image
+        id: docker_build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/leadme5-front:latest
+
+      # 8. Docker Digest 값 추출 (배포 설정에 사용할 이미지 고유 식별자)
+      - name: Get image digest
+        id: get_digest
+        run: echo "IMAGE_DIGEST=${{ steps.docker_build.outputs.digest }}" >> $GITHUB_ENV
+
+      # 9. 인프라 레포지토리 클론
+      - name: Checkout infra-k8s repository
+        uses: actions/checkout@v4
+        with:
+          repository: LEADME-skala5/infra-k8s
+          path: infra-k8s
+          token: ${{ secrets.GIT_PAT }}
+
+      # 10. deployment.yaml 파일 내 이미지 경로를 새 Digest로 치환
+      - name: Update infra-k8s deployment.yaml with new image digest
+        run: |
+          echo "Updating deployment.yaml with new image digest: ${{ env.IMAGE_DIGEST }}"
+          sed -i 's|image: .*/leadme5-front.*|image: ${{ secrets.DOCKERHUB_USERNAME }}/leadme5-front@${{ env.IMAGE_DIGEST }}|g' infra-k8s/front/deployment.yaml
+
+      # 11. 변경사항 커밋 및 푸시
+      - name: Commit and push updated deployment.yaml
+        run: |
+          cd infra-k8s
+          git config user.name "SanghyunLee"
+          git config user.email "lgw9736@naver.com"
+          git add front/deployment.yaml
+          git commit -m "Update front deployment image to ${{ env.IMAGE_DIGEST }}"
+          git push origin main
