@@ -66,6 +66,7 @@ export function PeerEvaluation({
   initialKeywords: PeerEvaluationKeyword[];
   peers: Peer[];
 }) {
+  const router = useRouter();
   const MIN_SELECTED_KEYWORD_COUNT = 5;
   const { user } = useUserStore();
   console.log('현재 로그인된 사용자 ID:', user?.id);
@@ -109,15 +110,25 @@ export function PeerEvaluation({
     if (currentTeammateIndex < teammates.length - 1) {
       setCurrentTeammateIndex(currentTeammateIndex + 1);
       setShowValidation(false);
-    }
-
-    if (currentTeammateIndex === teammates.length - 1) {
+    } else {
       if (!user) {
         alert('로그인이 필요합니다.');
         return;
       }
-      await createPeerKeywordEvaluation(user.id, selectedKeywords);
-      clearKeywords();
+
+      try {
+        const res = await createPeerKeywordEvaluation(user.id, selectedKeywords);
+
+        if (res) {
+          clearKeywords();
+          router.push('/evaluation/success');
+        } else {
+          alert('오류가 발생했습니다. 다시 시도해주세요.');
+        }
+      } catch (error) {
+        console.error('평가 저장 중 오류 발생:', error);
+        alert('서버 오류가 발생했습니다. 관리자에게 문의해주세요.');
+      }
     }
   };
 
