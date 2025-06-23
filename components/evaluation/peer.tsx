@@ -79,7 +79,7 @@ export function PeerEvaluation({
   const teammates: Teammate[] = peers.map((peer) => ({
     id: peer.userId,
     name: peer.name,
-    project: peer.task.map((t) => t.taskName).join(' • '),
+    project: peer.task.map((t) => `- ${t.taskName}`).join('\n'),
   }));
 
   const currentTeammate = teammates[currentTeammateIndex];
@@ -165,7 +165,9 @@ export function PeerEvaluation({
           <CardTitle className="flex items-center justify-between">
             <div>
               <h2 className="text-xl">{currentTeammate.name}</h2>
-              <p className="text-sm text-muted-foreground">{currentTeammate.project}</p>
+              <div className="text-sm text-muted-foreground whitespace-pre-line mt-2">
+                {currentTeammate.project}
+              </div>
             </div>
             <div className="text-right">
               <Badge variant="outline" className="text-xs font-semibold px-2 py-1.5 ">
