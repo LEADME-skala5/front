@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Users, ChevronRight, ChevronLeft } from 'lucide-react';
 import { usePeerKeywordEvaluationStore } from '@/store/peerKeywordEvaluationStore';
+import { useUserStore } from '@/store/useUserStore';
 
 interface Peer {
   userId: number;
@@ -32,11 +33,12 @@ interface Teammate {
   project: string;
 }
 
-const userId = 3;
-
-async function createPeerKeywordEvaluation(selectedKeywords: { [teammateId: number]: number[] }) {
+async function createPeerKeywordEvaluation(
+  evaluatorUserId: number,
+  selectedKeywords: { [teammateId: number]: number[] }
+) {
   const payload = {
-    evaluatorUserId: userId,
+    evaluatorUserId,
     evaluations: Object.entries(selectedKeywords).map(([evaluateeUserId, keywordIds]) => ({
       evaluateeUserId: Number(evaluateeUserId),
       keywordIds,
@@ -65,7 +67,8 @@ export function PeerEvaluation({
   peers: Peer[];
 }) {
   const MIN_SELECTED_KEYWORD_COUNT = 5;
-  const router = useRouter();
+  const { user } = useUserStore();
+  console.log('현재 로그인된 사용자 ID:', user?.id);
   const [currentTeammateIndex, setCurrentTeammateIndex] = useState(0);
   const [showValidation, setShowValidation] = useState(false);
 
@@ -109,7 +112,11 @@ export function PeerEvaluation({
     }
 
     if (currentTeammateIndex === teammates.length - 1) {
-      await createPeerKeywordEvaluation(selectedKeywords);
+      if (!user) {
+        alert('로그인이 필요합니다.');
+        return;
+      }
+      await createPeerKeywordEvaluation(user.id, selectedKeywords);
       clearKeywords();
     }
   };
