@@ -151,23 +151,17 @@ export function PeerEvaluation({
       </div>
 
       {/* Progress indicator */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-6 ml-1">
         <div className="text-sm text-muted-foreground">
           평가 진행 중 {currentTeammateIndex + 1} of {teammates.length}
         </div>
-        <div className="flex gap-2">
-          {teammates.map((_, index) => (
-            <div
-              key={index}
-              className={`w-3 h-3 rounded-full ${
-                index === currentTeammateIndex
-                  ? 'bg-primary'
-                  : index < currentTeammateIndex
-                    ? 'bg-green-500'
-                    : 'bg-gray-200'
-              }`}
-            />
-          ))}
+        <div className="w-1/2 bg-gray-200 h-2 rounded-full mr-4">
+          <div
+            className="h-full bg-primary rounded-full transition-all duration-300"
+            style={{
+              width: `${((currentTeammateIndex + 1) / teammates.length) * 100}%`,
+            }}
+          />
         </div>
       </div>
 
