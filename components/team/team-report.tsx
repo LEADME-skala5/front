@@ -85,7 +85,7 @@ const mockTeamMembers: TeamMember[] = [
 
 type SortMode = 'alphabetical' | 'performance';
 
-export function TeamOverview() {
+export function TeamReport() {
   const router = useRouter();
   const [sortMode, setSortMode] = useState<SortMode>('alphabetical');
   const [teamMembers, setTeamMembers] = useState(mockTeamMembers);
@@ -103,12 +103,7 @@ export function TeamOverview() {
   };
 
   const handleViewReport = (memberId: string) => {
-    // Navigate to individual member report
     router.push(`/team/member/${memberId}`);
-  };
-
-  const handleQualitativeEvaluation = (memberId: string) => {
-    router.push(`/team/member/${memberId}/evaluate`);
   };
 
   const getPerformanceColor = (score: number) => {
@@ -141,7 +136,7 @@ export function TeamOverview() {
             <UserCheck className="h-6 w-6 text-primary" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">팀원 전체보기</h1>
+            <h1 className="text-3xl font-bold text-gray-900">팀원 리포트 보기</h1>
             <p className="text-gray-600">팀원 전체의 성과 관리 리포트를 볼 수 있는 페이지입니다</p>
           </div>
         </div>
@@ -242,24 +237,15 @@ export function TeamOverview() {
                     <p className="text-xs text-gray-500">{member.email}</p>
                   </div>
                 </div>
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleViewReport(member.id)}
-                    className="border-primary/30 text-primary hover:bg-primary hover:text-white"
-                  >
-                    <Eye className="mr-2 h-4 w-4" />
-                    리포트 보기
-                  </Button>
-                  <Button
-                    size="sm"
-                    onClick={() => handleQualitativeEvaluation(member.id)}
-                    className="bg-primary hover:bg-primary/90"
-                  >
-                    정성평가하기
-                  </Button>
-                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleViewReport(member.id)}
+                  className="border-primary/30 text-primary hover:bg-primary hover:text-white bg-white"
+                >
+                  <Eye className="mr-2 h-4 w-4" />
+                  리포트 보기
+                </Button>
               </div>
             </CardHeader>
             <CardContent className="pt-0">
