@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Users, ChevronRight, ChevronLeft } from 'lucide-react';
 import { usePeerKeywordEvaluationStore } from '@/store/peerKeywordEvaluationStore';
+import { useUserStore } from '@/store/useUserStore';
 
 interface Peer {
   userId: number;
@@ -32,11 +33,12 @@ interface Teammate {
   project: string;
 }
 
-const userId = 3;
-
-async function createPeerKeywordEvaluation(selectedKeywords: { [teammateId: number]: number[] }) {
+async function createPeerKeywordEvaluation(
+  evaluatorUserId: number,
+  selectedKeywords: { [teammateId: number]: number[] }
+) {
   const payload = {
-    evaluatorUserId: userId,
+    evaluatorUserId,
     evaluations: Object.entries(selectedKeywords).map(([evaluateeUserId, keywordIds]) => ({
       evaluateeUserId: Number(evaluateeUserId),
       keywordIds,
@@ -64,8 +66,10 @@ export function PeerEvaluation({
   initialKeywords: PeerEvaluationKeyword[];
   peers: Peer[];
 }) {
-  const MIN_SELECTED_KEYWORD_COUNT = 5;
   const router = useRouter();
+  const MIN_SELECTED_KEYWORD_COUNT = 5;
+  const { user } = useUserStore();
+  console.log('현재 로그인된 사용자 ID:', user?.id);
   const [currentTeammateIndex, setCurrentTeammateIndex] = useState(0);
   const [showValidation, setShowValidation] = useState(false);
 
@@ -76,7 +80,7 @@ export function PeerEvaluation({
   const teammates: Teammate[] = peers.map((peer) => ({
     id: peer.userId,
     name: peer.name,
-    project: peer.task.map((t) => t.taskName).join(' • '),
+    project: peer.task.map((t) => `- ${t.taskName}`).join('\n'),
   }));
 
   const currentTeammate = teammates[currentTeammateIndex];
@@ -89,10 +93,8 @@ export function PeerEvaluation({
     let updated: number[];
     if (current.includes(keywordId)) {
       updated = current.filter((id) => id !== keywordId);
-    } else if (current.length < MIN_SELECTED_KEYWORD_COUNT) {
-      updated = [...current, keywordId];
     } else {
-      return;
+      updated = [...current, keywordId];
     }
 
     setKeywords(teammateId, updated);
@@ -100,7 +102,7 @@ export function PeerEvaluation({
   };
 
   const handleNext = async () => {
-    if (currentSelections.length !== MIN_SELECTED_KEYWORD_COUNT) {
+    if (currentSelections.length < MIN_SELECTED_KEYWORD_COUNT) {
       setShowValidation(true);
       return;
     }
@@ -108,11 +110,25 @@ export function PeerEvaluation({
     if (currentTeammateIndex < teammates.length - 1) {
       setCurrentTeammateIndex(currentTeammateIndex + 1);
       setShowValidation(false);
-    }
+    } else {
+      if (!user) {
+        alert('로그인이 필요합니다.');
+        return;
+      }
 
-    if (currentTeammateIndex === teammates.length - 1) {
-      await createPeerKeywordEvaluation(selectedKeywords);
-      clearKeywords();
+      try {
+        const res = await createPeerKeywordEvaluation(user.id, selectedKeywords);
+
+        if (res) {
+          clearKeywords();
+          router.push('/evaluation/success');
+        } else {
+          alert('오류가 발생했습니다. 다시 시도해주세요.');
+        }
+      } catch (error) {
+        console.error('평가 저장 중 오류 발생:', error);
+        alert('서버 오류가 발생했습니다. 관리자에게 문의해주세요.');
+      }
     }
   };
 
@@ -135,23 +151,17 @@ export function PeerEvaluation({
       </div>
 
       {/* Progress indicator */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-6 ml-1">
         <div className="text-sm text-muted-foreground">
           평가 진행 중 {currentTeammateIndex + 1} of {teammates.length}
         </div>
-        <div className="flex gap-2">
-          {teammates.map((_, index) => (
-            <div
-              key={index}
-              className={`w-3 h-3 rounded-full ${
-                index === currentTeammateIndex
-                  ? 'bg-primary'
-                  : index < currentTeammateIndex
-                    ? 'bg-green-500'
-                    : 'bg-gray-200'
-              }`}
-            />
-          ))}
+        <div className="w-1/2 bg-gray-200 h-2 rounded-full mr-4">
+          <div
+            className="h-full bg-primary rounded-full transition-all duration-300"
+            style={{
+              width: `${((currentTeammateIndex + 1) / teammates.length) * 100}%`,
+            }}
+          />
         </div>
       </div>
 
@@ -160,11 +170,19 @@ export function PeerEvaluation({
           <CardTitle className="flex items-center justify-between">
             <div>
               <h2 className="text-xl">{currentTeammate.name}</h2>
-              <p className="text-sm text-muted-foreground">{currentTeammate.project}</p>
+              <div className="text-sm text-muted-foreground whitespace-pre-line mt-2">
+                {currentTeammate.project}
+              </div>
             </div>
-            <Badge variant="outline">선택된 키워드 {currentSelections.length}/5</Badge>
+            <div className="text-right">
+              <Badge variant="outline" className="text-xs font-semibold px-2 py-1.5 ">
+                선택된 키워드 {currentSelections.length}
+              </Badge>
+              <p className="text-xs text-muted-foreground mt-2">5개 이상의 키워드를 선택해주세요</p>
+            </div>
           </CardTitle>
         </CardHeader>
+
         <CardContent className="space-y-6">
           {showValidation && (
             <Alert variant="destructive">
@@ -227,7 +245,7 @@ export function PeerEvaluation({
               이전 평가
             </Button>
 
-            <Button onClick={handleNext} disabled={currentSelections.length !== 5}>
+            <Button onClick={handleNext} disabled={currentSelections.length < 5}>
               {currentTeammateIndex === teammates.length - 1 ? '평가 완료' : '다음 평가'}
               <ChevronRight className="ml-2 h-4 w-4" />
             </Button>
