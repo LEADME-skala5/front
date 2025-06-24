@@ -10,7 +10,8 @@ interface User {
 
 interface UserStore {
   user: User | null;
-  setUser: (user: User) => void;
+  accessToken: string | null;
+  setUser: (user: User, token: string) => void;
   logout: () => void;
 }
 
@@ -18,8 +19,9 @@ export const useUserStore = create<UserStore>()(
   persist(
     (set) => ({
       user: null,
-      setUser: (user) => set({ user }),
-      logout: () => set({ user: null }),
+      accessToken: null,
+      setUser: (user, token) => set({ user, accessToken: token }),
+      logout: () => set({ user: null, accessToken: null }),
     }),
     {
       name: 'user-storage', // localStorage key
