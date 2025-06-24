@@ -70,7 +70,9 @@ export function LoginForm() {
       }
 
       const user = data.user;
-      setUser(user);
+      const accessToken = data.accessToken;
+
+      setUser(user, accessToken);
       localStorage.setItem('user', JSON.stringify(user));
       router.push('/dashboard');
     } catch (error) {
