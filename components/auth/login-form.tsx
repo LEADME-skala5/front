@@ -50,30 +50,31 @@ export function LoginForm() {
     setErrors({});
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
+      const res = await fetch('/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include',
         body: JSON.stringify({
-          employeeNumber: formData.userId,
+          userId: formData.userId,
           password: formData.password,
         }),
+        credentials: 'include',
       });
 
+      const data = await res.json();
+
       if (!res.ok) {
-        const errorData = await res.json();
-        setErrors({ general: errorData.message || '사번 또는 비밀번호가 틀렸습니다.' });
+        setErrors({ general: data.error || '로그인 실패' });
         return;
       }
 
-      const user = await res.json();
-      setUser(user); //Zustand에 유저 정보 저장
+      const user = data.user;
+      setUser(user);
       localStorage.setItem('user', JSON.stringify(user));
       router.push('/dashboard');
     } catch (error) {
-      setErrors({ general: '서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.' });
+      setErrors({ general: '서버 연결 오류' });
     } finally {
       setIsLoading(false);
     }
