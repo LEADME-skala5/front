@@ -26,6 +26,8 @@ RUN pnpm run build
 FROM node:20-alpine AS runner
 WORKDIR /app
 
+RUN npm install -g pnpm
+
 # 필요한 파일만 복사
 COPY --from=builder /app/.next .next
 COPY --from=builder /app/public public
@@ -36,9 +38,7 @@ COPY --from=builder /app/next.config.mjs next.config.mjs
 # 포트 설정
 EXPOSE 3000
 ENV NODE_ENV=production
-# NEXT_PUBLIC_API_URL은 그대로 유지
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
-# JWT_SECRET도 원하면 그대로 ENV로 전달 가능 (서버 사이드 로직에서만 접근 가능!)
 ENV JWT_SECRET=$JWT_SECRET
 
 # 실행
