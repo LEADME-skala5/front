@@ -41,6 +41,7 @@ async function getEvaluationData(organizationId: string): Promise<ApiResponse> {
           Authorization: `Bearer ${accessToken}`,
         },
         cache: 'no-store',
+        credentials: 'include',
       }
     );
     console.log('accessToken', accessToken);
