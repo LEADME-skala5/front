@@ -25,6 +25,9 @@ jobs:
       # 4. Next.js 빌드
       - name: Build Next.js application
         run: CI=false npm run build
+        env:
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
       # 5. Docker Buildx 설정
       - name: Set up Docker Buildx
