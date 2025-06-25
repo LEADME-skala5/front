@@ -18,13 +18,5 @@ export async function loginAction({ userId, password }: { userId: string; passwo
     throw new Error(data.message || '로그인 실패');
   }
 
-  (await cookies()).set('accessToken', data.accessToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    maxAge: 60 * 60,
-    sameSite: 'strict',
-    path: '/',
-  });
-
   redirect('/dashboard');
 }
