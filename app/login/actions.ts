@@ -2,7 +2,6 @@
 'use server';
 
 import { redirect } from 'next/navigation';
-import { cookies } from 'next/headers';
 
 export async function loginAction({ userId, password }: { userId: string; password: string }) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
