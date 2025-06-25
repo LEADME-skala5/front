@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -21,72 +21,29 @@ interface TeamMember {
   role: string;
   email: string;
   projects: string[];
-  avatar?: string;
 }
 
-const mockTeamMembers: TeamMember[] = [
-  {
-    id: '1',
-    name: '김민수',
-    role: 'Senior Developer',
-    email: 'kim.minsu@company.com',
-    projects: ['Project Alpha', 'API Integration'],
-  },
-  {
-    id: '2',
-    name: '이지영',
-    role: 'UI/UX Designer',
-    email: 'lee.jiyoung@company.com',
-    projects: ['Project Alpha', 'Dashboard UI'],
-  },
-  {
-    id: '3',
-    name: '박준호',
-    role: 'Backend Developer',
-    email: 'park.junho@company.com',
-    projects: ['Project Beta', 'API Integration'],
-  },
-  {
-    id: '4',
-    name: '최수진',
-    role: 'Product Manager',
-    email: 'choi.sujin@company.com',
-    projects: ['Project Alpha', 'Dashboard UI'],
-  },
-  {
-    id: '5',
-    name: '정현우',
-    role: 'Frontend Developer',
-    email: 'jung.hyunwoo@company.com',
-    projects: ['Dashboard UI'],
-  },
-  {
-    id: '6',
-    name: '한소영',
-    role: 'QA Engineer',
-    email: 'han.soyoung@company.com',
-    projects: ['Project Alpha', 'Project Beta'],
-  },
-];
+interface TeamEvaluationProps {
+  teamMembers: TeamMember[]; // props로 팀 멤버 데이터 받기
+}
 
 type SortMode = 'alphabetical' | 'role';
 
-export function TeamEvaluation() {
+export function TeamEvaluation({ teamMembers: initialTeamMembers }: TeamEvaluationProps) {
   const router = useRouter();
   const [sortMode, setSortMode] = useState<SortMode>('alphabetical');
-  const [teamMembers, setTeamMembers] = useState(mockTeamMembers);
 
-  const sortTeamMembers = (mode: SortMode) => {
-    const sorted = [...mockTeamMembers].sort((a, b) => {
-      if (mode === 'alphabetical') {
+  // 1. props로 전달된 initialTeamMembers 사용
+  // 2. useMemo로 정렬된 팀원 목록 계산
+  const sortedTeamMembers = useMemo(() => {
+    return [...initialTeamMembers].sort((a, b) => {
+      if (sortMode === 'alphabetical') {
         return a.name.localeCompare(b.name);
       } else {
         return a.role.localeCompare(b.role);
       }
     });
-    setTeamMembers(sorted);
-    setSortMode(mode);
-  };
+  }, [initialTeamMembers, sortMode]);
 
   const handleQualitativeEvaluation = (memberId: string) => {
     router.push(`/team/member/${memberId}/evaluate`);
@@ -99,6 +56,10 @@ export function TeamEvaluation() {
       .join('')
       .toUpperCase();
   };
+
+  // 3. 통계 데이터 계산 (실제 데이터 기반)
+  const totalMembers = initialTeamMembers.length;
+  const uniqueProjects = new Set(initialTeamMembers.flatMap((m) => m.projects)).size;
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
@@ -117,7 +78,7 @@ export function TeamEvaluation() {
         {/* Sort Controls */}
         <div className="flex items-center gap-3">
           <span className="text-sm font-medium text-gray-700">정렬:</span>
-          <Select value={sortMode} onValueChange={(value: SortMode) => sortTeamMembers(value)}>
+          <Select value={sortMode} onValueChange={(value: SortMode) => setSortMode(value)}>
             <SelectTrigger className="w-48 border-primary/20 focus:border-primary">
               <SelectValue />
             </SelectTrigger>
@@ -136,7 +97,7 @@ export function TeamEvaluation() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">평가 대상 팀원</p>
-                <p className="text-2xl font-bold text-primary">{teamMembers.length}</p>
+                <p className="text-2xl font-bold text-primary">{totalMembers}</p>
               </div>
               <UserCheck className="h-8 w-8 text-primary" />
             </div>
@@ -160,9 +121,7 @@ export function TeamEvaluation() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">진행 중인 프로젝트</p>
-                <p className="text-2xl font-bold text-blue-600">
-                  {new Set(teamMembers.flatMap((m) => m.projects)).size}
-                </p>
+                <p className="text-2xl font-bold text-blue-600">{uniqueProjects}</p>
               </div>
               <Briefcase className="h-8 w-8 text-blue-600" />
             </div>
@@ -172,7 +131,7 @@ export function TeamEvaluation() {
 
       {/* Team Members List */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {teamMembers.map((member) => (
+        {sortedTeamMembers.map((member) => (
           <Card
             key={member.id}
             className="border-primary/20 hover:border-primary/40 transition-all duration-200 hover:shadow-lg"
@@ -181,7 +140,7 @@ export function TeamEvaluation() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <Avatar className="h-12 w-12 border-2 border-primary/20">
-                    <AvatarImage src={member.avatar || '/placeholder.svg'} />
+                    {/* <AvatarImage src={member.avatar || '/placeholder.svg'} /> */}
                     <AvatarFallback className="bg-primary/10 text-primary font-semibold">
                       {getInitials(member.name)}
                     </AvatarFallback>

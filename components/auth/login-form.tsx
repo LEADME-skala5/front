@@ -12,10 +12,10 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Eye, EyeOff, LogIn } from 'lucide-react';
 import Link from 'next/link';
 import { useUserStore } from '@/store/useUserStore';
+import { loginAction } from '@/app/login/actions';
 
 export function LoginForm() {
   const setUser = useUserStore((state) => state.setUser);
-  const router = useRouter();
   const [formData, setFormData] = useState({
     userId: '',
     password: '',
@@ -50,33 +50,14 @@ export function LoginForm() {
     setErrors({});
 
     try {
-      const res = await fetch('/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userId: formData.userId,
-          password: formData.password,
-        }),
-        credentials: 'include',
+      //loginAction 호출로 변경
+      await loginAction({
+        userId: formData.userId,
+        password: formData.password,
       });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setErrors({ general: data.error || '로그인 실패' });
-        return;
-      }
-
-      const user = data.user;
-      const accessToken = data.accessToken;
-
-      setUser(user, accessToken);
-      localStorage.setItem('user', JSON.stringify(user));
-      router.push('/dashboard');
-    } catch (error) {
-      setErrors({ general: '서버 연결 오류' });
+      // redirect는 loginAction 내부에서 처리됨
+    } catch (error: any) {
+      setErrors({ general: error.message || '로그인 실패' });
     } finally {
       setIsLoading(false);
     }
