@@ -12,10 +12,10 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Eye, EyeOff, LogIn } from 'lucide-react';
 import Link from 'next/link';
 import { useUserStore } from '@/store/useUserStore';
+import { loginAction } from '@/app/login/actions';
 
 export function LoginForm() {
   const setUser = useUserStore((state) => state.setUser);
-  const router = useRouter();
   const [formData, setFormData] = useState({
     userId: '',
     password: '',
@@ -50,30 +50,14 @@ export function LoginForm() {
     setErrors({});
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({
-          employeeNumber: formData.userId,
-          password: formData.password,
-        }),
+      //loginAction 호출로 변경
+      await loginAction({
+        userId: formData.userId,
+        password: formData.password,
       });
-
-      if (!res.ok) {
-        const errorData = await res.json();
-        setErrors({ general: errorData.message || '사번 또는 비밀번호가 틀렸습니다.' });
-        return;
-      }
-
-      const user = await res.json();
-      setUser(user); //Zustand에 유저 정보 저장
-      localStorage.setItem('user', JSON.stringify(user));
-      router.push('/dashboard');
-    } catch (error) {
-      setErrors({ general: '서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.' });
+      // redirect는 loginAction 내부에서 처리됨
+    } catch (error: any) {
+      setErrors({ general: error.message || '로그인 실패' });
     } finally {
       setIsLoading(false);
     }
