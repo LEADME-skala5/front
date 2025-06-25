@@ -48,6 +48,9 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/leadme5-front:latest
+          build-args: |
+            NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
+            JWT_SECRET=${{ secrets.JWT_SECRET }}
 
       # 8. Docker Digest 값 추출 (배포 설정에 사용할 이미지 고유 식별자)
       - name: Get image digest
