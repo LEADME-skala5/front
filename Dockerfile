@@ -26,6 +26,9 @@ RUN pnpm run build
 FROM node:20-alpine AS runner
 WORKDIR /app
 
+ARG NEXT_PUBLIC_API_URL
+ARG JWT_SECRET
+
 RUN npm install -g pnpm
 
 # 필요한 파일만 복사
