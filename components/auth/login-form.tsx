@@ -12,9 +12,9 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Eye, EyeOff, LogIn } from 'lucide-react';
 import Link from 'next/link';
 import { useUserStore } from '@/store/useUserStore';
-import { loginAction } from '@/app/login/actions';
 
 export function LoginForm() {
+  const router = useRouter();
   const setUser = useUserStore((state) => state.setUser);
   const [formData, setFormData] = useState({
     userId: '',
@@ -50,14 +50,37 @@ export function LoginForm() {
     setErrors({});
 
     try {
-      //loginAction 호출로 변경
-      await loginAction({
-        userId: formData.userId,
-        password: formData.password,
+      // 클라이언트 컴포넌트에서 직접 API 호출
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ employeeNumber: formData.userId, password: formData.password }),
+        credentials: 'include', // 쿠키를 자동으로 저장하기 위해 필요
       });
-      // redirect는 loginAction 내부에서 처리됨
+
+      // 응답 검사
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || '로그인 실패');
+      }
+
+      // 성공 시 사용자 정보 저장
+      const userData = await response.json();
+
+      // Zustand 스토어에 사용자 정보 저장
+      // setUser({
+      //   id: userData.id || userData.userId,
+      //   name: userData.name,
+      //   role: userData.role || userData.position,
+      //   // 기타 필요한 사용자 정보
+      // });
+
+      // 대시보드로 리다이렉트
+      router.push('/dashboard');
+      router.refresh(); // 페이지 갱신 (선택적)
     } catch (error: any) {
       setErrors({ general: error.message || '로그인 실패' });
+      console.error('로그인 오류:', error);
     } finally {
       setIsLoading(false);
     }
