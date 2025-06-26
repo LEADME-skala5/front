@@ -1,12 +1,9 @@
 # 1️⃣ Build Stage
 FROM node:20-alpine AS builder
 
-# Build 시 필요한 변수 정의
 ARG NEXT_PUBLIC_API_URL
-ARG JWT_SECRET
 
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
-ENV JWT_SECRET=$JWT_SECRET
 
 # 작업 디렉토리
 WORKDIR /app
@@ -25,6 +22,8 @@ RUN pnpm run build
 FROM node:20-alpine AS runner
 WORKDIR /app
 
+ARG NEXT_PUBLIC_API_URL
+
 RUN npm install -g pnpm
 
 # 필요한 파일만 복사
@@ -37,7 +36,7 @@ COPY --from=builder /app/next.config.mjs next.config.mjs
 # 포트 설정
 EXPOSE 3000
 ENV NODE_ENV=production
-ENV JWT_SECRET=$JWT_SECRET
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 
 # 실행
 CMD ["pnpm", "start"]
