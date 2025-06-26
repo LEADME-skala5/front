@@ -4,9 +4,9 @@ import { redirect } from 'next/navigation';
 
 export async function loginAction({ userId, password }: { userId: string; password: string }) {
   console.log('🔍 NEXT_PUBLIC_API_URL:', process.env.NEXT_PUBLIC_API_URL);
-  console.log('🔍 요청 URL:', `${process.env.NEXT_PUBLIC_API_URL}/login`);
+  console.log('🔍 요청 URL:', `${process.env.NEXT_PUBLIC_API_URL}/auth/login`);
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ employeeNumber: userId, password }),
