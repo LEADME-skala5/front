@@ -13,10 +13,17 @@ export async function loginAction({ userId, password }: { userId: string; passwo
     credentials: 'include',
   });
 
+  // 🔍 기본 응답 정보
+  console.log('🔍 Status:', res.status, res.statusText);
+  console.log('🔍 Headers:', Object.fromEntries(res.headers.entries()));
+
+  const data = await res.json();
+
   if (!res.ok) {
-    const data = await res.json();
     throw new Error(data.message || '로그인 실패');
   }
+
+  console.log('🔍 Success Response:', data);
 
   redirect('/dashboard');
 }
