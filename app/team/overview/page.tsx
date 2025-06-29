@@ -1,4 +1,3 @@
-// 수정된 page.tsx
 import { TeamEvaluation } from '@/components/team/team-evaluation';
 import { TeamReport } from '@/components/team/team-report';
 import { cookies } from 'next/headers';
@@ -29,10 +28,26 @@ interface PageProps {
   params: { organizationId: string };
 }
 
-async function getEvaluationData(organizationId: string): Promise<ApiResponse> {
+function extractOrganizationIdFromToken(token: string): string | null {
+  try {
+    const payloadBase64 = token.split('.')[1];
+    const decodedPayload = JSON.parse(Buffer.from(payloadBase64, 'base64').toString());
+    return decodedPayload.organizationId?.toString() || null;
+  } catch (e) {
+    console.error('토큰 디코딩 실패:', e);
+    return null;
+  }
+}
+
+async function getEvaluationData() {
   try {
     const cookieStore = await cookies();
     const accessToken = cookieStore.get('accessToken')?.value;
+
+    if (!accessToken) throw new Error('accessToken 누락');
+
+    const organizationId = extractOrganizationIdFromToken(accessToken);
+    if (!organizationId) throw new Error('organizationId 추출 실패');
 
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/quantitative-evaluation/${organizationId}`,
@@ -54,9 +69,8 @@ async function getEvaluationData(organizationId: string): Promise<ApiResponse> {
   }
 }
 
-export default async function Page({ params }: PageProps) {
-  const { organizationId } = params;
-  const { evaluated, users } = await getEvaluationData(organizationId);
+export default async function Page() {
+  const { evaluated, users } = await getEvaluationData();
 
   // API 응답 → 컴포넌트 데이터 형식 변환
   const teamMembers = users.map((user) => ({
