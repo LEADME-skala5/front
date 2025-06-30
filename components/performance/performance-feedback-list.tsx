@@ -1,75 +1,106 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { FileText, Calendar, User, Download } from 'lucide-react';
 
-interface PerformanceFeedbackListProps {
-  selectedType: 'individual' | 'team';
+interface Report {
+  id: string;
+  type: string;
+  evaluatedYear: number;
+  evaluatedQuarter: number | null;
+  createdAt: string;
+  title: string;
+  startDate: string;
+  endDate: string;
+  user: {
+    userId: number;
+    name: string;
+    department: string;
+  };
 }
 
-const feedbackReports = [
-  {
-    id: 1,
-    title: '개인 분기 보고서',
-    type: '개인 분기 보고서',
-    date: '2026-01-15',
-    author: 'Virtual 홍길동 & X.Cel',
-    period: '2026-01-01 ~ 2026-11-30',
-    status: 'completed',
-  },
-  {
-    id: 2,
-    title: '개인 연말 보고서',
-    type: '개인 연말 보고서',
-    date: '2026-10-01',
-    author: 'Virtual 홍길동 & X.Cel',
-    period: '2026-07-01 ~ 2026-09-26 (26년 3분기)',
-    status: 'completed',
-  },
-  {
-    id: 3,
-    title: '팀 분기 보고서',
-    type: '팀 분기 보고서',
-    date: '2026-07-15',
-    author: 'Performance Team',
-    period: '2026-04-01 ~ 2026-06-30',
-    status: 'completed',
-  },
-  {
-    id: 4,
-    title: '팀 연말 보고서',
-    type: '팀 연말 보고서',
-    date: '2026-04-10',
-    author: 'HR Department',
-    period: '2026-01-01 ~ 2026-03-31',
-    status: 'completed',
-  },
-];
+interface ReportsResponse {
+  personalReports: Report[];
+  teamReports: Report[];
+}
 
-const getTypeColor = (type: string) => {
-  if (type.includes('분기')) return 'bg-blue-100 text-blue-800';
-  if (type.includes('연말')) return 'bg-purple-100 text-purple-800';
-  return 'bg-gray-100 text-gray-800'; // 기본값
-};
+interface PerformanceFeedbackListProps {
+  selectedType: 'individual' | 'team';
+  userId: number;
+}
 
-export function PerformanceFeedbackList({ selectedType }: PerformanceFeedbackListProps) {
+export function PerformanceFeedbackList({ selectedType, userId }: PerformanceFeedbackListProps) {
   const router = useRouter();
+  const [reports, setReports] = useState<Report[]>([]);
 
-  const filteredReports = feedbackReports.filter((report) =>
-    selectedType === 'individual' ? report.type.includes('개인') : report.type.includes('팀')
-  );
+  useEffect(() => {
+    async function fetchReports(userId: number): Promise<ReportsResponse> {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/${userId}/reports`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-  const handleReportClick = (reportId: number) => {
+      if (!res.ok) {
+        throw new Error('리포트 데이터를 불러오는데 실패했습니다.');
+      }
+
+      return res.json();
+    }
+
+    async function loadReports() {
+      try {
+        const data = await fetchReports(userId);
+        const selected = selectedType === 'individual' ? data.personalReports : data.teamReports;
+        setReports(selected);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    loadReports();
+  }, [selectedType, userId]);
+
+  const handleReportClick = (reportId: string) => {
     router.push(`/performance/reports/${reportId}`);
   };
 
-  const handleDownload = (e: React.MouseEvent, reportId: number) => {
+  const handleDownload = (e: React.MouseEvent, reportId: string) => {
     e.stopPropagation();
-    // Simulate download functionality
     console.log(`Downloading report ${reportId}`);
+  };
+
+  const getTypeColor = (type: string) => {
+    if (type.includes('quarter')) return 'bg-blue-100 text-blue-800';
+    if (type.includes('annual')) return 'bg-purple-100 text-purple-800';
+    return 'bg-gray-100 text-gray-800';
+  };
+
+  const getTypeHoverColor = (type: string) => {
+    if (type.includes('quarter')) return 'hover:bg-blue-200 hover:text-blue-900';
+    if (type.includes('annual')) return 'hover:bg-purple-200 hover:text-purple-900';
+    return 'hover:bg-gray-200 hover:text-gray-900';
+  };
+
+  const getTypeLabel = (type: string) => {
+    switch (type) {
+      case 'personal-quarter':
+        return '개인 분기';
+      case 'personal-annual':
+        return '개인 연말';
+      case 'team-quarter':
+        return '팀 분기';
+      case 'team-annual':
+        return '팀 연말';
+      default:
+        return '알 수 없음';
+    }
   };
 
   return (
@@ -82,7 +113,7 @@ export function PerformanceFeedbackList({ selectedType }: PerformanceFeedbackLis
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {filteredReports.map((report) => (
+          {reports.map((report) => (
             <div
               key={report.id}
               className="p-4 border rounded-lg cursor-pointer hover:shadow-md transition-shadow"
@@ -99,16 +130,23 @@ export function PerformanceFeedbackList({ selectedType }: PerformanceFeedbackLis
                     </h3>
                     <div className="flex items-center space-x-2 mt-1 text-sm text-muted-foreground">
                       <Calendar className="h-4 w-4" />
-                      <span>{report.date}</span>
+                      <span>{report.createdAt}</span>
                       <span>•</span>
                       <User className="h-4 w-4" />
-                      <span>{report.author}</span>
+                      <span>{report.user.name}</span>
                     </div>
-                    <p className="text-sm text-muted-foreground mt-1">기간: {report.period}</p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      기간:{report.startDate} ~ {report.endDate}
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <Badge className={getTypeColor(report.type)}>{report.type}</Badge>
+                  <Badge
+                    className={`${getTypeColor(report.type)} ${getTypeHoverColor(report.type)}`}
+                  >
+                    {getTypeLabel(report.type)}
+                  </Badge>
+
                   <Button variant="outline" size="sm" onClick={(e) => handleDownload(e, report.id)}>
                     <Download className="mr-2 h-4 w-4" />
                     다운로드
