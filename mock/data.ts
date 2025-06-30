@@ -11,6 +11,15 @@ export const mockIndividualQuarter = [
     },
     finalScore: 4.5,
     compareText: '상위 30%',
+    rank: {
+      job_name: 'AI 인프라 운영',
+      job_years: 0,
+      same_job_rank: 1,
+      same_job_user_count: 6,
+      organization_rank: 1,
+      organization_user_count: 40,
+      organization_id: 1,
+    },
     teamGoals: [
       {
         goalName: 'Cloud Professional 업무 진행 통한 BR/UR 개선',

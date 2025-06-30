@@ -56,7 +56,7 @@ export function IndividualQuarterReportDetail({ reportData }: IndividualQuarterR
       </div>
 
       {/* Report Header */}
-      <Card className="border-primary/20">
+      <Card className="border-primary/20 mr-7">
         <CardHeader>
           <div className="flex items-center gap-4">
             <Avatar className="h-20 w-20 border-4 border-primary/20">
@@ -75,7 +75,7 @@ export function IndividualQuarterReportDetail({ reportData }: IndividualQuarterR
               </div>
             </div>
             <div className="text-right">
-              <div className="flex items-center gap-2 mb-2">
+              <div className="flex items-center mb-2 justify-end">
                 <Star className="h-5 w-5 text-primary" />
                 <span className="text-2xl font-bold text-primary">
                   {reportData.finalScore.toFixed(1)}
@@ -84,6 +84,28 @@ export function IndividualQuarterReportDetail({ reportData }: IndividualQuarterR
               </div>
               {/* <p className="text-sm text-gray-600">분기 점수</p> */}
               <p className="text-black font-bold leading-relaxed mb-2">{reportData.compareText}</p>
+              <div className="flex mt-2 justify-end">
+                {/* 직무 순위 */}
+                <div className="flex flex-col gap-1 text-sm text-gray-700">
+                  <div className="flex items-center gap-2 justify-end">
+                    <span>
+                      {reportData.rank.job_name} {reportData.rank.job_years}년차 중{' '}
+                      <span className="text-primary font-bold text-base">
+                        {reportData.rank.same_job_rank}등
+                      </span>
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-end ml-2">
+                    <span>
+                      {reportData.employee.department} 중{' '}
+                      <span className="text-primary font-bold text-base">
+                        {reportData.rank.organization_rank}등
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </CardHeader>
