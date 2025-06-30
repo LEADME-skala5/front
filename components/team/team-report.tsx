@@ -172,7 +172,7 @@ export function TeamReport({ teamMembers }: TeamReportProps) {
 
       {/* Team Members List */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {teamMembers.map((member) => (
+        {sortedTeamMembers.map((member) => (
           <Card
             key={member.id}
             className="border-primary/20 hover:border-primary/40 transition-all duration-200 hover:shadow-lg"
