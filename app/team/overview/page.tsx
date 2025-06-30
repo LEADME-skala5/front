@@ -73,15 +73,25 @@ export default async function Page() {
   const { evaluated, users } = await getEvaluationData();
 
   // API 응답 → 컴포넌트 데이터 형식 변환
-  const teamMembers = users.map((user) => ({
-    id: user.userId.toString(),
-    name: user.name,
-    role: user.position,
-    email: user.email,
-    projects: user.tasks.map((task) => task.name),
-    performanceScore: user.quarterScore || 0, // null 대체값
-    lastEvaluationDate: user.lastUpdated || '', // null 대체값
-  }));
+  const teamMembers = users.map(
+    (user: {
+      userId: { toString: () => any };
+      name: any;
+      position: any;
+      email: any;
+      tasks: any[];
+      quarterScore: any;
+      lastUpdated: any;
+    }) => ({
+      id: user.userId.toString(),
+      name: user.name,
+      role: user.position,
+      email: user.email,
+      projects: user.tasks.map((task) => task.name),
+      performanceScore: user.quarterScore || 0, // null 대체값
+      lastEvaluationDate: user.lastUpdated || '', // null 대체값
+    })
+  );
 
   return (
     <div className="p-6">
