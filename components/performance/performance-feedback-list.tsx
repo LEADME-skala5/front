@@ -29,7 +29,7 @@ interface ReportsResponse {
 }
 
 interface PerformanceFeedbackListProps {
-  selectedType: 'individual' | 'team';
+  selectedType: 'personal' | 'team';
   userId: number;
 }
 
@@ -57,7 +57,7 @@ export function PerformanceFeedbackList({ selectedType, userId }: PerformanceFee
     async function loadReports() {
       try {
         const data = await fetchReports(userId);
-        const selected = selectedType === 'individual' ? data.personalReports : data.teamReports;
+        const selected = selectedType === 'personal' ? data.personalReports : data.teamReports;
         setReports(selected);
       } catch (error) {
         console.error(error);
@@ -67,8 +67,8 @@ export function PerformanceFeedbackList({ selectedType, userId }: PerformanceFee
     loadReports();
   }, [selectedType, userId]);
 
-  const handleReportClick = (reportId: string) => {
-    router.push(`/performance/reports/${reportId}`);
+  const handleReportClick = (reportId: string, type: string) => {
+    router.push(`/performance/reports/${reportId}?type=${type}`);
   };
 
   const handleDownload = (e: React.MouseEvent, reportId: string) => {
@@ -117,7 +117,7 @@ export function PerformanceFeedbackList({ selectedType, userId }: PerformanceFee
             <div
               key={report.id}
               className="p-4 border rounded-lg cursor-pointer hover:shadow-md transition-shadow"
-              onClick={() => handleReportClick(report.id)}
+              onClick={() => handleReportClick(report.id, report.type)}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">

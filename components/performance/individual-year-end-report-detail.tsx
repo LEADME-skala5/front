@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import ReactMarkdown from 'react-markdown';
 import {
   ArrowLeft,
   Download,
@@ -58,16 +59,17 @@ export function IndividualYearEndReportDetail({ reportData }: IndividualYearEndR
             <Avatar className="h-20 w-20 border-4 border-primary/20">
               <AvatarImage src="/.svg" />
               <AvatarFallback className="bg-primary/10 text-primary font-bold text-xl">
-                {getInitials(reportData.employee.name)}
+                {getInitials(reportData.user.name)}
               </AvatarFallback>
             </Avatar>
             <div className="flex-1">
               <CardTitle className="text-2xl text-gray-900">{reportData.title}</CardTitle>
+              <span>{reportData.user.name}</span>
               <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
-                <span>{reportData.employee.department}</span>
-                <span>{reportData.employee.job}</span>
+                <span>{reportData.user.department}</span>
+                <span>{reportData.user.job}</span>
                 <span>
-                  {reportData.employee.startDate} ~ {reportData.employee.endDate}
+                  {reportData.startDate} ~ {reportData.endDate}
                 </span>
               </div>
             </div>
@@ -233,7 +235,10 @@ export function IndividualYearEndReportDetail({ reportData }: IndividualYearEndR
         </CardHeader>
         <CardContent>
           <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
-            <p className="text-gray-700 leading-relaxed">{reportData.finalComment}</p>
+            <div className="text-gray-700 leading-relaxed">
+              {' '}
+              <ReactMarkdown>{reportData.finalComment}</ReactMarkdown>
+            </div>
           </div>
         </CardContent>
       </Card>

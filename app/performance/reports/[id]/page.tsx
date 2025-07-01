@@ -8,11 +8,10 @@ interface ReportDetailPageProps {
 
 export default async function ReportDetailPage({ params }: ReportDetailPageProps) {
   const { id } = await params;
-  const reportId = Number.parseInt(id);
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <PerformanceReportPage reportId={reportId} />
+      <PerformanceReportPage reportId={id} />
     </div>
   );
 }
