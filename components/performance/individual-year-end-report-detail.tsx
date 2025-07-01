@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import ReactMarkdown from 'react-markdown';
 import {
   ArrowLeft,
   Download,
@@ -58,16 +59,17 @@ export function IndividualYearEndReportDetail({ reportData }: IndividualYearEndR
             <Avatar className="h-20 w-20 border-4 border-primary/20">
               <AvatarImage src="/.svg" />
               <AvatarFallback className="bg-primary/10 text-primary font-bold text-xl">
-                {getInitials(reportData.employee.name)}
+                {getInitials(reportData.user.name)}
               </AvatarFallback>
             </Avatar>
             <div className="flex-1">
               <CardTitle className="text-2xl text-gray-900">{reportData.title}</CardTitle>
+              <span>{reportData.user.name}</span>
               <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
-                <span>{reportData.employee.department}</span>
-                <span>{reportData.employee.job}</span>
+                <span>{reportData.user.department}</span>
+                <span>{reportData.user.job}</span>
                 <span>
-                  {reportData.employee.startDate} ~ {reportData.employee.endDate}
+                  {reportData.startDate} ~ {reportData.endDate}
                 </span>
               </div>
             </div>
@@ -85,8 +87,7 @@ export function IndividualYearEndReportDetail({ reportData }: IndividualYearEndR
         </CardHeader>
       </Card>
 
-      {/* Performance Metrics */}
-      {reportData.skValues && (
+      {reportData.valueScore && (
         <Card className="border-primary/20">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -96,43 +97,26 @@ export function IndividualYearEndReportDetail({ reportData }: IndividualYearEndR
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {reportData.skValues.map((item: any, index: number) => (
-                <div key={index}>
-                  {item.category === '4P' && item.values ? (
-                    <div className="space-y-3">
-                      <h3 className="font-semibold text-gray-900 text-lg">{item.category}</h3>
-                      {item.values.map((value: any, valueIndex: number) => (
-                        <div
-                          key={valueIndex}
-                          className="p-4 bg-primary/5 rounded-lg border border-primary/20"
-                        >
-                          <div className="flex items-center justify-between mb-2">
-                            <h4 className="font-semibold text-gray-900">{value.category}</h4>
-                            <div className="flex items-center gap-1">
-                              <Star className="h-4 w-4 text-primary" />
-                              <span className="font-bold text-primary">
-                                {value.score.toFixed(1)}
-                              </span>
-                            </div>
-                          </div>
-                          <p className="text-sm text-gray-700">{value.summary}</p>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-semibold text-gray-900">{item.category}</h4>
-                        {item.score && (
-                          <div className="flex items-center gap-1">
-                            <Star className="h-4 w-4 text-primary" />
-                            <span className="font-bold text-primary">{item.score.toFixed(1)}</span>
-                          </div>
-                        )}
+              {reportData.valueScore.map((item: any, index: number) => (
+                <div key={index} className="p-4 bg-primary/5 rounded-lg border border-primary/20">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="font-bold text-gray-900 capitalize">
+                      {item.category === 'weekly'
+                        ? '정량 지표'
+                        : item.category === 'qualitative'
+                          ? '정성 평가'
+                          : item.category === 'peer-review'
+                            ? '동료 피드백'
+                            : item.category}
+                    </h4>
+                    {item.score && (
+                      <div className="flex items-center gap-1">
+                        <Star className="h-4 w-4 text-primary" />
+                        <span className="font-bold text-primary">{item.score.toFixed(1)}</span>
                       </div>
-                      {item.summary && <p className="text-sm text-gray-700">{item.summary}</p>}
-                    </div>
-                  )}
+                    )}
+                  </div>
+                  {item.summary && <p className="text-sm text-gray-700">{item.summary}</p>}
                 </div>
               ))}
             </div>
@@ -233,7 +217,10 @@ export function IndividualYearEndReportDetail({ reportData }: IndividualYearEndR
         </CardHeader>
         <CardContent>
           <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
-            <p className="text-gray-700 leading-relaxed">{reportData.finalComment}</p>
+            <div className="text-gray-700 leading-relaxed">
+              {' '}
+              <ReactMarkdown>{reportData.finalComment}</ReactMarkdown>
+            </div>
           </div>
         </CardContent>
       </Card>

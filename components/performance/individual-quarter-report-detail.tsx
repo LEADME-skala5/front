@@ -62,15 +62,17 @@ export function IndividualQuarterReportDetail({ reportData }: IndividualQuarterR
             <Avatar className="h-20 w-20 border-4 border-primary/20">
               <AvatarImage src="/.svg" />
               <AvatarFallback className="bg-primary/10 text-primary font-bold text-xl">
-                {getInitials(reportData.employee.name)}
+                {getInitials(reportData.user.name)}
               </AvatarFallback>
             </Avatar>
             <div className="flex-1">
               <CardTitle className="text-2xl text-gray-900">{reportData.title}</CardTitle>
+              <span>{reportData.user.name}</span>
               <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
-                <span>{reportData.employee.department}</span>
+                <span>{reportData.user.department}</span>
+
                 <span>
-                  {reportData.employee.startDate} ~ {reportData.employee.endDate}
+                  {reportData.startDate} ~ {reportData.endDate}
                 </span>
               </div>
             </div>
@@ -98,7 +100,7 @@ export function IndividualQuarterReportDetail({ reportData }: IndividualQuarterR
 
                   <div className="flex items-center justify-end ml-2">
                     <span>
-                      {reportData.employee.department} 중{' '}
+                      {reportData.user.department} 중{' '}
                       <span className="text-primary font-bold text-base">
                         {reportData.rank.organization_rank}등
                       </span>
@@ -252,7 +254,10 @@ export function IndividualQuarterReportDetail({ reportData }: IndividualQuarterR
                   {feedback.type === 'positive' ? '강점' : '보완할 점'}
                 </h4>
                 <div className="flex flex-wrap gap-2">
-                  {feedback.keywords.map((keyword: string, keyIndex: number) => (
+                  {(feedback.type === 'positive'
+                    ? feedback.keywords
+                    : feedback.keywords.slice(0, Math.ceil(feedback.keywords.length / 2))
+                  ).map((keyword: any, keyIndex: number) => (
                     <Badge
                       key={keyIndex}
                       variant="secondary"
@@ -262,7 +267,7 @@ export function IndividualQuarterReportDetail({ reportData }: IndividualQuarterR
                           : 'bg-orange-100 text-orange-800 hover:bg-orange-200'
                       }
                     >
-                      {keyword}
+                      {keyword.keyword}
                     </Badge>
                   ))}
                 </div>
