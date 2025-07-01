@@ -8,7 +8,6 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Users, ChevronRight, ChevronLeft } from 'lucide-react';
 import { usePeerKeywordEvaluationStore } from '@/store/peerKeywordEvaluationStore';
-import { useUserStore } from '@/store/useUserStore';
 
 interface Peer {
   userId: number;
@@ -62,14 +61,14 @@ async function createPeerKeywordEvaluation(
 export function PeerEvaluation({
   initialKeywords,
   peers,
+  userId,
 }: {
   initialKeywords: PeerEvaluationKeyword[];
   peers: Peer[];
+  userId: number;
 }) {
   const router = useRouter();
   const MIN_SELECTED_KEYWORD_COUNT = 5;
-  const { user } = useUserStore();
-  console.log('현재 로그인된 사용자 ID:', user?.id);
   const [currentTeammateIndex, setCurrentTeammateIndex] = useState(0);
   const [showValidation, setShowValidation] = useState(false);
 
@@ -111,13 +110,13 @@ export function PeerEvaluation({
       setCurrentTeammateIndex(currentTeammateIndex + 1);
       setShowValidation(false);
     } else {
-      if (!user) {
+      if (!userId) {
         alert('로그인이 필요합니다.');
         return;
       }
 
       try {
-        const res = await createPeerKeywordEvaluation(user.id, selectedKeywords);
+        const res = await createPeerKeywordEvaluation(userId, selectedKeywords);
 
         if (res) {
           clearKeywords();
