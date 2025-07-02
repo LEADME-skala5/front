@@ -24,7 +24,7 @@ export default async function PerformancePage() {
   return (
     <div className="p-6 space-y-6">
       <PerformanceHeader />
-      <PerformanceMetrics />
+      {/* <PerformanceMetrics /> */}
       <ToggleGroupClient userId={userId} />
     </div>
   );

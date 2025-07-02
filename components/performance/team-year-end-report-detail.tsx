@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import ReactMarkdown from 'react-markdown';
 import {
   ArrowLeft,
   Download,
@@ -20,6 +21,12 @@ import {
 interface TeamYearEndReportDetailProps {
   reportData: any;
 }
+
+const scoreLabelMap: Record<string, string> = {
+  Quantitative: '실적평가',
+  Qualitative: '태도평가',
+  Peer: '동료평가',
+};
 
 export function TeamYearEndReportDetail({ reportData }: TeamYearEndReportDetailProps) {
   const router = useRouter();
@@ -55,10 +62,11 @@ export function TeamYearEndReportDetail({ reportData }: TeamYearEndReportDetailP
             </Avatar>
             <div className="flex-1">
               <CardTitle className="text-2xl text-gray-900">{reportData.title}</CardTitle>
+              <span>{reportData.user.name} 팀장님</span>
               <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
-                <span>{reportData.employee.department}</span>
+                <span>{reportData.user.department}</span>
                 <span>
-                  {reportData.employee.startDate} ~ {reportData.employee.endDate}
+                  {reportData.startDate} ~ {reportData.endDate}
                 </span>
               </div>
             </div>
@@ -80,37 +88,32 @@ export function TeamYearEndReportDetail({ reportData }: TeamYearEndReportDetailP
               <div key={index} className="p-4 bg-gray-50 rounded-lg border">
                 <div className="flex items-center justify-between mb-3">
                   <h4 className="font-medium text-gray-900">{goal.goalName}</h4>
-                  <div className="flex items-center gap-2">
-                    <Badge
-                      variant="outline"
-                      className={`${
-                        goal.comparison === '우수'
-                          ? 'bg-green-100 text-green-800 border-green-300'
-                          : goal.comparison === '상위권'
-                            ? 'bg-blue-100 text-blue-800 border-blue-300'
-                            : 'bg-yellow-100 text-yellow-800 border-yellow-300'
-                      }`}
-                    >
-                      {goal.achievement} ({goal.comparison})
-                    </Badge>
-                  </div>
+                  <Badge
+                    variant="outline"
+                    className={`text-sm ${
+                      goal.grade === 'A'
+                        ? 'bg-green-100 text-green-800 border-green-300'
+                        : goal.grade === 'B'
+                          ? 'bg-yellow-100 text-yellow-800 border-yellow-300'
+                          : 'bg-red-100 text-red-800 border-red-300'
+                    }`}
+                  >
+                    {goal.grade}
+                  </Badge>
                 </div>
+
                 <div className="text-sm text-gray-600">
-                  {Array.isArray(goal.content) ? (
-                    goal.content.length > 0 ? (
-                      <ul className="space-y-1">
-                        {goal.content.map((item: string, itemIndex: number) => (
-                          <li key={itemIndex} className="flex items-start gap-2">
-                            <div className="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 flex-shrink-0"></div>
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <span className="text-gray-400 italic">-</span>
-                    )
+                  {Array.isArray(goal.content) && goal.content.length > 0 ? (
+                    <ul className="space-y-1">
+                      {goal.content.map((item: string, itemIndex: number) => (
+                        <li key={itemIndex} className="flex items-start gap-2">
+                          <div className="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 flex-shrink-0"></div>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
                   ) : (
-                    <span>{goal.content}</span>
+                    <span className="text-gray-400 italic">-</span>
                   )}
                 </div>
               </div>
@@ -120,7 +123,7 @@ export function TeamYearEndReportDetail({ reportData }: TeamYearEndReportDetailP
       </Card>
 
       {/* Key Team Achievements */}
-      <Card className="border-primary/20">
+      {/* <Card className="border-primary/20">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Award className="h-5 w-5 text-primary" />
@@ -137,7 +140,7 @@ export function TeamYearEndReportDetail({ reportData }: TeamYearEndReportDetailP
             ))}
           </div>
         </CardContent>
-      </Card>
+      </Card> */}
 
       {/* Annual Member Analysis */}
       <Card className="border-primary/20">
@@ -160,7 +163,6 @@ export function TeamYearEndReportDetail({ reportData }: TeamYearEndReportDetailP
                     </Avatar>
                     <div>
                       <h4 className="font-medium text-gray-900">{member.name}</h4>
-                      <p className="text-sm text-gray-500">{member.overallRank}</p>
                     </div>
                   </div>
                   <div className="text-right">
@@ -172,19 +174,15 @@ export function TeamYearEndReportDetail({ reportData }: TeamYearEndReportDetailP
                   </div>
                 </div>
 
-                {/* 4P Scores */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
-                  {Object.entries(member['4P']).map(([key, value]) => (
+                {/* 점수 상세 */}
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-3">
+                  {(Object.entries(member.scores) as [string, number][]).map(([key, value]) => (
                     <div key={key} className="text-center p-2 bg-white rounded border">
-                      <p className="text-xs text-gray-500">{key}</p>
-                      <p className="font-semibold text-primary">{value as string}</p>
+                      <p className="text-xs text-gray-500">{scoreLabelMap[key] || key}</p>
+                      <p className="font-semibold text-primary">{value.toFixed(1)} / 5</p>
                     </div>
                   ))}
                 </div>
-
-                {member.specialNote && (
-                  <p className="text-sm text-gray-700 italic">{member.specialNote}</p>
-                )}
               </div>
             ))}
           </div>
@@ -203,8 +201,24 @@ export function TeamYearEndReportDetail({ reportData }: TeamYearEndReportDetailP
           <div className="space-y-4">
             {reportData.hrSuggestions.map((suggestion: any, index: number) => (
               <div key={index} className="p-3 bg-gray-50 rounded-lg border">
-                <h4 className="font-medium text-gray-900 mb-1">{suggestion.target}</h4>
-                <p className="text-sm text-gray-700">{suggestion.recommendation}</p>
+                <h4 className="font-medium text-gray-900 mb-2">{suggestion.target}</h4>
+                <ReactMarkdown
+                  components={{
+                    p: ({ children }) => (
+                      <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
+                        {children}
+                      </p>
+                    ),
+                    strong: ({ children }) => (
+                      <strong className="font-semibold text-black">{children}</strong>
+                    ),
+                    li: ({ children }) => (
+                      <li className="list-disc ml-5 text-sm text-gray-700">{children}</li>
+                    ),
+                  }}
+                >
+                  {suggestion.recommendation}
+                </ReactMarkdown>
               </div>
             ))}
           </div>

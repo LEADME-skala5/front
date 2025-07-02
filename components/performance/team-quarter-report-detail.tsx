@@ -16,6 +16,7 @@ import {
   MessageSquare,
   BarChart3,
   Award,
+  Star,
 } from 'lucide-react';
 
 interface TeamQuarterReportDetailProps {
@@ -44,7 +45,6 @@ export function TeamQuarterReportDetail({ reportData }: TeamQuarterReportDetailP
           </Button>
         </div>
       </div>
-
       {/* Report Header */}
       <Card className="border-primary/20">
         <CardHeader>
@@ -56,10 +56,11 @@ export function TeamQuarterReportDetail({ reportData }: TeamQuarterReportDetailP
             </Avatar>
             <div className="flex-1">
               <CardTitle className="text-2xl text-gray-900">{reportData.title}</CardTitle>
+              <span>{reportData.user.name} 팀장님</span>
               <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
-                <span>{reportData.employee.department}</span>
+                <span>{reportData.user.department}</span>
                 <span>
-                  {reportData.employee.startDate} ~ {reportData.employee.endDate}
+                  {reportData.startDate} ~ {reportData.endDate}
                 </span>
               </div>
             </div>
@@ -67,7 +68,7 @@ export function TeamQuarterReportDetail({ reportData }: TeamQuarterReportDetailP
         </CardHeader>
       </Card>
 
-      {/* Team Goals Achievement */}
+      {/* Team Goals Achievement*/}
       <Card className="border-primary/20">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -77,52 +78,44 @@ export function TeamQuarterReportDetail({ reportData }: TeamQuarterReportDetailP
         <CardContent>
           <div className="space-y-4">
             {reportData.teamGoals.map((goal: any, index: number) => (
-              <div key={index} className="p-4 bg-gray-50 rounded-lg border">
+              <div key={index} className="p-4 bg-primary/5 rounded-lg border">
                 <div className="flex items-center justify-between mb-3">
                   <h4 className="font-medium text-gray-900">{goal.goalName}</h4>
-                  <div className="flex items-center gap-2">
-                    <Badge
-                      variant="outline"
-                      className={`${
-                        goal.comparison === '우수'
-                          ? 'bg-green-100 text-green-800 border-green-300'
-                          : goal.comparison === '상위권'
-                            ? 'bg-blue-100 text-blue-800 border-blue-300'
-                            : 'bg-yellow-100 text-yellow-800 border-yellow-300'
-                      }`}
-                    >
-                      {goal.achievement} ({goal.comparison})
-                    </Badge>
-                  </div>
+                  <Badge
+                    variant="outline"
+                    className={` text-sm mr-5 ${
+                      goal.grade === 'A'
+                        ? 'bg-green-100 text-green-800 border-green-300'
+                        : goal.grade === 'B'
+                          ? 'bg-yellow-100 text-yellow-800 border-yellow-300'
+                          : 'bg-gray-100 text-gray-700 border-gray-300'
+                    }`}
+                  >
+                    {goal.grade}
+                  </Badge>
                 </div>
+
                 <div className="text-sm text-gray-600">
-                  {Array.isArray(goal.content) ? (
-                    goal.content.length > 0 ? (
-                      <ul className="space-y-1">
-                        {goal.content.map((item: string, itemIndex: number) => (
-                          <li key={itemIndex} className="flex items-start gap-2">
-                            <div className="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 flex-shrink-0"></div>
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <span className="text-gray-400 italic">-</span>
-                    )
+                  {Array.isArray(goal.content) && goal.content.length > 0 ? (
+                    <ul className="space-y-1">
+                      {goal.content.map((item: string, itemIndex: number) => (
+                        <li key={itemIndex} className="flex items-start gap-2">
+                          <div className="w-1.5 h-1.5 bg-neutral-700 rounded-full mt-2 flex-shrink-0"></div>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
                   ) : (
-                    <span>{goal.content}</span>
+                    <span className="text-gray-400 italic">-</span>
                   )}
                 </div>
-                {goal.teamAvg && (
-                  <div className="mt-2 text-xs text-gray-500">팀 평균: {goal.teamAvg}</div>
-                )}
               </div>
             ))}
           </div>
         </CardContent>
       </Card>
 
-      {/* Key Team Achievements */}
+      {/* Key Team Achievements
       <Card className="border-primary/20">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -140,14 +133,14 @@ export function TeamQuarterReportDetail({ reportData }: TeamQuarterReportDetailP
             ))}
           </div>
         </CardContent>
-      </Card>
+      </Card> */}
 
       {/* Member Analysis */}
       <Card className="border-primary/20">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Users className="h-5 w-5 text-primary" />
-            팀원별 분석 (40명)
+            팀원별 분석
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -156,8 +149,8 @@ export function TeamQuarterReportDetail({ reportData }: TeamQuarterReportDetailP
             <div className="grid grid-cols-12 gap-4 p-3 bg-gray-100 rounded-lg font-medium text-sm text-gray-700 border-b">
               <div className="col-span-1 text-center">순위</div>
               <div className="col-span-2">이름</div>
-              <div className="col-span-4">직무</div>
-              <div className="col-span-3">주요 키워드</div>
+              <div className="col-span-3">직무</div>
+              <div className="col-span-4">주요 키워드</div>
               <div className="col-span-2 text-center">직군별 상위</div>
             </div>
 
@@ -174,15 +167,17 @@ export function TeamQuarterReportDetail({ reportData }: TeamQuarterReportDetailP
                 </div>
                 <div className="col-span-2">
                   <div className="flex items-center gap-2">
-                    <span className="font-medium text-gray-900">
-                      {member.name}&nbsp;({member.score})
+                    <span className="font-medium text-gray-900 flex items-center gap-1">
+                      {member.name}(
+                      <Star className="h-3 w-3 text-primary" />
+                      <span>{member.score.toFixed(2)}</span>)
                     </span>
                   </div>
                 </div>
-                <div className="col-span-4">
+                <div className="col-span-3">
                   <div className="text-sm text-gray-900">{member.role}</div>
                 </div>
-                <div className="col-span-3">
+                <div className="col-span-4">
                   <div className="flex flex-wrap gap-1">
                     {member.peerKeywords.map((keyword: string, keywordIndex: number) => (
                       <Badge
@@ -214,29 +209,6 @@ export function TeamQuarterReportDetail({ reportData }: TeamQuarterReportDetailP
           </div>
         </CardContent>
       </Card>
-
-      {/* Contribution Criteria */}
-      {/* <Card className="border-primary/20">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <BarChart3 className="h-5 w-5 text-primary" />
-            기여도 평가 기준
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            {reportData.contributionCriteria.evaluationBasis.map(
-              (criteria: string, index: number) => (
-                <div key={index} className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <p className="text-gray-700">{criteria}</p>
-                </div>
-              )
-            )}
-          </div>
-        </CardContent>
-      </Card> */}
-
       <Card className="border-primary/20">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -246,15 +218,16 @@ export function TeamQuarterReportDetail({ reportData }: TeamQuarterReportDetailP
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {reportData.hrSuggestions.map((suggestion: string, index: number) => (
+            {reportData.hrSuggestions.map((suggestion: any, index: number) => (
               <div key={index} className="p-3 bg-gray-50 rounded-lg border">
-                <p className="text-sm text-gray-700">{suggestion}</p>
+                <p className="text-sm text-black">
+                  <strong>{suggestion.target}</strong>: {suggestion.recommendation}
+                </p>
               </div>
             ))}
           </div>
         </CardContent>
       </Card>
-
       <Card className="border-primary/20">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -264,15 +237,14 @@ export function TeamQuarterReportDetail({ reportData }: TeamQuarterReportDetailP
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            {reportData.orgSuggestions.map((item: string, index: number) => (
-              <p key={index} className="text-sm text-gray-700 leading-relaxed">
-                • {item}
-              </p>
-            ))}
+            {reportData.orgSuggestions && (
+              <CardContent>
+                <p className="text-gray-700"> {reportData.orgSuggestions.suggestion}</p>
+              </CardContent>
+            )}
           </div>
         </CardContent>
       </Card>
-
       {/* Final Comments */}
       <Card className="border-primary/20">
         <CardHeader>
