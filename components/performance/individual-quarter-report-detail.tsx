@@ -56,7 +56,7 @@ export function IndividualQuarterReportDetail({ reportData }: IndividualQuarterR
       </div>
 
       {/* Report Header */}
-      <Card className="border-primary/20 mr-7">
+      <Card className="border-primary/20">
         <CardHeader>
           <div className="flex items-center gap-4">
             <Avatar className="h-20 w-20 border-4 border-primary/20">
@@ -91,7 +91,7 @@ export function IndividualQuarterReportDetail({ reportData }: IndividualQuarterR
                 <div className="flex flex-col gap-1 text-sm text-gray-700">
                   <div className="flex items-center gap-2 justify-end">
                     <span>
-                      {reportData.rank.job_name} {reportData.rank.job_years}년차 중{' '}
+                      {reportData.rank.job_name} 중{' '}
                       <span className="text-primary font-bold text-base">
                         {reportData.rank.same_job_rank}등
                       </span>
@@ -247,33 +247,42 @@ export function IndividualQuarterReportDetail({ reportData }: IndividualQuarterR
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            {reportData.peerFeedback.map((feedback: any, index: number) => (
+          {reportData.peerFeedback.map((feedback: any, index: number) => {
+            if (feedback.type === 'summary') {
+              return (
+                <div key={index}>
+                  <h4 className="font-medium text-gray-900 mt-5 mb-2">피드백 요약</h4>
+                  <p className="text-gray-700 whitespace-pre-line">{feedback.text}</p>
+                </div>
+              );
+            }
+
+            return (
               <div key={index}>
-                <h4 className="font-medium text-gray-900 mb-2 capitalize">
+                <h4 className="font-medium text-gray-900 mt-5 mb-2 capitalize">
                   {feedback.type === 'positive' ? '강점' : '보완할 점'}
                 </h4>
                 <div className="flex flex-wrap gap-2">
                   {(feedback.type === 'positive'
                     ? feedback.keywords
-                    : feedback.keywords.slice(0, Math.ceil(feedback.keywords.length / 2))
+                    : feedback.keywords?.slice(0, Math.ceil(feedback.keywords.length / 2)) || []
                   ).map((keyword: any, keyIndex: number) => (
                     <Badge
                       key={keyIndex}
                       variant="secondary"
-                      className={
+                      className={`pdf-badge ${
                         feedback.type === 'positive'
                           ? 'bg-green-100 text-green-800 hover:bg-green-200'
                           : 'bg-orange-100 text-orange-800 hover:bg-orange-200'
-                      }
+                      }`}
                     >
                       {keyword.keyword}
                     </Badge>
                   ))}
                 </div>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </CardContent>
       </Card>
 
