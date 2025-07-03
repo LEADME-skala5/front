@@ -2,7 +2,7 @@ name: CI
 on:
   push:
     branches:
-      - feat/ci-cd # TODO: main으로 변경 필요
+      - main
 
 jobs:
   build-and-push:
