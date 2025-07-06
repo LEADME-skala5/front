@@ -45,12 +45,12 @@ const menuItems = [
     icon: TrendingUp,
     requiresTeamLead: false,
   },
-  {
-    title: '성과관리 기준 설정',
-    url: '/evaluation/setup',
-    icon: ClipboardCheck,
-    requiresTeamLead: true,
-  },
+  // {
+  //   title: '성과관리 기준 설정',
+  //   url: '/evaluation/setup',
+  //   icon: ClipboardCheck,
+  //   requiresTeamLead: true,
+  // },
   {
     title: '팀원 전체 보기',
     url: '/team/overview',
