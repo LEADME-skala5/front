@@ -155,7 +155,7 @@ export function SignUpForm() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <UserPlus className="h-5 w-5" />
-          Create Account
+          회원가입
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -163,13 +163,13 @@ export function SignUpForm() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Name */}
             <div className="space-y-2">
-              <Label htmlFor="name">Name *</Label>
+              <Label htmlFor="name">이름 *</Label>
               <Input
                 id="name"
                 type="text"
                 value={formData.name}
                 onChange={(e) => handleInputChange('name', e.target.value)}
-                placeholder="Enter your full name"
+                placeholder="이름을 입력해주세요"
                 className={errors.name ? 'border-red-500' : ''}
               />
               {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
@@ -177,13 +177,13 @@ export function SignUpForm() {
 
             {/* User ID */}
             <div className="space-y-2">
-              <Label htmlFor="userId">User ID *</Label>
+              <Label htmlFor="userId">사번 *</Label>
               <Input
                 id="userId"
                 type="text"
                 value={formData.userId}
                 onChange={(e) => handleInputChange('userId', e.target.value)}
-                placeholder="Choose a user ID"
+                placeholder="사번을 입력해주세요"
                 className={errors.userId ? 'border-red-500' : ''}
               />
               {errors.userId && <p className="text-sm text-red-500">{errors.userId}</p>}
@@ -191,14 +191,14 @@ export function SignUpForm() {
 
             {/* Password */}
             <div className="space-y-2 md:col-span-2">
-              <Label htmlFor="password">Password *</Label>
+              <Label htmlFor="password">비밀번호 *</Label>
               <div className="relative">
                 <Input
                   id="password"
                   type={showPassword ? 'text' : 'password'}
                   value={formData.password}
                   onChange={(e) => handleInputChange('password', e.target.value)}
-                  placeholder="Create a password"
+                  placeholder="비밀번호를 입력해주세요"
                   className={errors.password ? 'border-red-500' : ''}
                 />
                 <Button
@@ -216,13 +216,13 @@ export function SignUpForm() {
 
             {/* Teams Email */}
             <div className="space-y-2">
-              <Label htmlFor="teamsEmail">Teams Email *</Label>
+              <Label htmlFor="teamsEmail">Teams 이메일 *</Label>
               <Input
                 id="teamsEmail"
                 type="email"
                 value={formData.teamsEmail}
                 onChange={(e) => handleInputChange('teamsEmail', e.target.value)}
-                placeholder="your.name@company.com"
+                placeholder="teams 이메일을 입력해주세요"
                 className={errors.teamsEmail ? 'border-red-500' : ''}
               />
               {errors.teamsEmail && <p className="text-sm text-red-500">{errors.teamsEmail}</p>}
@@ -230,13 +230,13 @@ export function SignUpForm() {
 
             {/* Slack Email */}
             <div className="space-y-2">
-              <Label htmlFor="slackEmail">Slack Email *</Label>
+              <Label htmlFor="slackEmail">Slack 이메일 *</Label>
               <Input
                 id="slackEmail"
                 type="email"
                 value={formData.slackEmail}
                 onChange={(e) => handleInputChange('slackEmail', e.target.value)}
-                placeholder="your.name@company.com"
+                placeholder="Slack 이메일을 입력해주세요"
                 className={errors.slackEmail ? 'border-red-500' : ''}
               />
               {errors.slackEmail && <p className="text-sm text-red-500">{errors.slackEmail}</p>}
@@ -244,7 +244,7 @@ export function SignUpForm() {
 
             {/* Local Directory Path */}
             <div className="space-y-2 md:col-span-2">
-              <Label htmlFor="localDirectory">Local Directory Path *</Label>
+              <Label htmlFor="localDirectory">로컬 파일 경로 *</Label>
               <Input
                 id="localDirectory"
                 type="text"
@@ -260,19 +260,17 @@ export function SignUpForm() {
 
             {/* Department */}
             <div className="space-y-2">
-              <Label htmlFor="department">Department (부문) *</Label>
+              <Label htmlFor="department">부문 *</Label>
               <Select onValueChange={(value) => handleInputChange('department', value)}>
                 <SelectTrigger className={errors.department ? 'border-red-500' : ''}>
-                  <SelectValue placeholder="Select department" />
+                  <SelectValue placeholder="부문을 선택해주세요" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="engineering">Engineering</SelectItem>
-                  <SelectItem value="product">Product</SelectItem>
-                  <SelectItem value="design">Design</SelectItem>
-                  <SelectItem value="marketing">Marketing</SelectItem>
-                  <SelectItem value="sales">Sales</SelectItem>
-                  <SelectItem value="hr">Human Resources</SelectItem>
-                  <SelectItem value="finance">Finance</SelectItem>
+                  <SelectItem value="at-service">AT서비스부문</SelectItem>
+                  <SelectItem value="Strategic-business">금융/전략사업부문</SelectItem>
+                  <SelectItem value="manufacturing">제조서비스부문</SelectItem>
+                  <SelectItem value="cloud">Cloud부문</SelectItem>
+                  <SelectItem value="strategic-plan">전략기획부문</SelectItem>
                 </SelectContent>
               </Select>
               {errors.department && <p className="text-sm text-red-500">{errors.department}</p>}
@@ -280,16 +278,16 @@ export function SignUpForm() {
 
             {/* Division */}
             <div className="space-y-2">
-              <Label htmlFor="division">Division (본부) *</Label>
+              <Label htmlFor="division">본부 *</Label>
               <Select onValueChange={(value) => handleInputChange('division', value)}>
                 <SelectTrigger className={errors.division ? 'border-red-500' : ''}>
-                  <SelectValue placeholder="Select division" />
+                  <SelectValue placeholder="본부를 선택해주세요" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="technology">Technology Division</SelectItem>
-                  <SelectItem value="business">Business Division</SelectItem>
-                  <SelectItem value="operations">Operations Division</SelectItem>
-                  <SelectItem value="strategy">Strategy Division</SelectItem>
+                  <SelectItem value="at-2">AT서비스2본부</SelectItem>
+                  <SelectItem value="manufacturing">제조서비스1본부</SelectItem>
+                  <SelectItem value="cloud">Cloud사업본부</SelectItem>
+                  <SelectItem value="esg">ESG전략담당</SelectItem>
                 </SelectContent>
               </Select>
               {errors.division && <p className="text-sm text-red-500">{errors.division}</p>}
@@ -297,16 +295,16 @@ export function SignUpForm() {
 
             {/* Organization */}
             <div className="space-y-2">
-              <Label htmlFor="organization">Organization (조직) *</Label>
+              <Label htmlFor="organization">조직 *</Label>
               <Select onValueChange={(value) => handleInputChange('organization', value)}>
                 <SelectTrigger className={errors.organization ? 'border-red-500' : ''}>
-                  <SelectValue placeholder="Select organization" />
+                  <SelectValue placeholder="조직을 선택해주세요" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="team-alpha">Team Alpha</SelectItem>
-                  <SelectItem value="team-beta">Team Beta</SelectItem>
-                  <SelectItem value="team-gamma">Team Gamma</SelectItem>
-                  <SelectItem value="team-delta">Team Delta</SelectItem>
+                  <SelectItem value="work-force-1">Workforce1팀</SelectItem>
+                  <SelectItem value="strategy-4">전략개발4팀</SelectItem>
+                  <SelectItem value="dt-service-3">DT서비스3팀</SelectItem>
+                  <SelectItem value="cloud-3">Cloud개발3팀</SelectItem>
                 </SelectContent>
               </Select>
               {errors.organization && <p className="text-sm text-red-500">{errors.organization}</p>}
@@ -314,18 +312,14 @@ export function SignUpForm() {
 
             {/* Position */}
             <div className="space-y-2">
-              <Label htmlFor="position">Position (직위) *</Label>
+              <Label htmlFor="position">직위 *</Label>
               <Select onValueChange={(value) => handleInputChange('position', value)}>
                 <SelectTrigger className={errors.position ? 'border-red-500' : ''}>
-                  <SelectValue placeholder="Select position" />
+                  <SelectValue placeholder="직위를 선택해주세요" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="intern">Intern</SelectItem>
-                  <SelectItem value="associate">Associate</SelectItem>
-                  <SelectItem value="senior">Senior</SelectItem>
-                  <SelectItem value="lead">Lead</SelectItem>
-                  <SelectItem value="manager">Manager</SelectItem>
-                  <SelectItem value="director">Director</SelectItem>
+                  <SelectItem value="manager">매니저</SelectItem>
+                  <SelectItem value="manager2">팀장</SelectItem>
                 </SelectContent>
               </Select>
               {errors.position && <p className="text-sm text-red-500">{errors.position}</p>}
@@ -333,18 +327,16 @@ export function SignUpForm() {
 
             {/* Career Level */}
             <div className="space-y-2 md:col-span-2">
-              <Label htmlFor="careerLevel">Career Level (커리어레벨) *</Label>
+              <Label htmlFor="careerLevel">커리어레벨 *</Label>
               <Select onValueChange={(value) => handleInputChange('careerLevel', value)}>
                 <SelectTrigger className={errors.careerLevel ? 'border-red-500' : ''}>
-                  <SelectValue placeholder="Select career level" />
+                  <SelectValue placeholder="커리어레벨을 선택해주세요" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="entry">Entry Level (신입)</SelectItem>
-                  <SelectItem value="junior">Junior (주니어)</SelectItem>
-                  <SelectItem value="mid">Mid Level (중급)</SelectItem>
-                  <SelectItem value="senior">Senior Level (시니어)</SelectItem>
-                  <SelectItem value="principal">Principal (프린시펄)</SelectItem>
-                  <SelectItem value="executive">Executive (임원)</SelectItem>
+                  <SelectItem value="cl1">CL1</SelectItem>
+                  <SelectItem value="cl2">CL2</SelectItem>
+                  <SelectItem value="cl3">CL3</SelectItem>
+                  <SelectItem value="cl4">CL4</SelectItem>
                 </SelectContent>
               </Select>
               {errors.careerLevel && <p className="text-sm text-red-500">{errors.careerLevel}</p>}
@@ -352,14 +344,14 @@ export function SignUpForm() {
           </div>
 
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? 'Creating Account...' : 'Create Account'}
+            {isLoading ? '회원가입하는 중' : '회원가입'}
           </Button>
 
           <div className="text-center">
             <p className="text-sm text-gray-600">
-              Already have an account?{' '}
+              이미 회원가입이 되어있다면?{' '}
               <Link href="/login" className="text-blue-600 hover:underline">
-                Sign in
+                로그인
               </Link>
             </p>
           </div>

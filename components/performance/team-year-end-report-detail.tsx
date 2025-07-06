@@ -74,7 +74,7 @@ export function TeamYearEndReportDetail({ reportData }: TeamYearEndReportDetailP
         </CardHeader>
       </Card>
 
-      {/* Annual Team Goals Achievement */}
+      {/* Team Goals Achievement*/}
       <Card className="border-primary/20">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -83,31 +83,52 @@ export function TeamYearEndReportDetail({ reportData }: TeamYearEndReportDetailP
           </CardTitle>
         </CardHeader>
         <CardContent>
+          {/* 헤더줄 */}
+          <div className="grid grid-cols-12 gap-4 p-3 rounded-lg font-medium text-sm text-gray-700 mb-4">
+            <div className="col-span-8">목표명</div>
+            <div className="col-span-2 text-center">비중</div>
+            <div className="col-span-2 text-center">등급</div>
+          </div>
+
           <div className="space-y-4">
             {reportData.teamGoals.map((goal: any, index: number) => (
-              <div key={index} className="p-4 bg-gray-50 rounded-lg border">
-                <div className="flex items-center justify-between mb-3">
-                  <h4 className="font-medium text-gray-900">{goal.goalName}</h4>
-                  <Badge
-                    variant="outline"
-                    className={`text-sm ${
-                      goal.grade === 'A'
-                        ? 'bg-green-100 text-green-800 border-green-300'
-                        : goal.grade === 'B'
-                          ? 'bg-yellow-100 text-yellow-800 border-yellow-300'
-                          : 'bg-red-100 text-red-800 border-red-300'
-                    }`}
-                  >
-                    {goal.grade}
-                  </Badge>
+              <div key={index} className="p-4 bg-gray-50 rounded-lg border space-y-2">
+                {/* 한 줄 요약: 목표명 / 비중 / 등급 */}
+                <div className="grid grid-cols-12 gap-4 items-center">
+                  {/* 목표명 */}
+                  <h4 className="col-span-8 font-medium text-gray-900">{goal.goalName}</h4>
+
+                  {/* 비중 */}
+                  <div className="col-span-2 text-center">
+                    <span className="text-xs text-white bg-orange-400 px-2 py-1 rounded-md font-semibold">
+                      {goal.weight}%
+                    </span>
+                  </div>
+
+                  {/* 등급 */}
+                  <div className="col-span-2 text-center">
+                    <Badge
+                      variant="outline"
+                      className={`text-sm ${
+                        goal.grade === 'A'
+                          ? 'bg-green-100 text-green-800 border-green-300'
+                          : goal.grade === 'B'
+                            ? 'bg-yellow-100 text-yellow-800 border-yellow-300'
+                            : 'bg-gray-100 text-gray-700 border-gray-300'
+                      }`}
+                    >
+                      {goal.grade}
+                    </Badge>
+                  </div>
                 </div>
 
+                {/* 상세 항목 (content) */}
                 <div className="text-sm text-gray-600">
                   {Array.isArray(goal.content) && goal.content.length > 0 ? (
                     <ul className="space-y-1">
                       {goal.content.map((item: string, itemIndex: number) => (
                         <li key={itemIndex} className="flex items-start gap-2">
-                          <div className="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 flex-shrink-0"></div>
+                          <div className="w-1.5 h-1.5 bg-neutral-700 rounded-full mt-2 flex-shrink-0"></div>
                           <span>{item}</span>
                         </li>
                       ))}

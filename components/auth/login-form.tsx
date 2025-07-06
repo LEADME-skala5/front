@@ -12,6 +12,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Eye, EyeOff, LogIn } from 'lucide-react';
 import Link from 'next/link';
 import { useUserStore } from '@/store/useUserStore';
+import LogoImage from '@/assets/skore_logo.svg';
 
 export function LoginForm() {
   const router = useRouter();
@@ -156,16 +157,6 @@ export function LoginForm() {
               <Link href="/signup" className="text-blue-600 hover:underline">
                 회원가입
               </Link>
-            </p>
-          </div>
-
-          <div className="mt-4 p-3 bg-gray-50 rounded-md">
-            <p className="text-xs text-gray-600">
-              <strong>Demo credentials:</strong>
-              <br />
-              Team Lead: admin / password
-              <br />
-              Member: member / password
             </p>
           </div>
         </form>
