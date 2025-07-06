@@ -17,6 +17,7 @@ import {
   MessageSquare,
   Award,
 } from 'lucide-react';
+import DownloadPDFButton from '@/components/ui/download-pdf-button';
 
 interface TeamYearEndReportDetailProps {
   reportData: any;
@@ -44,10 +45,7 @@ export function TeamYearEndReportDetail({ reportData }: TeamYearEndReportDetailP
             <Share className="mr-2 h-4 w-4" />
             공유
           </Button>
-          <Button variant="outline">
-            <Download className="mr-2 h-4 w-4" />
-            다운로드
-          </Button>
+          <DownloadPDFButton />
         </div>
       </div>
 

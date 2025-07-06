@@ -7,7 +7,6 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   ArrowLeft,
-  Download,
   Share,
   Star,
   Info,
@@ -17,8 +16,8 @@ import {
   MessageSquare,
   BarChart3,
 } from 'lucide-react';
-
 import * as Tooltip from '@radix-ui/react-tooltip';
+import DownloadPDFButton from '@/components/ui/download-pdf-button';
 
 interface IndividualQuarterReportDetailProps {
   reportData: any;
@@ -36,7 +35,11 @@ export function IndividualQuarterReportDetail({ reportData }: IndividualQuarterR
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto space-y-6">
+    <div
+      id="pdf-content"
+      style={{ maxHeight: 'none', height: 'auto', overflow: 'visible' }}
+      className="p-6 max-w-4xl mx-auto space-y-6"
+    >
       {/* Header */}
       <div className="flex items-center justify-between">
         <Button variant="outline" onClick={() => router.push('/performance')} className="mb-4">
@@ -48,10 +51,7 @@ export function IndividualQuarterReportDetail({ reportData }: IndividualQuarterR
             <Share className="mr-2 h-4 w-4" />
             공유
           </Button>
-          <Button variant="outline">
-            <Download className="mr-2 h-4 w-4" />
-            다운로드
-          </Button>
+          <DownloadPDFButton />
         </div>
       </div>
 
