@@ -17,36 +17,34 @@ import { Eye, EyeOff, Save } from 'lucide-react';
 
 export function ProfileSettings() {
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({
-    name: 'John Doe',
-    userId: 'john.doe',
-    password: 'password123',
-    teamsEmail: 'john.doe@company.com',
-    slackEmail: 'john.doe@company.com',
-    localDirectory: 'C:\\Users\\JohnDoe\\Documents',
-    department: 'engineering',
-    division: 'technology',
-    organization: 'team-alpha',
-    position: 'senior',
-    careerLevel: 'senior',
-  });
-
   const [isEditing, setIsEditing] = useState(false);
+
+  const [formData, setFormData] = useState({
+    name: '권채영',
+    userId: 'SK091',
+    password: 'hashed_password_91',
+    teamsEmail: 'user091@skala.co.kr',
+    slackEmail: 'user091@skala.co.kr',
+    localDirectory: 'C:\\Users\\user091\\Documents',
+    department: 'ESG전략담당',
+    division: 'ESG전략담당',
+    organization: 'ESG팀',
+    position: '팀장',
+    careerLevel: 'CL4',
+  });
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSave = () => {
-    // Mock save functionality
     console.log('Saving profile data:', formData);
     setIsEditing(false);
-    // In a real app, this would make an API call
   };
 
   const handleCancel = () => {
     setIsEditing(false);
-    // Reset form data to original values if needed
+    // 원래 값 복구하고 싶다면 초기값 백업해서 관리 필요
   };
 
   return (
@@ -73,13 +71,13 @@ export function ProfileSettings() {
         <div className="flex items-center space-x-4">
           <Avatar className="w-20 h-20">
             <AvatarImage src="/placeholder.svg?height=80&width=80" />
-            <AvatarFallback>JD</AvatarFallback>
+            <AvatarFallback>HD</AvatarFallback>
           </Avatar>
-          {isEditing && <Button variant="outline">Change Photo</Button>}
+          {isEditing && <Button variant="outline">사진 변경</Button>}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Name */}
+          {/* 이름 */}
           <div className="space-y-2">
             <Label htmlFor="name">이름</Label>
             <Input
@@ -90,7 +88,7 @@ export function ProfileSettings() {
             />
           </div>
 
-          {/* User ID */}
+          {/* 사번 */}
           <div className="space-y-2">
             <Label htmlFor="userId">사번</Label>
             <Input
@@ -101,7 +99,7 @@ export function ProfileSettings() {
             />
           </div>
 
-          {/* Password */}
+          {/* 비밀번호 */}
           <div className="space-y-2 md:col-span-2">
             <Label htmlFor="password">비밀번호</Label>
             <div className="relative">
@@ -126,7 +124,7 @@ export function ProfileSettings() {
             </div>
           </div>
 
-          {/* Teams Email */}
+          {/* Teams 이메일 */}
           <div className="space-y-2">
             <Label htmlFor="teamsEmail">Teams 이메일</Label>
             <Input
@@ -138,7 +136,7 @@ export function ProfileSettings() {
             />
           </div>
 
-          {/* Slack Email */}
+          {/* Slack 이메일 */}
           <div className="space-y-2">
             <Label htmlFor="slackEmail">Slack 이메일</Label>
             <Input
@@ -150,9 +148,9 @@ export function ProfileSettings() {
             />
           </div>
 
-          {/* Local Directory Path */}
+          {/* 로컬 경로 */}
           <div className="space-y-2 md:col-span-2">
-            <Label htmlFor="localDirectory">로컬 디렉토리 경로</Label>
+            <Label htmlFor="localDirectory">로컬 파일 경로</Label>
             <Input
               id="localDirectory"
               value={formData.localDirectory}
@@ -161,7 +159,7 @@ export function ProfileSettings() {
             />
           </div>
 
-          {/* Department */}
+          {/* 부문 */}
           <div className="space-y-2">
             <Label htmlFor="department">부문</Label>
             {isEditing ? (
@@ -170,16 +168,14 @@ export function ProfileSettings() {
                 value={formData.department}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select department" />
+                  <SelectValue placeholder="부문을 선택해주세요" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="engineering">Engineering</SelectItem>
-                  <SelectItem value="product">Product</SelectItem>
-                  <SelectItem value="design">Design</SelectItem>
-                  <SelectItem value="marketing">Marketing</SelectItem>
-                  <SelectItem value="sales">Sales</SelectItem>
-                  <SelectItem value="hr">Human Resources</SelectItem>
-                  <SelectItem value="finance">Finance</SelectItem>
+                  <SelectItem value="at-service">AT서비스부문</SelectItem>
+                  <SelectItem value="Strategic-business">금융/전략사업부문</SelectItem>
+                  <SelectItem value="manufacturing">제조서비스부문</SelectItem>
+                  <SelectItem value="cloud">Cloud부문</SelectItem>
+                  <SelectItem value="strategic-plan">전략기획부문</SelectItem>
                 </SelectContent>
               </Select>
             ) : (
@@ -187,7 +183,7 @@ export function ProfileSettings() {
             )}
           </div>
 
-          {/* Division */}
+          {/* 본부 */}
           <div className="space-y-2">
             <Label htmlFor="division">본부</Label>
             {isEditing ? (
@@ -196,13 +192,13 @@ export function ProfileSettings() {
                 value={formData.division}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select division" />
+                  <SelectValue placeholder="본부를 선택해주세요" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="technology">Technology Division</SelectItem>
-                  <SelectItem value="business">Business Division</SelectItem>
-                  <SelectItem value="operations">Operations Division</SelectItem>
-                  <SelectItem value="strategy">Strategy Division</SelectItem>
+                  <SelectItem value="at-2">AT서비스2본부</SelectItem>
+                  <SelectItem value="manufacturing">제조서비스1본부</SelectItem>
+                  <SelectItem value="cloud">Cloud사업본부</SelectItem>
+                  <SelectItem value="esg">ESG전략담당</SelectItem>
                 </SelectContent>
               </Select>
             ) : (
@@ -210,7 +206,7 @@ export function ProfileSettings() {
             )}
           </div>
 
-          {/* Organization */}
+          {/* 조직 */}
           <div className="space-y-2">
             <Label htmlFor="organization">조직</Label>
             {isEditing ? (
@@ -219,13 +215,13 @@ export function ProfileSettings() {
                 value={formData.organization}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select organization" />
+                  <SelectValue placeholder="조직을 선택해주세요" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="team-alpha">Team Alpha</SelectItem>
-                  <SelectItem value="team-beta">Team Beta</SelectItem>
-                  <SelectItem value="team-gamma">Team Gamma</SelectItem>
-                  <SelectItem value="team-delta">Team Delta</SelectItem>
+                  <SelectItem value="work-force-1">Workforce1팀</SelectItem>
+                  <SelectItem value="strategy-4">전략개발4팀</SelectItem>
+                  <SelectItem value="dt-service-3">DT서비스3팀</SelectItem>
+                  <SelectItem value="cloud-3">Cloud개발3팀</SelectItem>
                 </SelectContent>
               </Select>
             ) : (
@@ -233,7 +229,7 @@ export function ProfileSettings() {
             )}
           </div>
 
-          {/* Position */}
+          {/* 직위 */}
           <div className="space-y-2">
             <Label htmlFor="position">직위</Label>
             {isEditing ? (
@@ -242,15 +238,11 @@ export function ProfileSettings() {
                 value={formData.position}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select position" />
+                  <SelectValue placeholder="직위를 선택해주세요" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="intern">Intern</SelectItem>
-                  <SelectItem value="associate">Associate</SelectItem>
-                  <SelectItem value="senior">Senior</SelectItem>
-                  <SelectItem value="lead">Lead</SelectItem>
-                  <SelectItem value="manager">Manager</SelectItem>
-                  <SelectItem value="director">Director</SelectItem>
+                  <SelectItem value="manager">매니저</SelectItem>
+                  <SelectItem value="manager2">팀장</SelectItem>
                 </SelectContent>
               </Select>
             ) : (
@@ -258,7 +250,7 @@ export function ProfileSettings() {
             )}
           </div>
 
-          {/* Career Level */}
+          {/* 커리어레벨 */}
           <div className="space-y-2 md:col-span-2">
             <Label htmlFor="careerLevel">커리어레벨</Label>
             {isEditing ? (
@@ -267,15 +259,13 @@ export function ProfileSettings() {
                 value={formData.careerLevel}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select career level" />
+                  <SelectValue placeholder="커리어레벨을 선택해주세요" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="entry">Entry Level (신입)</SelectItem>
-                  <SelectItem value="junior">Junior (주니어)</SelectItem>
-                  <SelectItem value="mid">Mid Level (중급)</SelectItem>
-                  <SelectItem value="senior">Senior Level (시니어)</SelectItem>
-                  <SelectItem value="principal">Principal (프린시펄)</SelectItem>
-                  <SelectItem value="executive">Executive (임원)</SelectItem>
+                  <SelectItem value="cl1">CL1</SelectItem>
+                  <SelectItem value="cl2">CL2</SelectItem>
+                  <SelectItem value="cl3">CL3</SelectItem>
+                  <SelectItem value="cl4">CL4</SelectItem>
                 </SelectContent>
               </Select>
             ) : (

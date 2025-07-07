@@ -9,7 +9,7 @@ export default function SettingsPage() {
       </div>
 
       <div className="flex justify-center">
-        <div>
+        <div className="w-full max-w-5xl">
           <ProfileSettings />
         </div>
         {/* <div>
