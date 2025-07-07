@@ -34,7 +34,7 @@ type SortMode = 'alphabetical' | 'performance';
 
 export function TeamReport({ teamMembers }: TeamReportProps) {
   const router = useRouter();
-  const [sortMode, setSortMode] = useState<SortMode>('alphabetical');
+  const [sortMode, setSortMode] = useState<SortMode>('performance');
 
   // 2. useMemo로 정렬된 팀원 목록 계산
   const sortedTeamMembers = useMemo(() => {
