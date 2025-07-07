@@ -25,6 +25,7 @@ import {
   SidebarMenuItem,
   SidebarHeader,
 } from '@/components/ui/sidebar';
+import LogoOnly from '@/components/auth/LogoOnly';
 
 const menuItems = [
   // {
@@ -91,8 +92,10 @@ export function AppSidebar() {
     <Sidebar className="border-r border-primary/20 bg-white">
       <SidebarHeader className="bg-white">
         <div className="flex items-center gap-2 px-2 py-2 ">
-          <Image src={logo} alt="로고" width={50} height={50} />
-          <span className="font-semibold">목록</span>
+          <div className="w-10 h-10">
+            <LogoOnly />
+          </div>
+          <span className="font-semibold ml-3">목록</span>
         </div>
       </SidebarHeader>
       <SidebarContent className="bg-white">
