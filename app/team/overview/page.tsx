@@ -71,7 +71,9 @@ async function getEvaluationData() {
 
 export default async function Page() {
   const { evaluated, users } = await getEvaluationData();
-
+  // const response = await getEvaluationData();
+  // const evaluated = false;
+  // const users = response.users;
   // API 응답 → 컴포넌트 데이터 형식 변환
   const teamMembers = users.map(
     (user: {
@@ -82,6 +84,7 @@ export default async function Page() {
       tasks: any[];
       quarterScore: any;
       lastUpdated: any;
+      recentReportId: string;
     }) => ({
       id: user.userId.toString(),
       name: user.name,
@@ -90,6 +93,7 @@ export default async function Page() {
       projects: user.tasks.map((task) => task.name),
       performanceScore: user.quarterScore || 0, // null 대체값
       lastEvaluationDate: user.lastUpdated || '', // null 대체값
+      recentReportId: user.recentReportId,
     })
   );
 

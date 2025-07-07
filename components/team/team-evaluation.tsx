@@ -154,7 +154,7 @@ export function TeamEvaluation({ teamMembers: initialTeamMembers }: TeamEvaluati
                 <Button
                   size="sm"
                   onClick={() => handleQualitativeEvaluation(member.id)}
-                  className="bg-orange-500 hover:bg-orange-600 text-white"
+                  className="bg-orange-400 hover:bg-orange-600 text-white"
                 >
                   정성평가하기
                 </Button>

@@ -23,6 +23,7 @@ interface TeamMember {
   projects: string[];
   performanceScore: number;
   lastEvaluationDate: string;
+  recentReportId: string;
 }
 
 interface TeamReportProps {
@@ -57,8 +58,9 @@ export function TeamReport({ teamMembers }: TeamReportProps) {
       : '0.0';
   const uniqueProjects = new Set(teamMembers.flatMap((m) => m.projects)).size;
 
-  const handleViewReport = (memberId: string) => {
-    router.push(`/team/member/${memberId}`);
+  const handleViewReport = (reportId: string) => {
+    console.log(reportId);
+    router.push(`/performance/reports/${reportId}`);
   };
 
   const getPerformanceColor = (score: number) => {
@@ -195,7 +197,10 @@ export function TeamReport({ teamMembers }: TeamReportProps) {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => handleViewReport(member.id)}
+                  onClick={() => {
+                    console.log('버튼 클릭 - reportId:', member.recentReportId);
+                    handleViewReport(member.recentReportId);
+                  }}
                   className="border-primary/30 text-primary hover:bg-primary hover:text-white bg-white"
                 >
                   <Eye className="mr-2 h-4 w-4" />
