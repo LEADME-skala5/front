@@ -140,12 +140,14 @@ export function PerformanceFeedbackList({ selectedType, userId }: PerformanceFee
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-3">
-                  <Badge
-                    className={`${getTypeColor(report.type)} ${getTypeHoverColor(report.type)}`}
-                  >
-                    {getTypeLabel(report.type)}
-                  </Badge>
+                <div className="flex items-center space-x-3 mr-10">
+                  <div className="mr-10">
+                    <Badge
+                      className={`${getTypeColor(report.type)} ${getTypeHoverColor(report.type)}`}
+                    >
+                      {getTypeLabel(report.type)}
+                    </Badge>
+                  </div>
 
                   <Button variant="outline" size="sm" onClick={(e) => handleDownload(e, report.id)}>
                     <Download className="mr-2 h-4 w-4" />
